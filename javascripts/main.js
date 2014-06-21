@@ -1,4 +1,4 @@
 function sayHello()
 {
-    alert("Hello google docs");
+    alert("Hello githup test1");
 }

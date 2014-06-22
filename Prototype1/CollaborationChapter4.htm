@@ -1,0 +1,775 @@
+<HTML>
+<head>
+<script src="../javascripts/menuCommon.js"></script>
+<link rel=STYLESHEET TYPE="text/css" href="../stylesheets/common.css">
+</head>
+
+
+<B class="HeadingText">Collaboration and feedback</B>
+<br><br>
+
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, helpMenu, '260px')" onMouseout="delayhidemenu()">Chapter 4 - Detailed Requirements</em>
+
+<p>The detailed requirements will be divided into sections.   However, due to the complexity of the requirements, the full scope of the requirements will be expressed in layers.  Furthermore, I'm going to express the behavior in a manner which makes it easiest to digest, but not necessarily in a bottom up approach.  For instance, to create a feedback item, you must have content displayed somewhere, and need a registered user.   But the first requirement I'm going to discuss is the creation of a feedback item.  So when reading the requirements surrounding feedback item creation, the reader is going to have to overlook the fact that I haven't addressed user registration process (but be patient, that obviously will be covered).   I think it is best to layer requirements in this way because readers don't want to be exposed to a million fussy details before they can even recognize a single bit of system benefit.</p>
+<br>
+
+<a name="1-Creating_feedback_item"></a>
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, dlrMenu, '300px')" onMouseout="delayhidemenu()">1. Creating a basic feedback item</em>
+<ul>
+  <p>1.1 System will allow the user to post feedback about any web content.</p>
+     <ul>
+      The feedback item shall consist of any arbitrary free form text, but may also include images and video.  And since feedback items are typically displayed in a web browser, the system should allow user to supply raw html (but not require it either).
+     </ul>
+
+  <p>1.2 System will allow the user to designate a specific portion of web content as the target of a feedback item.</p>
+     <ul>
+         <li>For text based content - this could be a word or phrase, a paragraph, a page, a chapter (like in a book), or a <em title="Universal Resource Locator">URL</em>. 
+         <li>For tabular based content - this could be one or more cells, rows or columns.
+         <li>For images - this could be the entire image, or could be some region within the image.
+         <li>For videos - this could be the entire video, or could be a portion of the video (perhaps based on time offsets).
+     </ul>
+	  
+  <p>1.3 System will attempt to capture and store (redundantly) the target's visible image.</p>
+     <ul>
+      <p>For text, this would be the actual selected text.  For images and video, this would be the selected segment.   The reason I say "attempt to capture" is that video can be rather bulky (in size), and there might be copyright issues.   So when the full representation of the feedback item target cannot be captured and stored redundantly, a visible approximation (e.g., a screen shot or thumbnail) will be captured.   In such situations, the feedback item must contain enough meta data to allow playback of the user selected target.   For example, if the user comments on 10 seconds of a video from time offset 38 through 47 (in seconds), then ideally a video player could be used to replay just those 10 seconds.  It is of little value to have a user comment on 10 seconds of a 1 hour video, and then force a user to replay the entire video.   But the point of this requirement is not that a "seek" mechanism has to exist when playing back the video, but only that the feedback mechanism capture enough information so that if rich playback mechanism exist, it can leverage meta data in the feedback item to accomplish "seek" behavior.  And obviously, when considering video, if the video content cannot be copied redundantly (due to copyright or other technical issues), then playback would only be possible if the original publisher of the video continued to offer the video on some website.</p>
+     </ul>
+
+  <p>1.4 System will collect and store adjacent visible information so as to express the context of the feedback item target. </p> 
+     <ul>
+      <p>For feedback on text, this might be a few words or sentences before and after the selected text.  For video, this might be a few seconds before and after the selected video segment.</p>
+     </ul>
+  
+  <p>1.5 System will collect and store any non visible meta data embedded in the original content which helps identify or classify the target of the feedback item.</p>  
+     <ul>
+      <p>For text, this might be html tags.  For video, this could be any number of embedded or visual clues.   I'm no expert on all the various video encoding strategies, but it is entirely possible that video contains embedded signals for the start and end of various segments.  For instance, commercial television might contain embedded signals which mark the beginning and ending of commercial breaks.   So if such information exists, and if that information helps identify the target of a feedback item, it should be collected and stored as part of the feedback item meta data.</p>
+     </ul>
+
+  <p>1.6 As part of the feedback item creation process, user will have the ability to add miscellaneous notes.</p>
+     <ul>
+      <p>These notes can be attached to the various meta data attributes, or can merely be related to the feedback item as a whole.  The purpose behind free form notes is to clarify something of interest (e.g., meta data collected automatically by framework might not be entirely obvious, if there are other web sites which have similar content, the user may want to explain why the particular target was selected as opposed to other similar targets).  I figure if it makes sense to annotate content, then it probably makes sense to be able to annotate the annotation.
+     </ul>
+
+  <p>1.7 System will create feedback items in "draft mode" and establish default visibility permissions based on user preferences.</p>
+     <ul>
+      <p>Feedback items are always created in draft mode.  When in draft mode, an item is only visible to the user that created the item.  However, the creating user can explicitly grant permissions to other users.  Feedback items will promote to live mode either automatically (based on user preferences), or explicitly when designated by the creating user.  And although all content is created with default visibility rules, the user can adjust the visibility (and other system function permissions) on a case by case basis.</p>
+     </ul>
+  
+  <p>1.8 System will allow for collection of optional attributes.</p>
+     <ul>
+	  <p>Optional attributes will be available to support arbitrary classifications (e.g., severity, priority, status).
+     </ul>
+  
+  <p>1.9 System will store (at least) the following attributes for each feedback item:</p>
+  <ul>  
+	  <li>Creator user_name
+      <li>Date/time created
+	  <li>User feedback (rich text with optional attachments - like image and video files)
+	  <li>Selected visible target data
+	  <li>Visible data adjacent to the selected target (helps establish context)
+	  <li>Non visible meta data for selected target (helps anchor feedback to subsection of original content)
+	  <li>Non visible meta data adjacent to target (to further define context)
+	  <li>Link to original content (<em title="Universal Resource Locator">URL</em>)
+	  <li>Content_id (<em title="Universal Resource Name">URN</em> - assuming content has a <em title="Universal Resource Name">URN</em>, if not, <em title="Universal Resource Locator">URL</em> will be used instead)
+	  <li>Draft mode indicator	
+	  <li>Miscellaneous notes
+	  <li>Optional attributes 
+	  <li>Visibility and update permission rules
+  </ul>
+</ul>
+<br>
+
+
+<a name="2-Displaying_feedback_item"></a>
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, dlrMenu, '300px')" onMouseout="delayhidemenu()">2. Displaying a feedback item</em>  
+<ul>
+   <p>2.1 System shall display a single feedback item.</p>
+      <ul>   
+        <p> The simplest of the feedback displays is that of a single feedback item.  In this view, all feedback attributes are visible.  Navigation to single item view occurs when either one item meets the search criteria or when a specific items is selected (i.e., selected from list, or when viewing from original content in overlay mode).</p>
+      </ul> 
+             
+   <p>2.2 System shall display a list of feedback items.</p>
+      <ul>   
+        <p>A list of feedback items will be shown when multiple items match the search criteria, or when selecting a region of content which contains multiple feedback items.  List view allows for selection of multiple items - after which, bulk operations can be applied (e.g., bulk state transition, bulk delete, bulk annotation, bulk grant of permissions). </p>
+      </ul> 
+      
+   <p>2.3 System shall support searching for one or more feedback items.</p>
+      <ul>  
+         <p>Various filter and sort criteria will be available - execution of a search will yield either single item display or list view.</p>
+      </ul> 
+      
+   <p>2.4 System shall support display of original web content with "overlays" showing all the existing feedback items.</p>
+      <ul>     
+         <p>When feedback items exist for some <em title="Universal Resource Locator">URL</em>, it will be possible to invoke a display of the original content such that there are visual clues (in the original content) which depict elements that have feedback items.  Now since it is invalid to actually update the original web content, the original content would have to be cloned (on the fly) and then marked up with visual clues.  The manner in which visual clues are expressed is beyond the scope of this document - but examples are superscripts, bold, underline, use of color or shading or overlay icons.  For video, display of feedback items might be in the form of a time-line (with density of feedback perhaps leveraging color or shading).  And for video, feedback item icons might appear or disappear as the video is playing.</p>
+      </ul> 
+      
+   <p>2.5 System shall be able to toggle between Overlay and Feedback only views.</p>
+      <ul>     
+         <p>It is expected that both overlay and feedback only views will be equally useful (depending upon user function being performed).  When in overlay mode, it is assumed that user will be able to navigate to the details surrounding one or more feedback items.   And when in Feedback only view, it is assumed that user can jump back to original content view (to get a broader sense of the overall content).  And obviously, just like annotation of the original content, overlay mode would allow generation of new feedback items (i.e., user selects a section of the overlay content and triggers creation of a new feedback item).</p>
+      </ul> 
+      
+   <p>2.6 System shall support toggle between display an edit mode.</p>
+      <ul>     
+         <p>All of the display only views for feedback items will support navigation to edit mode, and will support user controls to enable any state transitions which are available (e.g., closing out a defect, promoting to live, demoting back to draft mode).</p>
+      </ul>         
+</ul>   
+<br>
+
+
+<a name="3-Editing_feedback_item"></a>
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, dlrMenu, '300px')" onMouseout="delayhidemenu()">3. Editing a feedback item</em>  
+<ul>   
+   <p>3.1 Typically only the original creator of a feedback item will be allowed to alter or delete a feedback item.</p>
+   
+   <p>3.2 Feedback items can only be logically deleted.</p>
+      <ul>
+         <p>Physical delete is done automatically by the system (well, if configured to do so after X amount of time).</p>
+      </ul> 
+   
+   <p>3.3 System will support archiving of deleted feedback items.</p>
+      <ul>
+         <p>But system administrators will be able to configure the archival criteria (which means they could elect to not archive at all).</p>
+      </ul>
+      
+   <p>3.4 System will track all change history in an activity log associated with the feedback item.</p>
+      <ul>
+         <p>This will be helpful if user wants to recall a previous version of comments.  Plus, it will allow those in the community to see what has changed.  At a minimum, the user making the change, the change date/time, the attributes that changed, and the original and new values will be logged.  Note that user name would typically be the creator of the feedback item, but under rare circumstances (e.g., change by a system administrator), the user name in the activity log could be different.</p>
+      </ul>
+   
+   <p>3.5 Creator of a feedback item will be able to edit most fields.</p>
+      <ul>
+         <p>However,  some attributes, like related <em title="Universal Resource Locator">URL</em> and underlying meta data, will not be editable.  Note that change to <em title="Universal Resource Locator">URL</em> will be supported by a separate system function.  </p> 
+      </ul>
+   
+   <p>3.6 System shall support feedback item community logging.</p>
+      <ul>
+         <p>Since only the creator will be able to change most attributes associated with a feedback item, other users must be allowed to offer suggestions as to the validity of feedback attributes.  Therefore, all users will be able to annotate any attributes surrounding a feedback item.   All such annotations will appear in the feedback item's community log.  The creator of the feedback item can also respond to the annotations by others - this allows collaboration across a community while still giving the feedback item creator control over the given item.  But note, "replying" to a feedback item is a totally separate system function.  When someone replies to a feedback item, they create a child item which has its own life (and is owned/controlled by the user which replied, not the original feedback item creator).  It is assumed that the volume of data expressed in the community log will be limited (i.e., community log doesn't exist to mimic the behavior of replying via a child feedback item).  So it is likely that community log messages will have a character limit (e.g., perhaps 120 characters, like <em title="Short Message Service (also known as 'Texting')">SMS</em> messages).</p>
+       </ul>
+       
+	<p>3.7 System administrators and super users will have limited control over feedback items should they be deemed offensive.</p>
+	   <ul>
+	      <p>For scenarios where content or feedback is deemed highly offensive, super users and system administrators can quarantine the content (i.e., hide it from view).  If this is done, notification will be sent to appropriate users so they can take corrective measures.	</p>	
+       </ul>
+</ul>
+<br>
+
+
+<a name="4-Replying_to_feedback_item"></a>
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, dlrMenu, '300px')" onMouseout="delayhidemenu()">4. Replying to a feedback item</em>  
+<ul>   
+   <p>4.1 A user which has visibility and reply permissions to a feedback item can reply to it. </p>  
+      <ul>   
+         <p>Replying creates a totally separate feedback item, but the feedback item is said to be a "child" of the original feedback item.   What this means is the "reply" feedback item would appear as a nested feedback item (to the original) - this typically would be displayed as an indented item under the original feedback.  When replying to an existing feedback item, the context of the new "child" item is that of the parent feedback item (i.e., parent item's context is cloned and stored on the child item).</p>
+      </ul>
+      
+   <p>4.2 Like/Dislike behavior shall be supported</p>  
+      <ul>   
+         <li>In general, all web content should display total likes and dislikes. 
+         <li>With appropriate permissions, a user shall be allowed to express their satisfaction or dissatisfaction.
+         <li>A user should not be allowed to "vote" more than once.
+         <li>A user should be allowed to change their designation at any point in time.
+         <li>A user should be able to see whether they expressed satisfaction (i.e., whether they voted).
+         <li>No other users shall be able to see how users voted (likes and dislikes are merely cumulative total).
+      </ul>      
+      
+   <p>4.3 Breaking the parent child relationship of a feedback item.</p>
+      <ul>
+         <p>Since a reply to a feedback item is considered a child of the original feedback item, the creator of the reply is allowed to break that child relationship.   If they do that, then the "child" reply has to be attached to something.  By default, a child reply which is broken from its parent feedback item inherits the parents meta data (i.e., what ever the parent reply is attached to).   If need be, the user breaking the child relationship can attached the feedback all the way up to the original web content - but if this is done, that user would have to ensure that the now root level feedback item has the appropriate content target specified.  Of course, breaking the parent relationship and attaching to the original web content is kind of like creating a new feedback item from scratch, so the user doing this should make sure that the feedback text is appropriate for the web content's target (i.e., when replying to an existing feedback item, a lot of context information is already established, so when breaking that relationship, the user might end up with a feedback item which is lacking context).  Anyway, it makes sense to support this requirement because a user can always attach a reply to the wrong feedback item, or at some later point in time, believe that their feedback item should stand alone.</p>
+      </ul>
+      
+   <p>4.4 System shall issue a warning if deleting feedback items which have descendants.</p>
+      <ul>   
+         <p>If a feedback item with descendants is deleted, the child feedback items are not deleted.  Instead, they are promoted up the feedback hierarchy chain.  An exception to this rule is when all the descendant feedback items are owned by the creator of the item being deleted - under this scenario, the system will ask the user if the descendant feedback items should also be deleted.  On delete of a feedback item, notifications are sent for impacted feedback items so that the owners can adjust feedback data when necessary.</p>
+      </ul>
+      
+   <p>4.5 Negotiating feedback between two or more parties (advanced topic).</p>
+      <ul>   
+         <p>When soliciting feedback from those in a group, it is possible that the feedback will be disputed.  We've all read rather lengthly email chains which seem to go on forever.  And for those, it is very easily to lose a sense of context.  After a while, people tend to give up following the discussion because it is too difficult to keep up.  So the feedback mechanism should offer a means of allowing each party to nominate changes (i.e., to make suggestions) which all parties would subsequently agree to (well, assuming that agreement can be reached).   So the framework may need to have a means for each party in a disputed discussion to temporarily "mark up" the post of another user.  Now it is possible that merely highlighting the "offensive" portion and responding will suffice, but sometimes a lengthy exchange between two parties doesn't lend itself to expressing a cohesive message.   So at a minimum, there would be a need to consolidate a set of exchanges to arrive at a final conclusion (i.e., a so called synopsis).  This would allow two or more parties to negotiate a final view of a post and replies without having a lengthly and complicated series of exchanges.  The exact view of the final result might look more like the original post with some injections for points of clarification by others in the discussion.  So this is the one instance where a single post would have a primary owner but perhaps multiple contributors.  So in a nut shell, the framework merely needs to have a secure way of allowing injection of comments by additional parties (and perhaps the "injections" become icons with "fly over" or otherwise expandable text).</p>
+      </ul>
+</ul>
+<br>
+
+
+<a name="5-Feedback_items_advanced_topic"></a>
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, dlrMenu, '300px')" onMouseout="delayhidemenu()">5. Feedback items (advanced topic)</em>	   
+<ul>
+    <p>5.1 When adding content or feedback, the system shall issue a warning if the given content is already registered.</p>
+       <ul>   
+         <p>Since it is possible that two or more URLs refer to the very same web content, when feedback is logged for an existing piece of web content with a different <em title="Universal Resource Locator">URL</em>, a duplicate warning will be issued.  The user will be able to proceed logging the feedback item with the new/different <em title="Universal Resource Locator">URL</em>, but this wont result in a second content record being logged.  Furthermore, the original <em title="Universal Resource Locator">URL</em> and new <em title="Universal Resource Locator">URL</em> will be indirectly related (since they both refer to the same bit of web content).  Of course, there is a not so obvious issue as to how a feedback repository would identify duplicate content - for that, see discussion of <em title="Universal Resource Name">URN</em>.</p>
+      </ul>
+      
+    <p>5.2 When adding a feedback item, there are certain helpful system functions which should be available:</p>
+       <ul>	
+	      <li>Rich palette of visual affects (bold, font, font size, underline, list items, tabular data).
+		  <li>If rich palette is offered, then there should be a means of editing the raw html (to give user complete control).
+		  <li>Spelling, thesaurus, auto correction.
+		  <li>Should have a means of uploading image and video files.
+      </ul>
+      
+    <p>5.3 System shall offer a means of ensuring community standards (i.e., limiting offensive language).</p>
+      <ul>	
+	     <p>The goal isn't necessarily to restrict free speech, but framework should probably support a means of helping those in the community that want to avoid offensive speech.  Below are some possible options which can be considered:
+         <ul>
+	        <li>Black list of offensive words or phrases.
+		    <li>Content maturity rating (i.e., perhaps could be used to identify content which is not suitable for minors).  This perhaps can be done automatically by the system, but even if not, if maturity rating icon exists next to each feedback item, system users can flag potentially "mature" content so that others can be aware of it.
+		    <li>Maturity rating for system users (i.e., users which continue to use offensive language perhaps should have something reported to their profile).  And certainly, group owners may want to remove offensive users from their group.
+         </ul>
+      </ul>
+      
+    <p>5.4 System shall support a means for closing out a discussion thread. </p> 
+      <ul>	
+	     <p>This will prevent system users from attaching child replies to a given feedback item.   Now this won't stop other system users from posting their opinions, but it will prevent them from attaching their opinions to that of someone else.  Now the exact details surrounding permissions hasn't been thoroughly expressed (other than the vague notion that the owner of a post will be able to control the visibility and actions that are associated with the post).   So it is possible that closing out a discussion thread might just be a function of setting appropriate visibility and system function permissions.  In any event, I just wanted to point out that although discourse is a valuable part of any feedback mechanism, there does come a point in time when people need to move on to some other topic.</p>
+      </ul>
+</ul>		
+<br>
+
+
+<a name="6-Searchability"></a>
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, dlrMenu, '300px')" onMouseout="delayhidemenu()">6. Searchability</em>	   
+<ul>   
+   <p>6.1 Search mechanism will exist for all data stored in the repository (e.g., content, feedback items, assessments, users).</p>
+   
+   <p>6.2 Search mechanism will include typical pattern based matching techniques (e.g., partial search, wild cards).</p>
+   	   
+   <p>6.3 Search mechanism will include logical connectors (e.g., and, or, in, not-in).</p>
+   
+   <p>6.4 Search mechanism will allow inclusion based on system metrics.</p>
+      <ul>
+         <p>This should include things like favorability metrics and feedback activity time periods (e.g., show me content which has criteria XZY, has 50% more dislikes than likes, and has had activity in the last 5 days).</p>
+      </ul>
+   
+   <p>6.5 Search results can be subsequently filtered (by adding or changing original search criteria).</p>
+   
+   <p>6.6 Search results will be displayed in context (e.g., thumbnail).</p>
+      <ul>   
+         <p>This will be helpful so that user can tell whether the returned result is actually what they were looking for.</p>
+      </ul>
+</ul>
+<br>
+
+
+<a name="7-Managing_change_advanced_topic"></a>
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, dlrMenu, '300px')" onMouseout="delayhidemenu()">7. Managing change to existing web content</em>	       
+<ul>
+   <p>7.1 Web content and its <em title="Universal Resource Locator">URL</em> (background).
+      <ul>
+         <p>Hopefully I won't confuse too many people with this topic but it is important to take a minute to establish a few critical points.  There is a subtle difference between the id of some web content and the content's <em title="Universal Resource Locator">URL</em>.   The <em title="Universal Resource Locator">URL</em> is a means of locating (or accessing) some web visible content so that it can be displayed in a web browser (well, that isn't the only purpose of a <em title="Universal Resource Locator">URL</em>, but it certainly is a major one).  Now if a piece of content never had its <em title="Universal Resource Locator">URL</em> change, and if there were only ever one <em title="Universal Resource Locator">URL</em> which referenced a given piece of web visible content, the world would certainly be a whole lot simpler.  But if you consider a book as some web visible piece of content, then the book's ISBN perhaps could be used as its content_id.   However, that individual book certainly could be hosted on many different web servers (which means that it would have many different URLs).   So if someone created feedback for book ABC and referenced <em title="Universal Resource Locator">URL</em> X, and then later on, web server X no longer hosted book ABC, then someone should update the book's <em title="Universal Resource Locator">URL</em> (in the feedback repository) to "server Y" (well, assuming "server Y" also hosted book ABC).   This would prevent the feedback items for book ABC from being "orphaned".  And without a valid <em title="Universal Resource Locator">URL</em>, there would be no way for those looking at the feedback items to view the actual content of book ABC (and feedback about something is pretty much worthless if you can't view the actual thing).</p>
+         
+         <p>So with this as a foundation, the very first time a piece of web content is exposed to the feedback mechanism, a record of the content will be recorded.  The content will be identified by its content_id (and not its <em title="Universal Resource Locator">URL</em>).   So it is assumed that all web content will not only have a <em title="Universal Resource Locator">URL</em>, but will also have a content_id.  Now the good news is that those that invented the internet have already thought about this - and they define something known as a URN (<a href="http://en.wikipedia.org/wiki/Uniform_resource_name">Universal Resource Name</a>).   In this document, I typically refer to this as the content_id (but <em title="Universal Resource Name">URN</em> is really the same thing).  So given that the content_id is unique throughout the entire world, only a single entry of the content is logged in the feedback repository.  Therefore, if subsequent feedback items attempt to log feedback against book ABC (as an example), if a different <em title="Universal Resource Locator">URL</em> is referenced, it still won't yield a second record of book ABC.  Of course, this could be mildly challenging for the feedback mechanism because the HTML for URL_1 would possibly be different than the HTML for URL_2 (so the context clues for the feedback items, even if they referred to the very same chapter and text, might actually be different).   This may seem confusing to some, but it is sort of like having the very same movie offered over two different movie channels - where one presents the the movie in high definition and absent commercials, and the other channel presents the movie in standard definition with commercial breaks.  It is the very same movie, but it has two different delivery mechanisms.   And since both visible and non visible context clues are important when expressing the target of a feedback item, the feedback item is always expressed in the context of a specific <em title="Universal Resource Locator">URL</em>.</p>
+	   
+         <p>Now the exact means of identifying the content_id/<em title="Universal Resource Name">URN</em> is beyond the scope of this document (well, other than an assumption that it will be possible to derive the <em title="Universal Resource Name">URN</em> from the web content associated with the <em title="Universal Resource Locator">URL</em>).  But if we were talking about an html doc for an online book with ISBN 123-456-7890, then the following might be a decent strategy to express the <em title="Universal Resource Name">URN</em>:</p>
+	   &lt;html&gt; <br>
+       <ul>
+	       &lt;head&gt;  <br>
+           <ul>
+	           &lt;META NAME="Identifier" SCHEME="URN:ISBN" CONTENT="123-456-7890"&gt; <br>
+           </ul>
+	       &lt;/head&gt; <br>
+	       .... <br>
+       </ul>
+	   &lt;/html&gt;<br>
+       
+         <p>Disclaimer: Although it is highly recommended that all content be described by both a <em title="Universal Resource Locator">URL</em> and <em title="Universal Resource Name">URN</em>, if feedback is offered for some web content which doesn't identify its <em title="Universal Resource Name">URN</em>, then the content's <em title="Universal Resource Locator">URL</em> will serve as the <em title="Universal Resource Name">URN</em>.   The down side of this is that the feedback mechanism wouldn't be able to identify duplicate URLs for the same web content.</p>
+      </ul>
+      
+   <p>7.2 System shall support change to the feedback item's <em title="Universal Resource Locator">URL</em>.</p>
+      <ul>
+         <p>If the <em title="Universal Resource Locator">URL</em> of any feedback item is changed (well, change is attempted), the system shall offer the option to change only that specific feedback item, or, all feedback items which reference the very same <em title="Universal Resource Locator">URL</em>.  As part of <em title="Universal Resource Locator">URL</em> change, the affected feedback items will be validated to ensure that their context information is still appropriate.   After validation, and after resolution of any conflicts, the user shall have the option to commit the <em title="Universal Resource Locator">URL</em> change (and any related context information changes), or they can abort the <em title="Universal Resource Locator">URL</em> change altogether.  Like any other feedback item change, <em title="Universal Resource Locator">URL</em> change will be logged to the feedback item's activity log.</p>
+      </ul>
+      
+   <p>7.3 System shall support validation of feedback item context.</p>
+      <ul>
+         <p>The system shall allow user to explicitly request validation of feedback item context information.  Validation of feedback items can be invoked for a single feedback item or can be done in bulk (e.g., can request validation of all feedback items which reference a given <em title="Universal Resource Locator">URL</em>).  As part of validation, if either the visible or non visible context information changes, or if adjacent context information changes, the user will be given the option of update the affected feedback items.  Updates can be applied automatically by the system, or can be done manually by the user.</p>
+      </ul>
+      
+   <p>7.4 The system shall report on any adjusted context information.</p>
+      <ul>   
+         <p>The system will log changes to context information that was adjusted automatically (by the system) or manually (by user).  The changes will be written to feedback item activity log.</p>
+      </ul>
+      
+	<p>7.5 Feedback mechanism will support the notion of <em title="Universal Resource Locator">URL</em> aliases.</p>
+      <ul>	
+	      <p>As mentioned above, the <em title="Universal Resource Locator">URL</em> is a means of accessing some bit of web content.  But since it doesn't truly identify the web content, <em title="Universal Resource Locator">URL</em> aliases become important.   When searching in the feedback repository, using a <em title="Universal Resource Locator">URL</em> or related <em title="Universal Resource Locator">URL</em> alias should yield the same results.</p>
+      </ul>
+</ul>
+<br>
+
+
+<a name="8-Managing_system_users"></a>
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, dlrMenu, '300px')" onMouseout="delayhidemenu()">8. Managing system users</em>	  		
+<ul>
+    <p>8.1 System will support a function to create a user.</p>
+	   <ul>
+          <p>This will consist of assigning a unique_id and recording of a unique user_name.  The user name is actually how the user will be known throughout the feedback repository (the user_name is what is displayed as part of the feedback items). </p>
+       </ul>
+
+    <p>8.2 Upon creation, each user is given a user profile which they maintain.</p>
+	   <ul>	
+          <p>The profile is meta data about the user (includes optional tags designated by user).   The user controls how much of their profile is visible to other users (and to which other users).  If the user is related to a group, then profile maintenance will benefit from any tagging or survey template strategies defined for the related groups.</p>
+       </ul>
+	   
+	<p>8.3 User preferences are managed by the individual user.</p>
+	   <ul>	
+	      <p>These control feedback mechanism usability, notifications, and work flows.</p>
+       </ul>
+       
+	<p>8.4 A user has to grant permission for others within repository to be able to see them and their stuff.</p>
+	   <ul>	
+	      <p>As a general rule, default permissions are established which are the most restrictive.   However, if the user is created with a designated group, then their profile and preference defaults will be consistent with that of the group.   After creation, a user can change their profile attributes as they see fit.</p>
+       </ul>
+       
+	<p>8.5 A user has a public and private identity (individual identifiable attributes are always private).</p>
+	
+	<p>8.6 Security policies will govern access to the user's account.  </p>
+       <ul>
+	      <p>This involve things like secure login via user_name and password, password reset via 3rd party messaging system, and security challenge questions.</p>
+       </ul>
+       
+    <p>8.7 The user will always have the ability to set all privacy settings</p>
+	   <ul>	
+          <li> User must have a means to control visibility for all of their content (including their profile and meta data).
+          <li> User must have a means to express default privacy settings.  The defaults apply to all content created by the user, as well as any responses like feedback and surveys.
+	      <li> User must have the ability to override privacy settings for individual items when they are posted.
+	      <li> User must have the ability to change the privacy settings even after an item is posted.
+	      <li> The framework as a whole should attempt to be the most restrictive with respect to content exposure (e.g., user preferences should default to be the most restrictive view, if multiple privacy rules apply then the most restrictive rule in the set should be used).
+	      <li> All solicitations must be subject to user permission preferences, and a user which previously opted in for a given type of solicitation should be able to opt out at a later date (or be able to change the level of permission for a given solicitation type).  Note that expected solicitation types would likely include advertisement, feedback request, and assessment request.
+		  <li> User can designate permissions for any groups which they are associated with (e.g., within some company org chart, perhaps all users within a single department should be allowed by default to see each other's stuff).
+	   </ul>
+      
+    <p>8.8 A user's role will determine what system functions are available to them.  </p>
+	   <ul>	
+	    <p>It is expected that there would be at least these 3 main roles:</p>
+           <ul>
+	          <li>System administrator - full access.
+		      <li>Super user - has almost full access, and can grant access to certain system functions to other members within their group.
+		      <li>Basic users - has update access to their stuff, and read only access to other users (well, at least to what other users have made publicly available).
+           </ul>
+       </ul>
+       
+	<p>8.9 Limited role users and bulk registration process</p>
+	   <ul>	
+	      <p>So far, virtually all of the discussion has been about offering users the highest degree of flexibility and control.  However, there is a different kind of user which benefits from much less flexibility and control.   Certain organizations may want to leverage a feedback repository as a means of managing very specific targeted discussions.  For such organizations, it is possible that the feedback is relatively short lived (e.g., a matter of weeks or months) and thus may not benefit from the notion of historical identity integrity.  In fact, for these types of focus groups, individual identity might not be important at all, or, the user community identities might be managed externally (i.e., through external lists).   One such example that comes to mind is a teacher registering students in a class room setting.  For this, the teacher would likely want to set up a group, a group profile and permissions, and request N number of discrete user accounts.  The feedback mechanism would merely create the N number of user accounts and supply the list of user accounts back to the teacher.  It would then be up to the teacher to track the user account names to the individual students (and to dole out generated user accounts to the individual students).  By using this strategy, it would guarantee the privacy of the individual students, and would guarantee the very same consistent set of functions would be available to each student.</p>
+		
+          <ul>
+		    <li>Support bulk registration of users.  The registration process should either allow for request of N number of user accounts, or allow submission of a list of user details which would then be used to generate the individual user accounts.  It is assumed that when registering a set of users in bulk, a group must be supplied (i.e., it wouldn't make sense to generate multiple user accounts unless they were somehow related).
+		    <li>The bulk registration process should allow designation of limited (or even restricted) edit to individual account profile settings.  This doesn't imply that all bulk adds must be limited access accounts, it just implies that some bulk registration may benefit from limited access accounts (again, think students in a class room).  
+		    <li>For users that were added with restricted edit capabilities, the system shall support a means to promote such users to full access accounts.  However, it is possible that such promotion may require approval from the original registering entity.
+          </ul>
+       </ul>
+</ul>
+<br>
+
+
+<a name="9-Managing_groups_and_hierarchies"></a>
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, dlrMenu, '300px')" onMouseout="delayhidemenu()">9. Managing groups and hierarchies</em>
+<ul>
+     <p>9.1 Benefit of groups (background).</p>
+       <ul>     
+	      <li>Define meta data about a group (helpful when performing searches, setting up notifications, or when mining data for analytics).
+		  <li>Allows modeling of a hierarchical organization.
+		  <li>Allows designation of system permissions (visibility and access to certain system functions)
+	   </ul>         
+     <p>9.2 A user with appropriate authority can create a group.  </p> 
+       <ul>	 
+	     <p>The creating user is said to be the "owner" of the group.  The owner of a group can delegate update permission to other users - this allows multiple users to manage a group.   The group "delegates" may or may not be associated with the group.  The owner of the group also controls which other users can see the group (i.e., groups can be public or private). </p>
+       </ul>  
+       
+	 <p>9.3 Once defined, meta data can be defined for a group.</p>
+	 
+	 <p>9.4 Once defined, users can be associated with a group (users can belong to multiple groups). </p> 
+	   <ul>	 
+	     <p>But note, a user cannot be "forced" into a group, they can merely be invited.   And, a user cannot mandate that they be included in a group (i.e., the association must be mutually agreed to by the individual user and the group owner).</p>
+       </ul>  
+
+     <p>9.5 Once defined, a group can be related to a parent group - this can be used to model a company org chart.</p>
+	 
+	 <p>9.6 Groups (and group hierarchies) can be used to identify candidates for feedback.</p>
+	 
+	 <p>9.7 Groups (and group hierarchies) can be used with notifications.</p>
+	 
+     <p>9.8 Survey and tagging templates can be associated with groups. </p>  
+	   <ul>	 
+	     <p>Because of this, users within a group can benefit from derived tagging and survey template strategies.</p>
+       </ul>  
+	 
+	 <p>9.9 Groups (and group hierarchies) can be used to express aggregate user assessment ratings.</p>
+	   <ul>
+         <p>This can be helpful if user community wants to compare favorability of the users within one group versus another.	</p> 
+       </ul>  
+</ul>  
+<br>
+
+
+<a name="10-Work_flows_and_notificaitons"></a>
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, dlrMenu, '300px')" onMouseout="delayhidemenu()">10. Work flows and notifications</em>	 
+<ul>
+    <p>10.1 System shall support notifications (the basics).</p>
+	   <ul>
+	      <li> Notification method is managed by user preference (examples would likely be email or <em title="Short Message Service (also known as 'Texting')">SMS</em>).
+		  <li> Notifications would be triggered by system action (e.g., someone responds to a post, someone raises a defect, someone opens or closes a discussion thread).
+		  <li> Delivery timing of notifications can be controlled by a user preference (e.g., immediate, hourly, daily).
+		  <li> User will be able to terminate or suspend notifications at their discretion.
+          <li> User will be able to resume any terminated or suspended notifications at their discretion.		 
+          <li> User will be able to request notifications even for system activity which they aren't directly related to (i.e., they might be interested in certain projects or discussions but don't have an active role in such activities). 
+          <li> Users will be able to send messages to other users.
+       </ul>
+        
+    <p>10.2 System shall support a means of soliciting feedback.</p>
+	   <ul>	
+	     <p>System shall allow request for feedback from one or more explicit users.  It is assumed that a search mechanism exists based on name, group associations, user profile meta data, and community reviews (i.e., of users).  It is also assumed that a given user can request feedback by selecting some other user in context (from one of the many views which display user's name). </p>
+		 	
+	     <p>Role based feedback - system shall allow request for feedback based on any arbitrary tags.  It is assumed that the feedback mechanism has the ability to define arbitrary categories and then associate a list of values to those categories.</p>
+		 
+		 <p>Possible roles (for some made up review categories):</p>
+            <ul>
+	           <li>For books, the roles might be: spelling, grammar, sentence structure, fact checking, validity, believability.
+		       <li>For research papers, roles might be: accuracy, validity, business benefit.
+            </ul>
+		 
+         <p>Note that "role based" feedback requests actually must be targeted to a list of users (which could be a wide audience).  The role based qualification is more to do with a candidate user agreeing to satisfy the given role (so in affect, it becomes a qualifier to the kind of review that a given person will be satisfying).</p>
+		 
+	     <p>Soliciting feedback based on user profile data - System shall allow request for feedback by identifying candidates with profile data which matches some specific criteria (e.g., requester might want those with a college degree in a particular field, or might want those that work in a particular profession).</p>
+	   </ul>
+       
+    <p>10.3 System shall allow a user to accept or reject a review request.</p>
+	   <ul>	
+	     <p>Expressed above is the need for a given user to request feedback from other system users (either explicitly through direct selection or implicitly through profile data).   But regardless of the candidate selection criteria, it is still up to the candidate to accept or reject the feedback request.   So the system shall record the feedback request and either acceptance or rejection.</p>
+	   </ul>
+       
+	<p>10.4 Feedback requester can impose time period deadlines.</p>
+	   <ul>	
+	      <p>Time period deadline will be allowed for both the acceptance of a request as well as feedback completion time period.  A feedback request which isn't accepted or completed within the defined criteria will be automatically rejected.</p>
+	   </ul>
+       
+    <p>10.5 System shall allow the requester to limit the number of reviewers (open versus closed reviews).</p>
+	   <ul>
+         <p>System shall allow requester to express an optional finite number of reviewers.   For instance, the requester might only need 5 marketing managers to respond to a survey.  Once 5 marketing managers accept the feedback request, the request for that class of reviewers is considered closed.   Or, a requester might want a total of 3 reviewers but sent the review request to an entire group.   For this scenario, when 3 reviewers have accepted the review request, the review is closed and the other requests are rejected automatically (by the system).</p>
+	   </ul>
+       
+    <p>10.6 Unsolicited feedback</p>
+	   <ul>	
+	     <p>System shall support notifications for unsolicited feedback.  However, a content publisher can disable notifications if they don't want to be bothered.  Furthermore, a content publisher can announce that feedback is no longer welcome (i.e., feedback loop is closed).   This won't prevent users from commenting (remember, we can't stop people from logging feedback), but it will give the content publisher an opportunity to express how he feels.  And note, closing a feedback loop or discussion thread shouldn't be viewed as a bad thing - this actually is a natural occurrence of the feedback loop methodology.  For instance, if an author is publishing a second edition of a book, and if they have a deadline for publication, it doesn't do any good to continue to take feedback after the second edition is published (well, unless there is going to be a third edition).	</p>	 
+	   </ul>
+	<p>10.7 The entire request and feedback loop is driven by notifications (messaging).</p>
+</ul>
+<br>
+
+
+<a name="11-Giving_content_publishers_a_voice"></a>
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, dlrMenu, '300px')" onMouseout="delayhidemenu()">11. Giving content publishers a voice at the table (advanced topic)</em>	
+<ul>
+    <p>11.1 Identifying content</p>
+	   <ul>		
+         <p>The content publisher shall have the ability to embed a content identifier within the web content - this will allow for unique identification of the content regardless of how many disparate web servers host the content.  It is assumed that feedback mechanisms shall recognize such an identifier and utilize it when appropriate.</p>
+	   </ul>
+       
+	<p>11.2 Identifying feedback repository</p>
+	   <ul>		
+	      <p>Similar to the content identifier explained above, the content publisher shall have the ability to embed a feedback repository identifier within the web content.  It is the feedback repository identifier which expresses the publisher's preference for the feedback location.  But since hard wiring to a particular feedback repository would be problematic (e.g., the web content might be replicated across many different servers, some perhaps even unknown to the original publisher), the feedback repository id should be used in a lookup to derive the publishers current preference (date/time based preference).  This will allow a content publisher to change feedback repositories over time (remember "portability").  And note, the content id (expressed above) is very important when considering feedback and feedback repositories.  In fact, it is impossible to store feedback in some repository unless you relate the feedback to something - and this is where the content id comes into play.</p>
+	   </ul>
+       
+	<p>11.3 Identifying assessment strategy</p>
+	   <ul>		
+          <p>A content publisher shall have the ability to embed one or more assessment tags which describe the kind of assessments they desire.   Now not all publishers will have explicit assessment requirements (e.g., sometimes 5 star rating is all they want).   But when a publisher wants feedback tailored to a specific subject or context, assessment strategy becomes important.  To give you a concrete example, consider a restaurant and a movie. </p>  
+		 
+          <p>When assessing a restaurant, a person might consider:</p>
+          <ul>
+		      <li> Quality of food
+		      <li> Timeliness and quality of service
+		      <li> Cleanliness of the restaurant
+		      <li> Overall value 
+		      <li> Atmosphere and appearance
+		  </ul>
+          
+          <p>When assessing a movie, a person might consider:</p>
+          <ul>
+		      <li> Picture quality
+		      <li> Sound quality
+		      <li> Story line (i.e., plot)
+		      <li> Believability
+		      <li> Quality of acting
+		      <li> Overall enjoyment
+          </ul>
+		  
+		<p>So as you can see, the assessment strategy is drastically different in regards to the dimensions which are important.   However, it is possible to convert each of the above two described surveys into numeric scores (well, if a publisher wants to normalize scores into say a scale from 1 to 100).   But regardless of whether a single numeric score is desired, it certainly would be valuable to understand how users rated the given thing across the various dimensions.</p>
+		
+		<p>So when you put these 3 concepts together, it gives the publish a voice to express the thing (content_id) which requires feedback, where the feedback should be stored (feedback repository id), and how assessments should be performed (assessment strategy).</p> 		  
+	   </ul>
+       
+    <p>11.4 Identifying tagging strategy</p>
+	   <ul>		
+	      <p>Much like an assessment strategy, a tagging strategy helps define a set of classifications (and classification values) for a given piece of content.   Now this becomes mostly relevant when creating feedback items for content, because any tagging strategies expressed by the content publisher might help the community classify and search for things in a consistent manner.</p>
+	   </ul>  
+</ul>
+<br>
+
+
+<a name="12-Feedback_assessments"></a>
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, dlrMenu, '300px')" onMouseout="delayhidemenu()">12. Feedback assessments</em>			
+<ul>
+    <p>12.1 Surveys</p>	
+       <ul>
+          <p>From an abstract point of view, a survey is really nothing more than a list of questions.  But since we live in a computerized world,  rarely do we want survey responses to be raw text.   Sure, raw text is fine for additional comments, but in regards to answers to surveys, the best technique is to allow the user to pick from a list of possible choices (i.e., some pick list, or a series of radio buttons where the user must pick one).  So most often, a given survey is a list of questions, each of which has a list of N possible answers for the user to choose from.</p>
+       </ul>
+       
+	<p>12.2 Survey tags</p>
+       <ul>	
+	      <p>Survey tags are the key words which relate a given piece of content to a survey type (which would most appropriately assess the given content).  So given the sample survey data described above, if we had one web page for a casual dining restaurant, it might have a survey tag of "restaurant".  Now it perhaps would be valuable to allow a publisher to express an explicit survey_id (in that case, the publisher is rather specific that the assessment should be done by survey XYZ).   But in other instances, a publisher might not care that much about the exact survey as long as it is appropriate for restaurants in general.   And it likely makes sense to support multiple survey tags (e.g., there are different kinds of restaurants - fast food, casual dining, formal dining), and even beyond that, sometimes there are multiple sets of survey dimensions (i.e., questions) where this can be best expressed by multiple survey tags.</p>   
+       </ul>
+       
+	<p>12.3 Survey templates</p>
+       <ul>	
+	      <p>A survey template is a list of one or more dimensions coupled with one or more dimension values.   And by convention, the order in which the dimension values are listed implies highest satisfaction to lowest satisfaction.   But survey answer satisfaction level is really only important when you're trying to quantify value from the survey - like when trying to convert the survey results into a numerical score.</p>
+		 
+		  <p>So given the theme of a restaurant, let's consider two dimensions listed above and possible dimension values:</p>
+            <ul>
+		       <li>Quality of food (1-Excellent, 2-Very good, 3-Fair, 4-Below average, 5-Poor).
+		       <li>Timeliness of service (1-Fast, 2-Average, 3-Slow)
+            </ul>
+		 
+		  <p>Now some might wonder why not merely use a numeric scale from say 1 to 5?   Well in fairness, there is nothing stopping someone from defining their dimension values in exactly that way.   The appropriateness of strategy really just has to do with the survey author and whether they feel that words associated with the responses add value to the survey or not.   My only point about numerical scoring is that for Quality of food, each response in the list is 1/5th - so 1-Excellent would be 100%, 2-Very good would be 80%, and 5-Poor would be 20%).   Contrast that with Timeliness of service where 1-Fast would be 100%, but 2-Average would be 66% and 3-Slow would be 33%.   It is up to the survey author to define the number of dimension values or score range (e.g., 1 thru 5, 1 thru 10, etc.).   The benefit of using words for dimension values is you don't have to continually remind the user that 1 means worst and 10 means best.  Still, conducting surveys is sometimes considered an art so I'm not trying to dictate what should be done.   I'm merely expressing that a feedback assessment model which supports survey templates is valuable in the overall feedback framework.</p>
+       </ul>
+       
+	<p>12.4 Relating survey templates to survey tags</p>
+       <ul>	
+	     <p>So now that the concept of surveys and survey templates are understood, hopefully it will become obvious that we need tags to describe the various kinds of surveys.  And once these tags are defined, they must be related to the various templates.   And once the survey templates are stamped with the appropriate survey tag, a content publisher can relate their content to a particular set of survey questions merely by embedding one or more survey tags in the web content.   Then, when a user interacts with a feedback mechanism and offers to complete a survey, the feedback mechanism can display the appropriate survey template questions and allow the user to answer them.   The survey results are then stored in the repository and can then be forever linked back to the original web content.  In fact, the web content itself can be displayed with links back to the survey results and can even contain an aggregate numeric score.</p> 
+       </ul>
+       
+	<p>12.5 Survey integrity</p>
+       <ul>	
+	     <p>With respects to surveys, it probably is wise to limit survey results to one per user - and this is where identity integrity really can be helpful.  If users are allowed to create an unlimited number of virtual accounts, and if each one of those virtual accounts can submit a survey against a piece of web content, a vocal minority certainly would be able to skew the results (which seems unfair to me).</p>   
+		 
+		 <p>Furthermore, it probably would be appropriate for a publisher to be able to designate a limited scope of reviewers, and for such reviewers, perhaps could nominate a select few to complete surveys.  So behavior surrounding requests for assessments should have the same capabilities as that of text based feedback.</p>
+       </ul>
+       
+    <p>12.6 User rating</p>
+       <ul>		 
+		 <p>All feedback items shall support Like and Dislike buttons (both of which will allow users to optionally reply via a post of their own).  But regardless of whether the user wishes to respond via text, hitting (and confirming) either a Like or Dislike will increment the running counters for the given item.  It is assumed that all content will be displayed with their current Like and Dislike accumulations.</p>
+         
+		 <p>System shall collect and report favorability rating for its users (i.e., cumulative Likes and Dislikes for a given user will be available in their user profile).</p>
+		 
+		 <p>And since surveys and survey templates exist within feedback mechanism, it is possible that templates might be defined to assess individual users.   Now it might not always make sense for a given feedback repository to leverage surveys to rate users, but for repositories used by a specific business or organization, it might.  And when desired, group owners will be able to define "user review" survey templates and have any completed surveys affect the individual user's favorability rating (again, as reported in the user's profile).</p>
+       </ul>
+       
+	<p>12.7 System shall support analytics</p>
+	   <ul>
+	     <p>This will include things like:</p>
+            <ul>
+	           <li>Calculating numeric score (of survey)
+		       <li>Calculating aggregate numeric score
+		       <li>Break down across survey dimensions
+		       <li>Break down across respondent meta data attributes
+            </ul>
+       </ul>
+       
+    <p>12.8 System shall allow designation of optional assessment strategy.</p>
+       <ul>	
+	      <p>In section above, there is a discussion about allowing the original content publisher to have a voice in how content should be assessed.   However, those offering feedback about web content should also have a voice and as such, they too should be allowed to designate one or more assessment strategies (by optionally associating a survey template with a piece of web content).  And when multiple survey strategies exist, a user agreeing to complete a survey will be offered a list of survey types to pick from.</p>
+       </ul>
+</ul>
+<br>
+
+
+<a name="13-Content_tagging"></a>
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, dlrMenu, '300px')" onMouseout="delayhidemenu()">13. Content tagging</em>	
+<ul>
+	<p>13.1 Content tag themes</p>
+       <ul>	
+	      <p>Tagging themes are merely high level groups for one or more tag categories.   Content publishers may want to leverage tag themes so as to avoid the need to associate many tag categories to their content.   Of course, a content publisher can leverage which ever designations are most appropriate (e.g., can associate a piece of content with 2 high level themes and 4 explicit tag categories).  But the ultimate goal is to relate content to one or more tag categories.</p>
+       </ul>
+       
+	<p>13.2 Content tag categories</p>
+       <ul>		
+	      <p>A tag category is merely some meaningful descriptive word or phrase which contains 1 to many tag values.   For example, if the category was "Programming language", then the category values might be "Java, C++, PERL, PHP, RUBY, COBOL, FORTRAN, PL/SQL"</p>
+       </ul>
+       
+	<p>13.3 Content tag values</p>
+       <ul>		
+	      <p>As mentioned above, the tag values are the selectable strings which are associated with a piece of content or feedback item.   The benefit of tags is that it allows consistent classification of stuff (which perhaps can make it easier to find via search mechanism).</p>
+       </ul>
+       
+	<p>13.4 Putting it all together</p>
+       <ul>		
+	      <p>If you revisit the section "Giving publisher a voice", you'll notice that the publisher can express a tagging strategy.   This is nothing more than allowing a publisher to embed one or more tag themes or tag categories.   So when registering a piece of content to a feedback mechanism, the set of effective categories consists of the explicit tag categories embedded in the document coupled with the derived tag categories based on the embedded tag themes.  So the first time the web content becomes known to the feedback mechanism, a record of that content is created in the feedback mechanism.   And once this is done, any system users can tag the content with tag values based on the derived tag categories.  Furthermore, when adding feedback items, the feedback item itself can be tagged with those very same tag categories.</p>   
+       </ul>
+       
+    <p>13.5 Manual tagging</p>
+       <ul>		
+	      <p>All content and feedback items shall support manual tagging.   These are just key words which can be associated with most feedback concepts.  The tags will be used in search mechanism, but the exact benefit to user tags is mostly up to the user community.</p>
+	   </ul>
+       
+    <p>13.6 Using tags in notifications</p>
+       <ul>		
+	      <p>System shall allow tag values to be defined as notification trigger criteria (e.g., notify me if content or feedback has tag value of 'XZY').</p>
+       </ul>
+       
+    <p>13.7 System shall allow designation of optional tagging strategy.</p>
+       <ul>		
+	      <p>In section above, there is a discussion about allowing the original content publisher to have a voice in how content should be tagged.   However, those offering feedback about web content should also have a voice and as such, they too should be allowed to designate one or more tagging strategies.  So when a user tags a given piece of content or feedback, the full set of categories and category values will be available (from both content owner and other system users).</p>
+       </ul>
+</ul>
+<br>
+
+
+<a name="14-Historical_identity_integrity"></a>
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, dlrMenu, '300px')" onMouseout="delayhidemenu()">14. Managing historical identity integrity (advanced topic)</em>			 
+<ul>
+    <p>The following is an optional facet of feedback management which might be difficult to implement early on.  In fact, it likely will take a lot of discussion and careful consideration before an optimum model can be evolved.  Plus, it will take a while for both businesses and consumers to adjust to this idea, and will require some level of momentum to get started.</p>
+	
+	<p>14.1 Within a feedback repository, users with historical identity integrity will be displayed with some sort of a visual clue.</p>
+       <ul>	
+	     <p>The exact icon isn't that important - perhaps could be a gold star or a check mark.  And note, there might be multiple endorsements so it is possible that multiple stars or check marks could apply. Now the first level of integrity (e.g., first check mark) really just expresses that the user is a real person with a confirmed identity (i.e., a <em title="The premise is that by confirming against a tangible thing like a mailing address, it prevents a single person from creating a large number of aliases.">singleton</em>).  The second level of integrity (e.g., second check mark) expresses that the given user not only is a singleton, but is recognized with a single user name at lest some of the time.  Of course, this second endorsement cannot possibly assert that the given user never creates web accounts under an alias (that would be impossible absent a single national database - and I for one would be dead set against that).</p>
+		 
+		 <p>Of course, since this is merely a convention, it is assumed that internet companies (including feedback mechanisms) will have a vested interest in supporting this convention.  It is also assumed that there would be some sort of certification process which helps assure that companies and frameworks which claim to support this convention actually have safeguards in place to ensure real integrity.</p>
+       </ul>	
+       
+	<p>14.2 When registering for a user account, it is assumed users will supply a <em title="Also referred to in this doc as an Endorsement company">validating company.</em></p>
+       <ul>		
+	     <p>It is assumed that individuals registering for a user account with a certified identity integrity company (to support rule 14.1) will supply a validating company which will endorse the user's identity.</p>
+       </ul>	
+	
+	<p>14.3 It is assumed some internet companies will gain Identity Endorsement certification.</p>
+       <ul>		
+	      <p>The notion of a validating company which endorses the identity of a user is the backbone of the entire identity integrity process.  So it is obviously assumed that N number of companies (e.g., social networking, cable, telecommunications, and large retailers) will apply for Identity Endorsement certification.   These companies satisfy the "validation" part of the equation.  The certification requires adherence to the following:</p>
+          
+          <ul>
+	         <p>1. When registering users, Identity Endorsement companies will collect contact information which is tied to a discrete physical address and has a limited resource contact phone number (e.g., land line or mobile phone number).  Note that "limited resource phone number" merely implies that a user has a financial obligation for the phone number (i.e., the phone number isn't merely made up much like a virtual web account).  It is believed that land lines and cell phones work well for this.</p>
+
+	         <p>2. Satisfy confirmation requests for identity integrity.</p>
+                <ul>
+		           <li>When a user registers for an account with a certified identity integrity company (e.g., when creating a user account in a feedback repository), the registration process would <em title="To the endorsement company">send over</em> certain user information and request confirmation that the user isn't a duplicate.  If confirmed, user is registered as a singleton (rule 16.1).  If not confirmed, the user can still be given an account, but the account isn't flagged as a singleton (and thus, doesn't get the identity integrity endorsement).
+		           <li>Periodically, or when user changes their contact information, a request for reconfirmation will be made.
+                </ul>
+		
+		    <p>3. Identity Endorsement companies will have a procedure to resolve disputes when mistakes or identity <em title="A hijack would be where someone else uses a given person's address or phone number to create an account.">hijacks</em> occur.  It is quite possible that mistakes will merely be a result of people moving or changing their phone number.</p>
+		
+		    <p>4. Identity endorsement companies will periodically contact their users to confirm contact information is still valid (must be done for each contact method - namely mailing address and by phone).   Email can serve as an optional contact mechanism - but only to remind users of pending phone call and house mail correspondence.</p>
+		
+		    <p>5. To minimize privacy concerns and hijacks, a user that wants to register for a new account with internet company XYZ will first add an authorization request with their Identity Endorsement company.   They will supply the name or <em title="Universal Resource Locator">URL</em> for company XZY, a pin which they make up, an authorized user name, and an expiration date.  When they register for an account with company XZY, they will supply the Identity Endorsement company name, the pin which they made up, and presumably the user name which they included as part of the authorization request.  When company XZY <em title="From the identity endorsement company">requests validation</em>, they will supply the pin and person's user_name - if they match, confirmation will be returned.  And note, by having the user register an authorized user name when setting up a temporary authorization request, it allows for a slightly higher level of identity validation - namely if the authorized user name matches the user name established with the Endorsement Company, it implies that the person actually uses a "Universal public identity" (well, at least some of the time).  So the Identity Endorsement company can not only confirm identity, they can confirm whether the user name (of the new account in company XZY) is the same as the user name of the person within the Endorsement company.   Now some people might want to have separate user names for each of their web accounts.   But others, especially those that want to have a consistent identity throughout the internet, may benefit from a "Universal user name".   Plus, it is likely that recognition of a universal user name might lead to an even higher level of credibility and integrity.</p>
+          </ul>
+       </ul>
+       
+    <p>An example will probably help:</p>
+	
+	<p>A.  Assume John Smith is a Dish Network customer and has the following attributes:</p>
+       <ul>
+	<pre>
+Name:              John Smith
+User name:         JohnS_2877
+Mailing address:   123 Small town USA
+Home phone:        212-123-4567
+Cell phone:        787-100-2000</pre>
+       </ul>
+       
+    <p>B. Assume John Smith wants to participate in Identity Integrity (perhaps Dish Network offers him some Dish Perks if he does).</p>
+	
+	<p>C. John Smith wants to create an account on Facebook and confirms that user name JohnS_2877 is available.</p>
+	
+	<p>D. John sets up an authorization request with Dish Network (just assume Dish Network has an awesome web site which allows this).  The authorization request has the following:</p>
+       <ul>
+	<pre>
+Company name:    Facebook
+User name:       JohnS_2877
+Pin:             Axz8@280837!
+Creation date:   Today
+Expiration date: Today</pre>
+       </ul>
+    
+	<p>E. John goes to Facebook and creates a user account.  John supplies the following:</p>
+       <ul>    
+	<pre>
+User name:       JohnS_2877
+Pin:             Axz8@280837!
+Contact info:    Not relevant (Facebook requires an email address and some other misc info)
+Identity Endorsement (optional): Dish Network</pre>
+       </ul>    
+	
+    <p>F. When John submits the request for an account with Facebook, Facebook sends an identity confirmation request to Dish Network with the following information:</p>
+       <ul>    
+	<pre>
+Request from:    Facebook
+User name:       JohnS_2877
+Pin:             Axz8@280837!</pre>
+       </ul>    
+	
+	<p>G. Dish network verifies a non expired authorization request with the above 3 attributes.  Dish network sends back the following response:</p>
+       <ul>        
+	<pre>
+Identity confirmed:   Yes
+Universal user:       Yes (since user name matches the name that John Smith established as part of his Dish Network account).</pre>
+       </ul>    
+
+</ul>
+<br>
+
+
+<a name="15-Portability"></a>
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, dlrMenu, '300px')" onMouseout="delayhidemenu()">15. Portability (advanced topic)</em>		
+<ul>
+    <p>15.1 Both import and export of data will be supported - the capabilities should be identical unless noted otherwise.</p>
+	
+    <p>15.2 Should be able to control the scope in relationship to the number of users:</p>
+       <ul>
+          <li>A single user
+          <li>A user within a hierarchy and all descendants
+          <li>An entire group (e.g., a company or organization)
+          <li>User information for those who responded to feedback (only meta data attributes - could be important for data mining and analytics)
+       </ul>
+
+    <p>15.3 Should be able to control the volume of data</p>
+       <ul>
+          <li>User profile and meta data
+    	  <li>User posts, feedback and discussion threads
+          <li>Rating assessments of users about other users
+       </ul>
+
+    <p>15.4 Like everything else, export of data is constrained by user visibility preferences.</p>
+
+    <p>15.5 Export of configuration data and any extensions shall be portable just like other user data.  </p>
+       <ul>	
+	      <p>This is important because it is the meta data about a group which helps explain or define the meaning of words or phrases (e.g., vernaculars).  So when exporting users and user data, must consider the configuration data which binds things together.</p>
+       </ul>          
+</ul>
+<br>
+
+
+<a name="16-General_requirements_and_assumptions"></a>
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, dlrMenu, '300px')" onMouseout="delayhidemenu()">16. General requirements and assumptions</em>		    
+<ul>
+    <p>16.1 Feedback mechanism shall be generally available.</p>
+       <ul>
+          <li>Shall be available across hardware platforms (e.g., smart phones, tablets, PCs)
+          <li>Shall be available across a variety of applications (e.g., E-readers, web browsers, applications).
+       </ul>
+       
+    <p>16.2 Feedback mechanism shall attempt to be consistent with all system functions and data.</p>
+       <ul>	
+	     <p>A decent amount of behavior is expressed regarding feedback items (e.g., activity logging, permissions, optional tagging).   But when it makes sense, those very same behaviors should apply to other repository concepts.  For instance, web content, system users, groups, and templates are also discussed in this document.  So if (for instance) activity logging makes sense for any of those other concepts, then it should be supported.   Consistency of data and function will enhance the user experience and will likely allow users to leverage features perhaps not even intended or expected by the original designers (and that can be a good thing).</p>
+       </ul>
+	
+	<p>16.3 Calendar functions
+       <ul>	
+	     <p>Although it would be nice to support calendar functions, for now, this will be considered out of scope.   For one, embedded calendar function would probably be of limited value since people won't want to replicate their calendars in one of potentially many feedback repositories.  So, it likely would be better to support an automated sync with external calendaring systems (but this just adds extra complexity and diversion to support an interface - which perhaps isn't universally accepted in the industry anyway).  So yes, it would be nice to express "unavailable" responses for things like notifications or explicit correspondence requests - but at present, this will have to be put on hold.</p>
+       </ul>
+		 
+    <p>16.4 Content management</p>
+       <ul>
+          <p>The majority of focus so far has been related to user and feedback management.   But I hope everyone realizes that feedback is "content" just like a book or video is content.   So certainly it makes sense for a feedback mechanism to support creation and management of arbitrary content (e.g., text, html, picture, video, pdf, etc.).   I'll list some of the expected features here - but there are plenty of content management frameworks, so it is possible that an existing one can perhaps be bolted on:</p>
+  
+          <ul>
+            <li>Manage folders (i.e., hierarchical decomposition)
+            <li>Manage content (create, update, delete, upload, download)
+            <li>Version control (e.g., Svn)
+            <li>Linkable via predictable <em title="Universal Resource Locator">URL</em> (even when content moves - think content ID versus existence in current folder)
+            <li>Parameter driven URLs so that explicit version of content can be expressed
+            <li>Version unaware URLs when "latest" version is desired
+            <li>Permissions, groups, and everything else ...
+          </ul>
+       </ul>
+</ul>
+<br>
+
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, helpMenu, '260px')" onMouseout="delayhidemenu()">Chapter 4 - Detailed Requirements</em>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="mailto:mrdarrellmadison@gmail.com?Subject=Collaboration%20Chapter_4" target="_top">Contact Darrell Madison</a>
+
+</html>

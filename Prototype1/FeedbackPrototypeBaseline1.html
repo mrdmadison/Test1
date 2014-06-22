@@ -1,0 +1,621 @@
+
+<html>
+<head>
+
+<style>
+
+.ReplyAction {
+  color:blue;
+}
+
+.ReplyActionDyno {
+  color:blue;
+}
+
+.LikeAction {
+  color:blue;
+}
+
+.DislikeAction {
+  color:blue;
+}
+
+.clickable {
+  color:blue;
+}
+
+p.small { line-height:10%; }
+
+div.small { line-height:1px; }
+
+</style>
+
+<script src="../javascripts/tinymce/js/tinymce/tinymce.dev.js"></script>
+<script src="../javascripts/tinymce/js/tinymce/plugins/table/plugin.dev.js"></script>
+<script src="../javascripts/tinymce/js/tinymce/plugins/paste/plugin.dev.js"></script>
+<script src="../javascripts/tinymce/js/tinymce/plugins/spellchecker/plugin.dev.js"></script>
+
+<script src="../javascripts/menuCommon.js"></script>
+<script src="../javascripts/jquery-2.1.1.js"></script>
+
+<script src="../javascripts/FeedbackDataModel.js"></script>
+<script src="../javascripts/ExternalPostAndReplyData.js"></script>
+
+<link rel=STYLESHEET TYPE="text/css" href="../stylesheets/common.css">
+
+</head>
+
+<script>
+
+// Change history:
+//   6/15/2014 - Common handing for like/dislike behavior (creation of FeedbackDataMmodel.js)
+
+// Summary of behaior:
+//   Creation of dyamic (nested) replies.
+//   Initial load of existing reply data.
+//   Creation of tag (and corresponding div) from selected text in initial post.
+//   Selection of tag from choice box.
+//   Like / Dislike behavior
+//   Common object to support like/dislike (code restructuring)
+
+
+
+// It turns out that the init tinymce.init was causing a problem for mozilla.  The reply
+// action was failing because addReply could remove the editor:   tinymce.remove('#NewReplyTA');   
+// But this works fine if tinymce is initialized (not sure why).   But this works for both
+// chrome and mozilla, so will live with it for now.
+// See JQuery_DynamicAddWithTinyMCErelocatable.html for version which works in chrome.
+
+
+var dynamicIdSeqNbr = 0;
+var selectedReplyId = null;
+var newReplyLevel   = null;
+var numberOfReplies = 0;
+var userName        = "Anonymous User";
+var currDivId       = null;
+var currDynoEvent   = null;
+var tagStrings      = new Array();
+var numberOfTags    = 0;
+
+var replyLikes              = new Array();
+replyLikes["InitialPostId"] = new LikeData("InitialPostId", 35831, 83915, 0);
+
+$(document).ready(function()
+{
+    $("div").on("click", "a.ReplyAction", function(event){
+
+        if (selectedReplyId) {
+            alert("Cannot add a new reply while an exist reply is being composed.");
+        }
+        else {
+            addReply($(this));      
+        }
+    });
+    
+    $("body").on("click", "a.ReplyActionDyno", function(event){
+        var obj=$(this);
+        
+        if (selectedReplyId == null) {
+            if (event.isImmediatePropagationStopped()) {
+                alert("event propatation was stopped immediately");
+            }
+            else {             
+                addReply($(this));
+            }
+        }
+    });
+
+    $("div").on("change", "#TagStringsChoiceBoxId", function(event){
+        handleTagStringSelection();
+    });
+
+    $("body").on("click", "a.LikeAction", function(event){    
+        handleLikeDesignation(event.target.id);
+    });    
+    
+    $("body").on("click", "a.DislikeAction", function(event){    
+        handleDislikeDesignation(event.target.id);
+    });
+    
+    $("body").on("click", ".EmojiAction", function(event){    
+        removeEmojiDesignation(event.target.id);
+    });
+    
+});
+
+
+function handleLikeDesignation(elementId)
+{
+    var index  = elementId.indexOf('_');
+    var likeId = elementId.substr(index+1);
+    
+    var likeData = null;
+    
+    likeData = replyLikes[likeId];
+    if (likeData == null) {
+        alert ("Like data not found for id: " + likeId);
+        return;
+    }
+    
+    likeData.like();
+
+    var likeCntId = "LikeCnt_" + likeId;
+    var myHtml = "<a id='" + likeCntId + "'>" + likeData.likeCnt + ", </a>";
+    $("#" + likeCntId).replaceWith(myHtml);        
+
+    var dislikeCntId = "DislikeCnt_" + likeId;
+    myHtml = "<a id='" + dislikeCntId + "'>" + likeData.dislikeCnt + "</a>";
+    $("#" + dislikeCntId).replaceWith(myHtml);
+
+    // Set emmoji image visible
+    var emojiId     = "Emoji_" + likeId;
+    myHtml = " <img id='" + emojiId + "' class='EmojiAction' src='ThumbsUp.jpg' width='15' height='15'>";
+    $("#" + emojiId).replaceWith(myHtml);
+}
+
+
+function handleDislikeDesignation(elementId)
+{
+    var index  = elementId.indexOf('_');
+    var likeId = elementId.substr(index+1);
+    
+    var likeData = null;
+    
+    likeData = replyLikes[likeId];
+    if (likeData == null) {
+        alert ("Like data not found for id: " + likeId);
+        return;
+    }
+    
+    likeData.dislike();
+
+    var likeCntId = "LikeCnt_" + likeId;
+    var myHtml = "<a id='" + likeCntId + "'>" + likeData.likeCnt + ", </a>";
+    $("#" + likeCntId).replaceWith(myHtml);        
+
+    var dislikeCntId = "DislikeCnt_" + likeId;
+    myHtml = "<a id='" + dislikeCntId + "'>" + likeData.dislikeCnt + "</a>";
+    $("#" + dislikeCntId).replaceWith(myHtml);
+
+    // Set emmoji image visible
+    var emojiId     = "Emoji_" + likeId;
+    myHtml = " <img id='" + emojiId + "' class='EmojiAction' src='ThumbsDown.jpg' width='15' height='15'>";
+    $("#" + emojiId).replaceWith(myHtml);
+}
+
+
+function removeEmojiDesignation(emojiId)
+{    
+    var index  = emojiId.indexOf('_');
+    var likeId = emojiId.substr(index+1);
+    
+    var likeData = null;
+    
+    likeData = replyLikes[likeId];
+    if (likeData == null) {
+        alert ("Like data not found for id: " + likeId);
+        return;
+    }
+    
+    likeData.removeDesignation();
+
+    var likeCntId = "LikeCnt_" + likeId;
+    var myHtml = "<a id='" + likeCntId + "'>" + likeData.likeCnt + ", </a>";
+    $("#" + likeCntId).replaceWith(myHtml);        
+
+    var dislikeCntId = "DislikeCnt_" + likeId;
+    myHtml = "<a id='" + dislikeCntId + "'>" + likeData.dislikeCnt + "</a>";
+    $("#" + dislikeCntId).replaceWith(myHtml);     
+
+
+    // Set emmoji image visible
+    myHtml = "<a id='" + emojiId + "' class='EmojiAction'>&nbsp;&nbsp;&nbsp;&nbsp; </a>";
+    $("#" + emojiId).replaceWith(myHtml);
+}
+
+
+function getSelectionTextAndContainerElement() {
+    var text = "", containerElement = null;
+    if (typeof window.getSelection != "undefined") {
+        var sel = window.getSelection();
+        if (sel.rangeCount) {
+            var node = sel.getRangeAt(0).commonAncestorContainer;
+            containerElement = node.nodeType == 1 ? node : node.parentNode;
+            text = sel.toString();
+        }
+    } else if (typeof document.selection != "undefined" &&
+               document.selection.type != "Control") {
+        var textRange = document.selection.createRange();
+        containerElement = textRange.parentElement();
+        text = textRange.text;
+    }
+    
+    if (containerElement != null && $('#InitialPostId').attr('id') != containerElement.id) {
+        text = "";  // Only want selected text if it is within the original post
+    }
+    
+    return getSelectTextRemovingSpaces(text);
+}
+
+
+// Need to replace all embedded spaces with underbar (so selected text can serve as the div id)
+function getSelectTextRemovingSpaces(text)
+{
+    text = text.trim();
+    text = text.replace(/ /g,"_");
+    text = text.replace(/\./g,"");
+    return text;
+}
+
+
+// This function is probably not needed anymore.
+function getSelectedText() {
+    var text = "";
+    if (typeof window.getSelection != "undefined") {
+        text = window.getSelection().toString();
+    } else if (typeof document.selection != "undefined" && document.selection.type == "Text") {
+        text = document.selection.createRange().text;
+    }
+    return text;
+}
+
+
+function selectCurrDivWithinInitialPost() 
+{
+    var tempSelectText = currDivId.replace(/_/g," ");    
+    
+    var start = initialPostText.indexOf(tempSelectText);
+    var end   = start + tempSelectText.length;
+    
+    var elm = document.getElementById("InitialPostId");
+    var fc = elm.firstChild;
+    var ec = elm.lastChild;
+    var range = document.createRange();
+    var sel;
+
+    elm.focus();
+    range.setStart(fc,start);
+    range.setEnd(ec,end);
+    sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);  
+}
+
+
+function handleTagStringSelection() 
+{
+    if (currDivId != null) {
+        $("#" + currDivId).hide(); 
+    }
+
+    currDivId = $('#TagStringsChoiceBoxId option:selected').val()
+    $("#" + currDivId).show();
+    
+    selectCurrDivWithinInitialPost();
+    doSomethingWithSelectedText();
+}
+
+
+function doSomethingWithSelectedText() {
+    selectedText = getSelectionTextAndContainerElement(); 
+
+    if (selectedText) 
+    {
+        var replyButton = document.getElementById('TopLevelReplyButton');
+        replyButton.style.visibility='visible';
+        replyButton.innerHTML="&nbsp;&nbsp; Reply: '" + selectedText + "'";
+      
+        // Now try to find a div which matches the selectedText - if found, then set it visible.
+        // If no such div exists, create one and add it as a child to "AllResponses".
+        // Regardless, set current div id here.
+
+        if (currDivId != null && currDivId != selectedText) {
+            $("#" + currDivId).hide(); 
+        }
+
+        var obj=$("#" + selectedText);
+        if ($("#" + selectedText).length) {
+            currDivId = $("#" + selectedText).attr('id');
+            $("#" + currDivId).show();             
+        }
+        else {
+            currDivId = selectedText;
+            var newDivHtml = "<div id='" + selectedText + "'></div>";
+            $(newDivHtml).insertAfter("#AllResponses"); 
+            $("#" + currDivId).show();
+        }
+        selectTagString();
+    }
+    else {
+        var replyButton = document.getElementById('TopLevelReplyButton');
+        replyButton.style.visibility='hidden';
+    }
+}
+
+document.onmouseup = doSomethingWithSelectedText;
+document.onkeyup = doSomethingWithSelectedText;
+var selectedText;
+
+
+function getDate()
+{
+    var d       = new Date();
+    var dateStr = getMonth(d) + " " +  d.getDate() + ", " + d.getFullYear() + " " +
+                  d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+    
+    return dateStr;
+}
+
+
+function getMonth(d)
+{
+    var month = d.getMonth();
+    if (month === 0) {
+      month = "January";
+    }
+    else if (month === 1) {
+      month = "February";    
+    }
+    else if (month === 2) {
+      month = "March";    
+    }
+    else if (month === 3) {
+      month = "April";    
+    }
+    else if (month === 4) {
+      month = "May";    
+    }
+    else if (month === 5) {
+      month = "June";    
+    }
+    else if (month === 6) {
+      month = "July";    
+    }
+    else if (month === 7) {
+      month = "August";    
+    }
+    else if (month === 8) {
+      month = "September";    
+    }
+    else if (month === 9) {
+      month = "October";    
+    }
+    else if (month === 10) {
+      month = "November";    
+    }
+    else if (month === 11) {
+      month = "December";    
+    }
+    return month;
+}
+
+
+function cancelNewReply() 
+{
+    if (selectedReplyId) {
+        // There is no reason to get the contents from the textarea other than cancel is broken for mozilla
+        // without it.  Figure this out when looking at addReply behavior (which was working).  Very Odd!
+        var textAreaValue = tinymce.get('NewReplyTA').getContent();    
+        tinymce.get('NewReplyTA').setContent('');
+        $("#NewReplyDiv").hide(); 
+        selectedReplyId = null;
+        newReplyLevel   = null;          
+    }
+}
+
+
+function commitNewReply() 
+{
+    var textAreaValue = tinymce.get('NewReplyTA').getContent();
+
+    commitNewReplyPrivate(currDivId, selectedReplyId, textAreaValue, newReplyLevel, userName, getDate(), 0, 0);
+
+    manageTagStrings();
+
+    tinymce.get('NewReplyTA').setContent('');
+    $("#NewReplyDiv").hide(); 
+    selectedReplyId = null;
+    newReplyLevel   = null;
+    displayStatusLine();
+}
+
+
+function commitNewReplyPrivate(currDivId_, selectedReplyId_, 
+                               userReplyText, nestingLevel, userNameStr, dateStr,
+                               likeCount, dislikeCount)
+{
+    dynamicIdSeqNbr = dynamicIdSeqNbr + 1;
+    numberOfReplies = numberOfReplies + 1;
+    
+    var divId   = "DIV_" + nestingLevel + "_" + dynamicIdSeqNbr;
+    var replyId = "DynamicReply_" + nestingLevel + "_" + dynamicIdSeqNbr;
+
+    var likeReplyId       = "Like_" + replyId;
+    var likeReplyCntId    = "LikeCnt_" + replyId;
+    var dislikeReplyId    = "Dislike_" + replyId;
+    var dislikeReplyCntId = "DislikeCnt_" + replyId;
+    var emojiId           = "Emoji_" + replyId;
+    var myHtml = "<ul>" +
+                 "  <div id='" + divId + "'>" +
+                 "    <p class='small'>Reply by: " + "<a class='clickable'>" + userNameStr + "</a>" + ", " + dateStr + "</p>" +
+                 "    <p>" + userReplyText + "</p>" +
+                 "    <a id='" + likeReplyId + "' class='LikeAction'>Likes: </a>" + 
+                 "    <a id='" + likeReplyCntId + "'>" + likeCount + ", </a>" + 
+                 "    <a id='" + dislikeReplyId + "' class='DislikeAction'>Dislikes: </a>" +  
+                 "    <a id='" + dislikeReplyCntId + "'>" + dislikeCount + ",</a>" + 
+                 "    <a id='" + emojiId + "'>&nbsp;&nbsp;&nbsp; </a>" +
+                 "    <a id='" + replyId + "' class='ReplyActionDyno' nestingLevel='" + nestingLevel + "'>Reply &nbsp;&nbsp;&nbsp;</a>" +                  
+                 "  </div>" +
+                 "</ul>";
+
+                 
+    replyLikes[replyId] = new LikeData(replyId, likeCount, dislikeCount, 0);
+    
+    if (selectedReplyId_ == "TopLevelReplyButton") {
+        $(myHtml).prependTo("#" + currDivId_); 
+    }
+    else {
+        $(myHtml).insertAfter("#" + selectedReplyId_);        
+    }
+    
+    return replyId;
+}
+
+
+function addTagToTagList(tag)
+{
+    if (numberOfTags == 0) {
+        myHtml = "&nbsp;&nbsp;<select id='TagStringsChoiceBoxId'><option value='" + tag + "'>" + tag + "</option></select>";
+        $("#TagStringsTableCell").replaceWith(myHtml);
+    }
+    else {
+        var selectionObject = $("#TagStringsChoiceBoxId");
+        selectionObject.prepend("<option value="+ tag +">" + tag + "</option>");    
+    }
+
+    numberOfTags    = numberOfTags + 1;
+    tagStrings[tag] = 1;    
+    
+    var newDivHtml = "<div id='" + tag + "'></div>";
+    $(newDivHtml).insertAfter("#AllResponses");  
+}
+
+
+function setInitialState(previousTag, currentTag)  // Assume tag will be the first div in the list
+{
+    currDivId = previousTag;     // This is important because we want the previous div to be hidden.
+    $('#TagStringsChoiceBoxId').val(currentTag);    
+    handleTagStringSelection();  // This will do everything if choice box has selection
+    displayStatusLine("ShowTopLevelReply");
+}
+
+
+function selectTagString()
+{
+    $('#TagStringsChoiceBoxId').val(currDivId);        
+}
+
+
+function manageTagStrings() 
+{
+    if (tagStrings[currDivId]) {
+        //alert("Tag strings['" + currDivId + "'] = " + tagStrings[currDivId]);
+        tagStrings[currDivId] = tagStrings[currDivId] + 1;  // Doesn't hurt to keep track of posts per tagString
+    }
+    else {
+        var myHtml;
+        if (numberOfTags == 0) {
+            // This is the first tag, so create the widget
+            myHtml = "&nbsp;&nbsp;<select id='TagStringsChoiceBoxId'><option value='" + currDivId + "'>" + currDivId + "</option></select>";
+            $("#TagStringsTableCell").replaceWith(myHtml);
+        }
+        else {
+            var selectionObject = $("#TagStringsChoiceBoxId");
+            selectionObject.prepend("<option value="+ currDivId +">" + currDivId + "</option>");
+        }
+
+        numberOfTags = numberOfTags + 1;  // length won't work on hash
+        tagStrings[currDivId] = 1;        // Put new tag in hash     
+    }
+    
+    selectTagString();  // On commit, a new tag may have been added by user selecting some text, so might as
+                        // well make sure the tags choice box is selected (so that it matches with the current div).
+}
+
+
+function addReply(jqThis) 
+{    
+    selectedReplyId = jqThis.prop("id");
+    var currLevel   = jqThis.attr('nestingLevel');
+    newReplyLevel   = Number(currLevel) + 1;  
+    
+    // The following moved the text area immediately below the original post (easier to read this way).
+    $("#NewReplyDiv").insertAfter($("#" + selectedReplyId));
+    
+    // But because the tinymce editor is moved, must reinitialize it
+    tinymce.remove('#NewReplyTA');    
+    tinyMCE.execCommand('mceAddEditor', false, 'NewReplyTA');    
+    
+    $("#NewReplyDiv").show();
+}
+
+
+function initialize() {
+    $("#NewReplyDiv").hide();
+    loadInitialPostData();
+    displayInitialPost();     
+    loadInitialReplies();    
+    //displayStatusLine();
+}
+
+
+function setPreInitialPostData(preInitialPostData)
+{
+    $("#PreInitialPostData").replaceWith(preInitialPostData);
+}
+
+
+var initialPostText;
+var initialPostHtml;
+
+function setInitialPost(post) {
+    initialPostText = post;
+    initialPostHtml = "<p id='InitialPostId'>" + initialPostText + "</p>";
+}
+
+function displayInitialPost() {
+    $("#InitialPostId").replaceWith(initialPostHtml);
+}
+
+
+function displayStatusLine(showTopLevelReply) 
+{   
+    var myHtml = "<a id='statusLine'>Last reply on: " + getDate() +"</a>"
+    $("#statusLine").replaceWith(myHtml);
+
+    if (!showTopLevelReply) {
+        var replyButton = document.getElementById('TopLevelReplyButton');
+        replyButton.style.visibility='hidden';    
+    }
+}
+
+</script>
+
+
+<body onload="initialize()">
+
+<div>
+    <div id="PreInitialPostData"></div>
+    <table>
+        <tr>
+            <td><img src='Obama.jpg' width='60' height='60'></td>        
+            <td> <p id="InitialPostId"></p> </td> <td>  <p id="TagStringsTableCell"> &nbsp;  </p> </td> </tr>
+        
+        <tr><td>&nbsp; </td>
+            <td> <a id='Like_InitialPostId' class='LikeAction'>Likes: </a>
+                 <a id='LikeCnt_InitialPostId'>35831, </a>
+                 <a id='Dislike_InitialPostId' class='DislikeAction'>Disikes: </a> 
+                 <a id='DislikeCnt_InitialPostId'>83915 </a>
+                 <a id='Emoji_InitialPostId' class='EmojiAction'>&nbsp;&nbsp;&nbsp;&nbsp; </a>
+    </table><br>
+    <a id='statusLine'></a>
+    <a id='TopLevelReplyButton' class='ReplyAction' nestingLevel='1'>&nbsp;&nbsp;&nbsp; Reply</a>
+</div>
+
+<div id='AllResponses'>
+    <div id='EntirePost'>
+    </div
+</div>
+
+<div id="NewReplyDiv" class="ReplyWidgetsDiv">
+  <textarea id="NewReplyTA" name="NewReplyTA" rows="4" cols="40" style="width: 60%"></textarea>
+ 
+  <button type="button" onclick="commitNewReply()">Commit</button>
+  <button type="button" onclick="cancelNewReply()">Cancel</button>  
+</div>
+
+</body>
+</html>
+
+
+

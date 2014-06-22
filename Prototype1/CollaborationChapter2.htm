@@ -1,0 +1,272 @@
+<HTML>
+<head>
+<script src="../javascripts/menuCommon.js"></script>
+<link rel=STYLESHEET TYPE="text/css" href="../stylesheets/common.css">
+</head>
+
+
+<B class="HeadingText">Collaboration and feedback</B>
+<br><br>
+
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, helpMenu, '260px')" onMouseout="delayhidemenu()">Chapter 2 - High Level Requirements</em>
+
+
+<a name="R1-GivingPublisherAVoice"></a>
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, hlrMenu, '250px')" onMouseout="delayhidemenu()">R1: </em>
+Any arbitrary web content should have a means of announcing a mechanism for community feedback.</p>
+
+<ul>  
+    <li>This doesn't restrict feedback to only the publisher announced mechanism, but at least gives the content producer a voice.
+    <br><br>
+    <li>Announcement of the feedback mechanism must be embedded in the actual web content (i.e., not in the <em title="Universal Resource Locator">URL</em>, and not as a visible artifact of the content).
+    <br><br>
+    <li>It is assumed that client apps (like web browsers and E-Readers) would respect the author's feedback preference and offer access to that feedback mechanism.
+    <br><br>
+    <li>Migration from one feedback mechanism to another should be possible.
+    <br><br>
+    <ul>    
+        And migration should be possible without forcing the publisher to update every individual instance of content (for scenarios where the same content is offered on many different web sites).  Therefore, "hard wiring" to an explicit feedback mechanism should be avoided.  Given the desire to not hard wire, it is likely that some sort of common lookup service would be needed which maps a particular piece of web content to the author's current feedback mechanism preference.  So some minimal amount of content meta data would be embedded by the author, and this would instruct the client app to derive the appropriate feedback mechanism (and then redirect when requested by the user).  Given this, I can think of at least two pieces of meta data which would be needed: feedback_mechanism_id and <em title="For tech geeks, this would be the URN">content_id</em>.
+    </ul>
+</ul>
+
+
+<a name="R2-GeneralAvailability"></a>
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, hlrMenu, '250px')" onMouseout="delayhidemenu()">R2: </em>
+Feedback mechanism shall be generally available.</p>
+
+<ul>
+    <li>Shall be available across hardware platforms (e.g., smart phones, tablets, PCs)
+    <li>Shall be available across a variety of applications (e.g., E-readers, web browsers, applications).
+</ul>
+
+
+<a name="R3-ManagingIdentity"></a>
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, hlrMenu, '250px')" onMouseout="delayhidemenu()">R3: </em>
+Managing identity</p>
+
+<ul>
+  Since most in this country have registered for at least one web account, the notion of a "user account" certainly won't be a foreign concept.  The behavior surrounding account management is fairly well understood - most importantly, this involves assignment of a unique user_id, password, and  user name.   Issues like password security, password reset, and security challenge questions are also important.  Now there is one extra requirement which I would like to see, and this has to do with whether the user is recognized as a single entity (i.e., a singleton).  To verify a user as a singleton, the user would need to be associated (and confirmed) with a tangible thing like a mailing address or a physical phone number (land line or cell phone).   I mention this because there are some web sites which allow you to create virtually an unlimited number of accounts.   Consider Facebook for a minute - all you have to do is request a new user name and you can get as many Facebook accounts as you want.   It is true that you have to supply an email address, but considering you can create an unlimited number of email addresses via gmail (or others), there really isn't a limit to the number of Facebook accounts that you can create.   Now it is possible that social networking companies do (or will) try to limit the number of user accounts that can be created by a single person, but certainly, there is nothing that I'm aware of right now which attempts to express whether a given user is a "singleton".
+  <br><br>
+  
+  Now this last point regarding singletons is perhaps a touchy subject, because privacy is certainly a hot topic today.   So I'm merely mentioning here that there is value to everyone in regards to knowing whether a given user is confirmed as a singleton, or whether there is a possibility that the person behind the user account has many identities (perhaps even a very large number of them).  I know I'm not the only one that is considering this topic - in fact, some within government think it might be a good idea to discourage anonymity altogether (but I'm not on board with that).  I'm merely asserting that the community at large benefits when they can discern that feedback is coming from a single confirmed user with a legitimate identity and history.   My premise is that there is more honesty and sincerity when one's history is preserved - and certainly, others might place more credence in feedback from a user if they knew that the user's identity had historical integrity.  
+  <br><br>
+
+  And before everyone thinks I'm crazy and that this will never happen, I'm suspicious that social networking companies and advertisers are already thinking about this very point.  I'm suspicious that the bean counters have figured out that users with a single identity (and with identity integrity) are higher income earners and spend more money (well, at least as compared to those with many virtual accounts).   After all, how does it help Facebook if they have 100 million accounts but only 10 million living/breathing people.   It is actually people that buy stuff, not the multiple virtual accounts.  So social networking companies and the retail businesses that leverage them certainly have a vested interest in strengthening the bound between them and real people behind the user accounts.   And if there is a benefit to social networking companies and advertisers, those businesses will figure out a way to incentify their users and coerce them toward identity integrity. And by the way, I'm not implying that a person's true identify (i.e., their real name, address, phone number or email address) should ever be exposed.   And my guess is that individual social networking companies (and retailers) have a pretty good idea about the real identity of their users.  I'm merely suggesting that this be opened up so the rest of the world can know whether a given user name is a real person, or merely 1 of many virtual accounts.   
+</ul>
+
+
+<a name="R4-IndividualMetaData"></a>
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, hlrMenu, '250px')" onMouseout="delayhidemenu()">R4: </em>
+Managing individual's meta data:</p>
+
+<ul>
+  <p>There are two main benefits to collecting meta data about those within a community (well, with respect to collaboration and feedback):</p>
+  <ul>
+     <li>Requests for feedback can be directed to those with certain user characteristics.
+	 <li>Feedback can be mined/sorted based on user characteristics.
+  </ul>
+	
+  <p>Up until now, user meta data has typically been used for advertising and to grow social networks.  To me, this is the least interesting or appealing aspect.   But regardless of whether meta data is used for selective targeting of advertising, we should at least get the other two benefits I list above.  And again, my goal is to have a completely portable framework so that no single "empire" can hoard the user's meta data.</p>
+</ul>
+
+
+<a name="R5-PrivacyGuidelines"></a>
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, hlrMenu, '250px')" onMouseout="delayhidemenu()">R5: </em>  
+Adopting privacy guidelines:</p>
+
+<ul>		
+  <p>Privacy is a hugely important thing which virtually all Americans are concerned about.  The best illustration I can think of with regards to the importance of privacy is that we have the notion of a secret ballot in this country.   I think we all can think of the absolute abuse of power that would arise if election voting ballots were not private.  And with the explosion of social networks and information sharing on the internet, the importance of privacy is way more important today than it has ever been in the past.   And although it is tempting to think that only those individuals which express "radical" or potentially disturbing views benefit from privacy, just consider this article for a second.   What I'm expressing in this document is that feedback and collaboration, including the social networks which arise from such collaboration, be portable.  Well, there are quite a few social networking companies that might have a strong objection to that, and if my identity were made public, perhaps such companies would attempt some sort of attack on me personally (I hope not, but when a lot of money is at stake, people and companies sometimes behave poorly).  So certainly, privacy and security MUST be built into any collaborative framework.</p>
+</ul>
+
+
+<a name="R6-ManagingGroups"></a>
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, hlrMenu, '250px')" onMouseout="delayhidemenu()">R6: </em>
+Managing groups:</p>
+
+<ul>
+  <p>Groups are merely a mechanism to relate a set of users.   They are important because meta data can be associated with a group.  And as such, when requesting feedback, a publisher can request feedback from those within a specific group, or can request feedback from those within groups which have certain characteristics.  And, when mining feedback, it would be possible to analyze feedback in relation to the attributes about the group, as well as the attributes associated with the individuals.  Social networking companies are already leveraging groups for a variety of reasons (mostly to make money through advertising).  But as I expressed above, I think there are plenty of other benefits which can be realized by publishers, authors, educators, and even those in business.</p>
+</ul>
+
+
+<a name="R7-ManagingFeedback"></a>
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, hlrMenu, '250px')" onMouseout="delayhidemenu()">R7: </em>
+Managing feedback:</p>
+
+<ul>
+
+  <p>The idea of requesting feedback is extremely important.   It is important to have more than just a scratch pad where comments could perhaps be offered.  Instead, guided discussions with perhaps assigned roles can progress discussions way further than what we witness today.  But the underlying feedback mechanism needs to be robust, and ideally, implemented in a consistent manner.  The consistency will allow users well trained in framework X to easily and seemlessly adapt when moving to other web sites and other content repositories.  The following are some basic needs:</p>
+  
+  <ul>
+    <li> Requesting feedback based on role or reviewer skill set
+    <li> Limiting scope of feedback  (is feedback open to everyone, or only open to authorized users)
+    <li> Does the author want to prompt users with a list of questions or topics (e.g., survey questions)
+    <li> Iterative feedback loop (Negotiating feedback, Resolving disputes, Baselining feedback)
+    <li> Feedback meta data (e.g., type, status, severity)
+    <li> State transitions (e.g., closing out defects)
+    <li> Activity logging (historical view of all changes to feedback)
+    <li> Like/Dislike metrics
+    <li> Content assessment surveys
+    <li> Rating the reviewers
+    <li> Archiving and deletion
+  </ul>
+</ul>
+
+
+<a name="R8-UserInterface"></a>
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, hlrMenu, '250px')" onMouseout="delayhidemenu()">R8: </em>  
+User interface (UI):</p>
+
+<ul>
+  <p>I don't want to get bogged down in the details surrounding the user interface for creating feedback items (well, not too much).  For one, tablets are causing a subtle evolution in how we perceive the user interface.  Plus, I think voice to text is going to be much more common place in the future.  But, I think the user's will still want to be able to control the look and feel surrounding the information they express - so I'll list some points here as place holders to consider when evolving a rich user interface.</p>
+  
+  <p>User's must be able to convey things like:</p>
+  <ul>
+      <li> Paragraphs
+	  <li> List items (e.g., numbered and bullet points)
+	  <li> Tabular data
+	  <li> Images and/or video
+	  <li> Text emphasis (e.g., bold, italic, underline, subscript, superscript)
+	  <li> Color, font and size
+	  <li> Links to related content
+   </ul>
+
+  <p>It is likely that the UI will make it easier to create the artifacts listed above without having to know the details of the underlying encoding strategy (e.g., html).  On many web sites today, the user is offered a palette which supports the object styles listed above.  This allows the user to easily convey a message without having to deal with the fussy details surrounding html (e.g., to bold the word hello, in html you would write '&lt;b&gt;hello&lt;/b&gt;').  However, it is rare that a UI will support all the capabilities of the underlying encoding strategy.  For this reason, web apps which support these user palettes typically allow the user to switch to "raw html" mode.  This allows experienced users to fully control the appearance of their message.</p>
+  
+  <p>Spelling and thesaurus should be available - some might even want to support auto correct (i.e., as you type).  Of course, when such features are available, users should always have the ability to set profile preferences and also control on a case by case basis.</p>
+  
+  <p>Filtering profanity and hurtful words - now I'm not one to insist on forced compliance with regards to speech.  Hopefully those expressing ideas will do so in good conscience.  However, it is possible that the owner of some content or discussion thread my want to place restrictions on the kind of feedback which can be offered (e.g., consider the movie rating system).  Now I'm sure there will always be ways for people to offend, so there is no perfect solution which will work under all circumstances.  But I would encourage frameworks that support the ability to impose "content age maturity guidelines" and then allow users to leverage such guidelines as they see fit.  And even absent forced compliance, it certainly is recommended that frameworks assess the "age maturity level" of content and report on such content as it is viewed by others.  This second option wouldn't prevent anyone from expressing potentially offensive content, but it might help those that want to shield such content from younger audiences, or for those that merely elect not to consume such material.</p>
+</ul>
+
+  
+<a name="R9-Searchability"></a>
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, hlrMenu, '250px')" onMouseout="delayhidemenu()">R9: </em>    
+Searchability:</p>
+
+<ul>
+    <p>Search mechanism should support things like the following (although this certainly isn't an exhaustive list):</p>
+    <ul>
+       <li> By role (of reviewer)
+       <li> By explicit reviewer list (All or subset of reviewers - user selects from pick list), can perhaps bulk select by role
+       <li> By favorability (of feedback item)
+       <li> By comment classification (e.g., comment, question, defect, suggestion)
+       <li> By "status" of item (e.g., resolved versus unresolved defects)
+       <li> By severity
+       <li> By time period (e.g., when created, last updated, last state transition, etc.)
+       <li> Sorting based on various criteria (including activity level - e.g., show most liked, most active, etc.).
+    </ul>
+</ul>
+
+
+<a name="R10-NotificationsAndMessages"></a>
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, hlrMenu, '250px')" onMouseout="delayhidemenu()">R10: </em> 
+Notifications and messages</p>
+
+<ul>
+    <p>Notifications are the backbone behinds the work flows surrounding a collaborative framework.</p>
+    <ul>
+        <li> User notifications should be available at least via email or <em title="Short Message Service (also known as 'Texting')">SMS</em>.
+        <li> Notification options should be controlled by user preference (but can be overridden based on context).
+        <li> Notifications will be sent to appropriate users based on system actions (e.g., someone responds to a post, someone raises a defect, someone opens or closes a discussion thread).
+        <li> User will be able to terminate or suspend notifications at their discretion.
+        <li> User will be able to resume any terminated or suspended notifications at their discretion.
+        <li> User will be able to request notifications even for system activity which they aren't directly related to (i.e., they might be interested in certain projects or discussions but don't have an active role in such activities). 
+        <li> Users will be able to send messages to other users.
+    </ul>
+</ul>
+  
+  
+<a name="R11-Analytics"></a>
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, hlrMenu, '250px')" onMouseout="delayhidemenu()">R11: </em>   
+Analytics:</p>
+
+<ul>
+    <p>If notifications are the backbone behind a feedback repository, then analytics perhaps should be considered the payoff.  Analytics help users digest the wealth of information expressed in a feedback repository by comparing and quantifying large sets of data.</p>
+    <ul>
+       <li> Mining feedback and assessment data for things like favorability rating.
+       <li> Comparing individual's feedback against community trend line.
+       <li> Statistics should be available from various filtered view.
+    </ul>
+</ul>
+
+
+<a name="R12-Portability"></a>
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, hlrMenu, '250px')" onMouseout="delayhidemenu()">R12: </em>   
+Portability:</p>
+
+<ul>
+  <p>Below are some of the desired features of portability.  The main thing to consider is that port-out cannot be considered an after thought.   Being able to easily switch from one repository to another is essential if we're going to ever get consistency and quality of service.</p>
+  <ul>
+     <li> Both import and export of data will be supported - the capabilities should be identical unless noted otherwise.
+     <li> Ability to control the scope in relationship to the number of users (e.g., single user, all users within a group or hierarchy).
+     <li> Ability to control the volume of data (all or subset)
+     <li> Like everything else, export of data is constrained by user visibility preferences.
+  </ul>
+</ul>
+
+
+<a name="R13-ContentManagement"></a>
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, hlrMenu, '250px')" onMouseout="delayhidemenu()">R13: </em>   
+Content management:</p>
+
+<ul>
+  <p>The majority of focus so far has been related to user and feedback management.   But I hope everyone realizes that feedback is "content" just like a book or video is content.   So certainly it makes sense for a feedback mechanism to support creation and management of arbitrary content (e.g., text, html, picture, video, pdf, etc.).   Now there are plenty of web sites which allow creation of arbitrary web content, so feedback mechanism doesn't have to go overboard with this capability.  However, there may be value to creating "home pages" for things like groups, and it might be valuable to express various methods and procedures.  So for topics which are only relevant to a given feedback repository, it seems odd to require users to leverage some external web content hosting mechanism just to express some mildly simple ideas.
+</ul>
+
+
+<a name="R14-ManagingChangeToContent"></a>
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, hlrMenu, '250px')" onMouseout="delayhidemenu()">R14: </em> 
+Managing change to original content:</p>
+
+<ul>
+  <p>The notion that a feedback item can potentially span multiple versions of a piece of content (over time) is a rather interesting and complex issue to deal with.  Because of it's complexity, most feedback mechanisms don't even bother to address this.  To assist in the discussion, let's consider a book which has gone through a few editions.   It is likely that the 2nd through Nth editions have many similarities with that of the very first edition.  In regards to things that may have changed, it is likely that there were some spelling, grammar or sentence structure changes, and perhaps there were some sections added for clarity.   Furthermore, some text may have been deleted.  So now let's think about what it means to have a feedback item associated with a sentence that has been completely removed.  Does that mean the comment is totally irrelevant - perhaps?   But if the person that originally posted the comment merely selected the sentence as an example of something worthy of a comment, then perhaps the feedback items is still valid.   So exactly how should a feedback mechanism deal with this?</p>
+
+  <p>Publisher's preference:</p>
+  <ul>
+     <p>Not all content benefits from preservation of feedback when subsequent editions of the content are released.  Therefore, a publisher should have the ability to designate (by embedding something in their content) whether they want earlier feedback to be carried forward to their newer edition.  Not let me remind everyone that the publisher cannot dictate this (as explained earlier), but should at least have an opportunity to express a preference.   There are times when a piece of content has gone through so many changes that attempting to preserve old feedback items becomes counter productive.   But other times, there is such a wealth of valuable feedback that the author (and entire community for that matter) benefits from the preservation of the original feedback.  So in a nut shell, this requirement merely states that there should be a method for expressing whether historical feedback should be preserved, and a process should exist to deal with orphaned feedback so that it can be coalesced into the newer content edition.</p>
+  </ul>
+  
+  <p>Targeting a feedback item:</p>
+  <ul>  
+    It is mentioned above that a feedback items (well, at least for feedback based on readable text) can be associated with one of many things (e.g., word, phrase, paragraph, chapter).  For this sort of feedback, it is rather easy for a user to select (highlight) the section of text and then add the comment.   But the word or phrase is in the context of something bigger (e.g., a word lives within a sentence, which lives within a paragraph, which lives within a section or chapter, etc.).  And although not explicitly expressed above under the UI requirements, it is assumed that the meta data associated with a feedback item would not only include the expressly selected word or phrase, but also includes some amount of visible context information.  It should be noted that I mention "visible" context here because there is also hidden information about all elements presented on a web page - and those too are important (but that will be addressed in the next section).  Anyway, think about how a search engine returns a "thumbnail" for each returned result - this "extra" text allows the user to scan it and determine whether the search result is truly what they were looking for.  And the extra context information which is captured by the feedback mechanism will be important when attempting to coalesce orphaned feedback items.
+  </ul>
+  
+  <p>Hidden context meta data:</p>
+  <ul>  
+    Although perhaps not obvious to everyone, most web content is expressed via html.  When viewing a page in a web browser, if you want to see the page's raw html, you can right click on the page and select "View source".   This typically isn't a great way to view web content, but it will give you a little bit of insight into the underlying content encoding strategy.   In any event, under the covers, there are tons of non visible meta data tags which can be expressed by the content creator.   And these tags can be leveraged by a feedback mechanism to help connect a feedback item to its concrete target.  For instance, if a given chapter in a book has a single warning disclaimer, it would be possible for the author to tag that paragraph as such, and then when associating a feedback item with the disclaimer, the feedback mechanism wouldn't merely have to rely on the fact that the disclaimer was the Nth paragraph from the beginning of some chapter Y.  This is helpful because in subsequent editions, the order of the paragraphs may change, or some paragraphs may be added or deleted.   But when the author "tags" the subsection with some non visible meta data, it makes a stronger association between the visible text and some real/tangible thing.   Of course, an author can either deliberately or inadvertently change the non visible meta data, so even meta data tagging isn't a fool proof method when dealing with orphaned feedback items.  Still, the high level requirement here is that non visible meta data tags can/should be leveraged by the feedback mechanism to help strengthen the relationship between a feedback item and its target.
+  </ul>
+  
+  <p>Automatically coalescing orphaned feedback items:</p>
+  <ul>  
+    For content which supports feedback across multiple editions, the feedback mechanism should automatically attempt to resolve orphaned feedback items.  For instance, if a feedback item is related to a word within a sentence that has subsequently changed (but merely to a synonym of the original word), it perhaps is reasonable to reattach the feedback item to the new word.   And since text based content is typically arranged hierarchically (e.g., books are decomposed into chapters, paragraphs and sentences), it is assumed that when reattaching orphaned feedback items, the context associated with the new target will be stored with the feedback item.  Of course, the original target context data (both visible and hidden meta data tags) should be preserved, and the feedback mechanism should make it obvious that the feedback item was reattached (this allows users to confirm that reattachment is in fact valid). 
+  </ul>
+  
+  <p>Manual coalescing orphaned feedback items:</p>
+  <ul>  
+    For scenarios where automatic reattachment isn't possible, the feedback mechanism must support a means for manually reassigning the orphaned items.   To make this as painless as possible, the orphaned feedback items should be grouped with the most specific thing possible (e.g., might need to roll up items to the chapter level, and in the worst case scenario, to the book level).  And when possible, the feedback mechanism should list possible reattachment suggestions (e.g., consider chapter X since it deals with subject ABC, or chapter Y, because it deals with EFG).  
+  </ul>
+
+  <p>Conclusion:</p>
+  <ul>
+    <p>Several factors will impact the effectiveness of managing feedback across content editions:</p>
+    <ul>
+	  <li>Volume of change from one edition to the next
+	  <li>Ratio of feedback items which are related to changed content
+      <li>The level of rigor associated with hidden meta data and whether that rigor was preserved across editions (i.e., did the author attempt to manage change effectively)	  
+	  <li>Sophistication of the feedback mechanism
+    </ul>
+  </ul>
+</ul>
+
+
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, helpMenu, '260px')" onMouseout="delayhidemenu()">Chapter 2 - High Level Requirements</em>&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="CollaborationChapter3.htm">Next Chapter</a>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="mailto:mrdarrellmadison@gmail.com?Subject=Collaboration%20Chapter_2" target="_top">Contact Darrell Madison</a>  
+
+
+</html>
+
+
+
+  
+  

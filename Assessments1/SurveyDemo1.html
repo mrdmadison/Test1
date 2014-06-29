@@ -1,0 +1,454 @@
+<html>
+<head>
+
+<style>
+
+.InvokeSurveyAction {
+  color:blue;
+}
+
+.DoneAction {
+  color:blue;
+}
+
+.ClearAction {
+  color:blue;
+}
+
+.clickable {
+  color:blue;
+}
+
+p.small { line-height:10%; }
+
+div.small { line-height:1px; }
+
+</style>
+
+<script src="../javascripts/menuCommon.js"></script>
+<script src="../javascripts/jquery-2.1.1.js"></script>
+
+<link rel=STYLESHEET TYPE="text/css" href="../stylesheets/common.css">
+
+</head>
+
+<script>
+
+function SurveyObj(surveyId, dimensions) {
+  this.surveyId   = surveyId;
+  this.dimensions = dimensions;
+}
+
+function DimensionObj(dimensionNbr, title, label, values) {
+  this.dimensionNbr = dimensionNbr;
+  this.title        = title;
+  this.label        = label;
+  this.values       = values.split(",");
+}
+
+var surveySections = new Array();   // This is the actual survey 
+
+
+// surveyDimensions - local variable only (i.e., will be embedded in surveys).
+//                    This will be a hash of survey dimension results keyed by dimensionNbr
+
+var surveys = new Object();                    // Hash of surveyDimensions
+
+var individualSurveyScores = new Object();     // Derived score for a single set of survey results 
+                                               // (i.e., a single surveyDimensions hash)
+                                               // This hash is keyed by surveySelectionId prefix.
+                                               
+var committedSurveyScores = new Object();      // This is similar to individualSurveyScores except that it
+                                               // will be used to save the last user accepted survey.  This is
+                                               // necessary because each survey dimension will update the survey 
+                                               // score immediately.   The original is needed so that when user clears
+                                               // out all dimensions and then hits done, will need to determine whether
+                                               // the originally saved survey results need to be removed from the 
+                                               // displayed results.                                               
+                                    
+var origCumulativeSurveyScores = new Object(); // The scores when page was first loaded (never gets updated)
+                                               // This hash is keyed by surveySelectionId prefix.
+
+var origNbrOfCompletedSurveys = new Object();  // Number of surveys completed when page was first loaded 
+                                               // (never gets updated).
+                                               // This hash is keyed by surveySelectionId prefix.
+                                    
+
+$(document).ready(function()
+{
+
+    $("div").on("click", "a.InvokeSurveyAction", function(event){
+        invokeSurveyAction(event);
+    });
+
+    $("div").on("click", "a.DoneAction", function(event){
+        handleDone(event);
+    });   
+
+    $("div").on("click", "a.ClearAction", function(event){
+        handleClear(event);
+    });      
+    
+    $("body").on("change", "select.SurveySelection", function(event){
+        handleDimensionSelection(event.target.id);
+    });    
+    
+});
+
+
+function handleClear(event)
+{
+    var sectionId = event.target.id;
+
+    var index     = sectionId.indexOf('_');
+    var sectionId = sectionId.substr(0, index);   
+
+    var dimensions = surveys[sectionId];
+    var choiceBoxId; 
+    var choiceBoxSelectionValue;
+    var choiceBoxNbrOfItems;
+    
+    for	(var key in dimensions) {
+        choiceBoxId = sectionId + "_" + key;
+        choiceBoxSelectionValue = dimensions[key];
+        index = choiceBoxSelectionValue.indexOf('-');
+        choiceBoxSelectionValue = "0-" + choiceBoxSelectionValue.substr(index+1);
+        $("#" + choiceBoxId).val(choiceBoxSelectionValue);        
+    }
+    
+    delete surveys[sectionId];
+    deriveIndividualSurveyScore(sectionId);
+}    
+
+
+function handleDone(event)
+{
+    var sectionId = event.target.id;
+
+    var index     = sectionId.indexOf('_');
+    var sectionId = sectionId.substr(0, index);    
+    var attrId    = sectionId + "_RatingScore";
+
+    // Take the individual survey score and add it to the cumulative rating score, then replace
+    // the rating score for the section.
+
+    var origCumulativeScore = Number(origCumulativeSurveyScores[sectionId]);
+    var origNbrOfSurveys = Number(origNbrOfCompletedSurveys[sectionId])
+    origCumulativeScore  = origCumulativeScore * origNbrOfSurveys;
+
+    var individualSurveyScore = Number(individualSurveyScores[sectionId]);
+    
+    var previousSurveyExists = (sectionId in committedSurveyScores);
+
+    var userSurveyIcon = "*";   // Will appear if the user has completed a survey
+    
+    if (individualSurveyScore > 0 || previousSurveyExists)
+    {
+        var newCumulativeScore;
+        var newNbrOfCompletedSurveys;
+        var ratingHtml;
+        var newRatingScore = 0;
+        
+        if (individualSurveyScore > 0) 
+        {
+            committedSurveyScores[sectionId] = individualSurveyScore;
+            newCumulativeScore = origCumulativeScore + individualSurveyScore;
+            newNbrOfCompletedSurveys = origNbrOfSurveys + 1;
+        }
+        else {
+            // Reset to original values (since user has removed all of there survey results
+            delete committedSurveyScores[sectionId];
+            userSurveyIcon = "";
+            newCumulativeScore = origCumulativeScore;
+            newNbrOfCompletedSurveys = origNbrOfSurveys;            
+        }
+        
+        if (newNbrOfCompletedSurveys > 0) {
+            newRatingScore = newCumulativeScore/newNbrOfCompletedSurveys;
+            newRatingScore = newRatingScore.toFixed(2);        
+        }
+        
+        ratingHtml = "<a title='Click here to rate this.' class='InvokeSurveyAction' id='" + attrId + "'>" +
+                     newRatingScore + 
+                     "&nbsp;(" + newNbrOfCompletedSurveys + userSurveyIcon + ")" + "</a> ";
+    
+        $("#" + attrId).replaceWith(ratingHtml);
+    }
+
+    $("#" + sectionId + "_Div").hide();
+}
+
+
+function deriveIndividualSurveyScore(surveyType)
+{
+    var surveyDimensions = surveys[surveyType];
+    var dimensionValue;
+    var ranking;
+    var range;
+    var index;
+    var dimensionValuePercent;
+    var nbrOfSelections = 0;
+    var runningTotal = 0;
+    var surveyScore = 0;
+    
+    for (var key in surveyDimensions) {
+        dimensionValue = surveyDimensions[key];
+        //alert("survey selection values: " + dimensionValue);
+
+        index = dimensionValue.indexOf('-');
+
+        ranking = Number(dimensionValue.substr(0, index));
+        range   = Number(dimensionValue.substr(index+1));     
+        
+        if (ranking > 0) 
+        {
+            nbrOfSelections++;
+            dimensionValuePercent = 100;
+            if (ranking > 1) {  
+                dimensionValuePercent = 100 - ((ranking-1)/range)*100;
+            }
+            runningTotal = runningTotal + dimensionValuePercent;
+        }
+    }
+    
+    summaryScore = 0;
+    if (nbrOfSelections > 0) 
+    {
+        surveyScore = runningTotal/nbrOfSelections;
+        surveyScore = surveyScore.toFixed(2);
+    }
+    
+    individualSurveyScores[surveyType] = surveyScore;
+
+    myHtml = "<a id='" + surveyType + "_Score'>" + surveyScore + "</a>";        
+
+    //alert("Survey score = " + myHtml);
+
+    $("#" + surveyType + "_Score").replaceWith(myHtml);   
+}
+
+function handleDimensionSelection(dimensionId)
+{
+    var index  = dimensionId.indexOf('_');
+    var surveyType   = dimensionId.substr(0, index);
+    var dimensionNbr = dimensionId.substr(index+1);
+
+    var selectedValue = $('#' + dimensionId + ' option:selected').val()
+
+    //alert("selection changed: " + dimensionId + ', value: ' + selectedValue + ', surveyType: ' + surveyType + ', dimensionNbr: ' + dimensionNbr);
+
+    var surveyDimensions;
+    
+    if (surveyType in surveys) {
+        surveyDimensions = surveys[surveyType];
+    }
+    else {
+        surveyDimensions = new Object();
+        surveys[surveyType] = surveyDimensions;
+    }
+
+    surveyDimensions[dimensionNbr] = selectedValue;
+    
+    //alert("Survey dimension value added: " + surveyDimensions[dimensionNbr]);
+    
+    deriveIndividualSurveyScore(surveyType);
+}
+
+
+function setRatingSection(sectionId, origCumulativeRatingScore, origNbrOfSurveys)
+{
+    surveys[sectionId] = new Object();
+    origCumulativeSurveyScores[sectionId] = origCumulativeRatingScore;
+    origNbrOfCompletedSurveys[sectionId]  = origNbrOfSurveys;    
+}
+
+
+function invokeSurveyAction(event)
+{
+    var sectionId = event.target.id;
+    var index     = sectionId.indexOf('_');
+    var sectionId = sectionId.substr(0, index);  
+
+    $("#" + sectionId + "_Div").show();
+}
+
+function getRatingHtml(sectionId)
+{
+    var ratingHtml = "<div id='" + sectionId + "_RatingDiv'>Rating: " + 
+                     "<a title='Click here to rate this.' " + 
+                     "class='InvokeSurveyAction' id='" + sectionId + "_RatingScore'>" +
+                     Number(origCumulativeSurveyScores[sectionId]).toFixed(2) + 
+                     "&nbsp;(" + origNbrOfCompletedSurveys[sectionId] + ")" + "</a> " +
+                     "</div>";
+                     
+    return ratingHtml;
+}
+
+function addSurveyHtml(surveyObj)
+{
+    var index;
+    var index2;
+    var surveyHtml;
+    var dimensionHtml;
+    var optionHtml;    
+    var optionsHtml;
+    var dimension;
+
+    var surveyDiv = surveyObj.surveyId + "_Div";
+    
+    surveyHtml = "<div id='" + surveyDiv + "'>\n" +
+                 "  <ul>\n" +
+                 "    <table>\n";
+    
+    for	(index = 0; index < surveyObj.dimensions.length; ++index) {
+        dimension = surveyObj.dimensions[index];
+        dimensionHtml = "<tr>\n" +
+                        "  <td title='" + dimension.title + "'>" + dimension.label + "</td>\n" +
+                        "  <td>\n" +
+                        "    <select id='" + surveyObj.surveyId + "_CB_" + dimension.dimensionNbr + "' class='SurveySelection'>\n";
+
+        optionsHtml = "<option value='" + 0 + "-" + dimension.values.length + "'></option>\n";
+                        
+        for (index2 = 0; index2 < dimension.values.length; ++index2) {
+            optionHtml  = "<option value='" + (index2+1) + "-" + dimension.values.length + "'>" + dimension.values[index2] + "</option>\n";
+            optionsHtml = optionsHtml + optionHtml;
+        }
+        
+        dimensionHtml = dimensionHtml + optionsHtml +
+                        "    </select>\n" +
+                        "  </td>\n" +
+                        "</tr>\n";
+
+        surveyHtml = surveyHtml + dimensionHtml;
+    }
+
+    surveyHtml = surveyHtml + "</table>\n" + 
+                 "<p>Score: <a id='" + surveyObj.surveyId + "_Score'> 0 </a> </p>\n" +
+                 "<a id='" + surveyObj.surveyId + "_Done' class='DoneAction'>Done</a>&nbsp;&nbsp;&nbsp; \n " +
+                 "<a id='" + surveyObj.surveyId + "_Clear' class='ClearAction'>Clear</a>\n " +                 
+                 "</ul>\n" +
+                 "</div>\n";
+
+    $(surveyHtml).insertAfter("#" + surveyObj.surveyId + "_RatingDiv");
+    
+    $("#" + surveyObj.surveyId + "_Div").hide();
+}
+
+function addSection(sectionId, sectionHtml, surveyObj, origCumulativeRatingScore, origNbrOfSurveys)
+{
+    var localSectionDivId = sectionId + "_Div";
+    var localSectionHtml  = "<div id='" + localSectionDivId + "'>" + sectionHtml + "</div>";
+
+    setRatingSection(surveyObj.surveyId, origCumulativeRatingScore, origNbrOfSurveys);
+    
+    sectionHtml = localSectionHtml + getRatingHtml(surveyObj.surveyId);
+    
+    $(sectionHtml).insertAfter("#LoadableDiv"); 
+    
+    addSurveyHtml(surveyObj);
+}
+
+
+
+function initialize() 
+{
+    var surveyObj;
+    var dimensionObj;
+    var dimensionArray;
+    var section1Html;
+
+
+    // Casual dining
+    dimensionArray = new Array();
+    surveyObj      = new SurveyObj("Survey2", dimensionArray);
+
+    dimensionObj = new DimensionObj(1, 
+                                    "How was the wait in the drive through?.", 
+                                    "Drive through timeliness:",  
+                                    "1 - Very quick,2 - Acceptable,3 - A little bit slow,4 - Very slow");    
+    dimensionArray[0] = dimensionObj;
+    
+    dimensionObj = new DimensionObj(2, 
+                                    "Was your order filled correctly?", 
+                                    "Drive through order accuracy:",  
+                                    "1 - Order was correct,2 - Order was not correct"); 
+    dimensionArray[1] = dimensionObj;
+
+    dimensionObj = new DimensionObj(3, 
+                                    "Were you given adequate utensils, napkins and condiments?", 
+                                    "Drive through extras:",  
+                                    "1 - Satisfactory,2 - Unsatisfactory"); 
+    dimensionArray[2] = dimensionObj;    
+    
+    section1Html = "<br>2. Resturant (drive through) ...";
+    addSection("Section2", section1Html, surveyObj, 0, 0);   // 80 is original cumulative rating score, 2 is number of surveys
+       
+
+    // Formal dining
+    dimensionArray = new Array();
+    surveyObj      = new SurveyObj("Survey1", dimensionArray);
+
+    dimensionObj = new DimensionObj(1, 
+                                    "Rate the quality of the food.", 
+                                    "Food quality:",  
+                                    "1 - Excellent,2 - Good,3 - Average,4 - Below average,5 - Poor");    
+    dimensionArray[0] = dimensionObj;
+    
+    dimensionObj = new DimensionObj(2, 
+                                    "Evaluate your wait time (e.g., to be seated, to order, food prep, checkout).", 
+                                    "Timeliness of service:",  
+                                    "1 - Excellent,2 - Average,3 - Too slow"); 
+    dimensionArray[1] = dimensionObj;
+
+    dimensionObj = new DimensionObj(3, 
+                                    "Was the resturant clean?", 
+                                    "Cleanliness:",  
+                                    "1 - Very clean,2 - Acceptable,3 - Not entirely clean,4 - Dirty"); 
+    dimensionArray[2] = dimensionObj;
+
+    dimensionObj = new DimensionObj(4, 
+                                    "Evaluate the overall atmosphere (was it pleasant, noisy, crowded, peaceful).", 
+                                    "Overall atmosphere:",  
+                                    "1 - Outstanding,2 - Acceptable,3 - Not great,4 - Poor"); 
+    dimensionArray[3] = dimensionObj;    
+    
+
+    dimensionObj = new DimensionObj(5, 
+                                    "Rate the value of the dining experience (cost, quality, portion size,  overall experience).", 
+                                    "Overall value:",  
+                                    "1 - Excellent,2 - Very good,3 - Acceptable,4 - Not great,5 - Poor"); 
+    dimensionArray[4] = dimensionObj;    
+
+    section1Html = "1. Resturant (formal dining) ...";
+    addSection("Section1", section1Html, surveyObj, 80, 2);   // 80 is original cumulative rating score, 2 is number of surveys
+}
+
+</script>
+
+<body onload="initialize()">
+In the <a href="../Prototype1/FeedbackPrototypeBaseline1.html">feedback mechanism</a> demo I illustrate like/dislike behavior.   Although that is a very common (and often desirable) feature, it lacks a fine level of granularity that is sometimes needed.  When appropriate, users should be able to define survey templates and attach them to things of interest.   This will allow collection of feedback which can then be converted into a numerical score.  And when coupled with social functions assumed in a rich feedback mechanism, the analytics that would be available could benefit everyone.
+<br><br>
+
+Instructions (for demo):
+<ul>
+   Below are two separate sections of a web page - each of which has a Rating score (well, the second one as of yet has no completed surveys).  But you can click on the numeric score to enter survey responses - when you have answered one or more questions, you can click done.   As you answer questions, your individual survey score will be updated.  When you hit done, your survey results will be aggregated into the main page's Rating.   The two numbers which are displayed represent the current rating (for others that have completed surveys) and the total number of surveys that have been completed.   If you have completed a survey, you'll see an '*' next to the number of reviewers (and likewise, if you remove all your survey question responses, your survey will be removed and the '*' will disappear).  
+   <br><br>
+   Disclaimers:
+   
+   <ul>
+     <li>This is a demo only, so no data is actually stored in a server or backend database (i.e., there is no persistence layer).  
+     <li>No extensive rigor went into the survey questions (i.e., I merely made up some questions and selection values).   Conducting surveys is sometimes thought of as an "art form" - but my goal here is to merely demonstrate some possibilities that are available when Like/Dislike is not sufficient.
+     <li>The demo below illustrates one facet of the requirements surrounding <a href="../Prototype1/CollaborationChapter4.htm#12-Feedback_assessments">survey requirements</a>.
+   </ul>
+</ul>
+<br>
+
+<div>
+    <div id="LoadableDiv"></div>
+</div>
+
+</body>
+</html>
+
+
+

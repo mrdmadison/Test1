@@ -1,4 +1,4 @@
-<HTML>
+<HTML> 
 <head>
 <script src="../javascripts/menuCommon.js"></script>
 <link rel=STYLESHEET TYPE="text/css" href="../stylesheets/common.css">
@@ -151,8 +151,8 @@ Searchability:</p>
        <li> By comment classification (e.g., comment, question, defect, suggestion)
        <li> By "status" of item (e.g., resolved versus unresolved defects)
        <li> By severity
-       <li> By time period (e.g., when created, last updated, last state transition, etc.)
-       <li> Sorting based on various criteria (including activity level - e.g., show most liked, most active, etc.).
+       <li> By time period (e.g., when created, last updated, last state transition)
+       <li> Sorting based on various criteria (including activity level - e.g., show most liked, most active).
     </ul>
 </ul>
 
@@ -209,7 +209,7 @@ Portability:</p>
 Content management:</p>
 
 <ul>
-  <p>The majority of focus so far has been related to user and feedback management.   But I hope everyone realizes that feedback is "content" just like a book or video is content.   So certainly it makes sense for a feedback mechanism to support creation and management of arbitrary content (e.g., text, html, picture, video, pdf, etc.).   Now there are plenty of web sites which allow creation of arbitrary web content, so feedback mechanism doesn't have to go overboard with this capability.  However, there may be value to creating "home pages" for things like groups, and it might be valuable to express various methods and procedures.  So for topics which are only relevant to a given feedback repository, it seems odd to require users to leverage some external web content hosting mechanism just to express some mildly simple ideas.
+  <p>The majority of focus so far has been related to user and feedback management.   But I hope everyone realizes that feedback is "content" just like a book or video is content.   So certainly it makes sense for a feedback mechanism to support creation and management of arbitrary content (e.g., text, html, picture, video, pdf).   Now there are plenty of web sites which allow creation of arbitrary web content, so feedback mechanism doesn't have to go overboard with this capability.  However, there may be value to creating "home pages" for things like groups, and it might be valuable to express various methods and procedures.  So for topics which are only relevant to a given feedback repository, it seems odd to require users to leverage some external web content hosting mechanism just to express some mildly simple ideas.
 </ul>
 
 
@@ -220,29 +220,29 @@ Managing change to original content:</p>
 <ul>
   <p>The notion that a feedback item can potentially span multiple versions of a piece of content (over time) is a rather interesting and complex issue to deal with.  Because of it's complexity, most feedback mechanisms don't even bother to address this.  To assist in the discussion, let's consider a book which has gone through a few editions.   It is likely that the 2nd through Nth editions have many similarities with that of the very first edition.  In regards to things that may have changed, it is likely that there were some spelling, grammar or sentence structure changes, and perhaps there were some sections added for clarity.   Furthermore, some text may have been deleted.  So now let's think about what it means to have a feedback item associated with a sentence that has been completely removed.  Does that mean the comment is totally irrelevant - perhaps?   But if the person that originally posted the comment merely selected the sentence as an example of something worthy of a comment, then perhaps the feedback items is still valid.   So exactly how should a feedback mechanism deal with this?</p>
 
-  <p>Publisher's preference:</p>
+  <p>Publisher's preference (content producer should have a voice):</p>
   <ul>
      <p>Not all content benefits from preservation of feedback when subsequent editions of the content are released.  Therefore, a publisher should have the ability to designate (by embedding something in their content) whether they want earlier feedback to be carried forward to their newer edition.  Not let me remind everyone that the publisher cannot dictate this (as explained earlier), but should at least have an opportunity to express a preference.   There are times when a piece of content has gone through so many changes that attempting to preserve old feedback items becomes counter productive.   But other times, there is such a wealth of valuable feedback that the author (and entire community for that matter) benefits from the preservation of the original feedback.  So in a nut shell, this requirement merely states that there should be a method for expressing whether historical feedback should be preserved, and a process should exist to deal with orphaned feedback so that it can be coalesced into the newer content edition.</p>
   </ul>
   
-  <p>Targeting a feedback item:</p>
+  <p>Identifying the target of feedback through visible text (background info):</p>
   <ul>  
-    It is mentioned above that a feedback items (well, at least for feedback based on readable text) can be associated with one of many things (e.g., word, phrase, paragraph, chapter).  For this sort of feedback, it is rather easy for a user to select (highlight) the section of text and then add the comment.   But the word or phrase is in the context of something bigger (e.g., a word lives within a sentence, which lives within a paragraph, which lives within a section or chapter, etc.).  And although not explicitly expressed above under the UI requirements, it is assumed that the meta data associated with a feedback item would not only include the expressly selected word or phrase, but also includes some amount of visible context information.  It should be noted that I mention "visible" context here because there is also hidden information about all elements presented on a web page - and those too are important (but that will be addressed in the next section).  Anyway, think about how a search engine returns a "thumbnail" for each returned result - this "extra" text allows the user to scan it and determine whether the search result is truly what they were looking for.  And the extra context information which is captured by the feedback mechanism will be important when attempting to coalesce orphaned feedback items.
+    It is mentioned above that a feedback items (well, at least for feedback based on readable text) can be associated with one of many things (e.g., word, phrase, paragraph, chapter).  For this sort of feedback, it is rather easy for a user to select (highlight) the section of text and then add a comment.   But the word or phrase is in the context of something bigger (e.g., a word lives within a sentence, which lives within a paragraph, which lives within a section or chapter).  So it is assumed that the feedback mechanism will capture not only the text explicitly selected by the user, but will also capture text adjacent to the selected text to offer some amount of context (within the overall web document).  To put this in perspective, think about how a search engine returns a "thumbnail" for each returned result - this "extra" text allows the user to scan it and determine whether the search result is truly what they were looking for.  And the extra context information which is captured by the feedback mechanism will be important when attempting to coalesce orphaned feedback items.
   </ul>
   
-  <p>Hidden context meta data:</p>
+  <p>Anchoring the target of feedback through hidden context meta data (background info):</p>
   <ul>  
     Although perhaps not obvious to everyone, most web content is expressed via html.  When viewing a page in a web browser, if you want to see the page's raw html, you can right click on the page and select "View source".   This typically isn't a great way to view web content, but it will give you a little bit of insight into the underlying content encoding strategy.   In any event, under the covers, there are tons of non visible meta data tags which can be expressed by the content creator.   And these tags can be leveraged by a feedback mechanism to help connect a feedback item to its concrete target.  For instance, if a given chapter in a book has a single warning disclaimer, it would be possible for the author to tag that paragraph as such, and then when associating a feedback item with the disclaimer, the feedback mechanism wouldn't merely have to rely on the fact that the disclaimer was the Nth paragraph from the beginning of some chapter Y.  This is helpful because in subsequent editions, the order of the paragraphs may change, or some paragraphs may be added or deleted.   But when the author "tags" the subsection with some non visible meta data, it makes a stronger association between the visible text and some real/tangible thing.   Of course, an author can either deliberately or inadvertently change the non visible meta data, so even meta data tagging isn't a fool proof method when dealing with orphaned feedback items.  Still, the high level requirement here is that non visible meta data tags can/should be leveraged by the feedback mechanism to help strengthen the relationship between a feedback item and its target.
   </ul>
   
   <p>Automatically coalescing orphaned feedback items:</p>
   <ul>  
-    For content which supports feedback across multiple editions, the feedback mechanism should automatically attempt to resolve orphaned feedback items.  For instance, if a feedback item is related to a word within a sentence that has subsequently changed (but merely to a synonym of the original word), it perhaps is reasonable to reattach the feedback item to the new word.   And since text based content is typically arranged hierarchically (e.g., books are decomposed into chapters, paragraphs and sentences), it is assumed that when reattaching orphaned feedback items, the context associated with the new target will be stored with the feedback item.  Of course, the original target context data (both visible and hidden meta data tags) should be preserved, and the feedback mechanism should make it obvious that the feedback item was reattached (this allows users to confirm that reattachment is in fact valid). 
+    For content which supports feedback across multiple editions, the feedback mechanism should automatically attempt to resolve orphaned feedback items.  For instance, if a feedback item is related to a word within a sentence that has subsequently changed (but is merely a spelling correction), it perhaps is reasonable to reattach the feedback item to the newly spelled word.  In fact, for spelling corrections, it is quite possible that the original feedback item was a comment about the misspelled word.   When reattaching an item, the original context should be preserved so that full change history is available.
   </ul>
   
   <p>Manual coalescing orphaned feedback items:</p>
   <ul>  
-    For scenarios where automatic reattachment isn't possible, the feedback mechanism must support a means for manually reassigning the orphaned items.   To make this as painless as possible, the orphaned feedback items should be grouped with the most specific thing possible (e.g., might need to roll up items to the chapter level, and in the worst case scenario, to the book level).  And when possible, the feedback mechanism should list possible reattachment suggestions (e.g., consider chapter X since it deals with subject ABC, or chapter Y, because it deals with EFG).  
+    For scenarios where automatic reattachment isn't possible, the feedback mechanism must support a means for manually reassigning the orphaned items.   To make this as painless as possible, the orphaned feedback items should be grouped with the most specific thing possible (e.g., might need to roll up items to the paragraph or chapter level, and in the worst case scenario, to the book or web document level).  And when possible, the feedback mechanism should list possible reattachment suggestions (e.g., consider chapter X since it deals with subject ABC, or chapter Y, because it deals with EFG).  
   </ul>
 
   <p>Conclusion:</p>

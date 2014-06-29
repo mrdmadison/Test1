@@ -1,5 +1,5 @@
 <HTML>
-<head>
+<head> 
 <script src="../javascripts/menuCommon.js"></script>
 <link rel=STYLESHEET TYPE="text/css" href="../stylesheets/common.css">
 </head>
@@ -31,7 +31,7 @@
 	  
   <p>1.3 System will attempt to capture and store (redundantly) the target's visible image.</p>
      <ul>
-      <p>For text, this would be the actual selected text.  For images and video, this would be the selected segment.   The reason I say "attempt to capture" is that video can be rather bulky (in size), and there might be copyright issues.   So when the full representation of the feedback item target cannot be captured and stored redundantly, a visible approximation (e.g., a screen shot or thumbnail) will be captured.   In such situations, the feedback item must contain enough meta data to allow playback of the user selected target.   For example, if the user comments on 10 seconds of a video from time offset 38 through 47 (in seconds), then ideally a video player could be used to replay just those 10 seconds.  It is of little value to have a user comment on 10 seconds of a 1 hour video, and then force a user to replay the entire video.   But the point of this requirement is not that a "seek" mechanism has to exist when playing back the video, but only that the feedback mechanism capture enough information so that if rich playback mechanism exist, it can leverage meta data in the feedback item to accomplish "seek" behavior.  And obviously, when considering video, if the video content cannot be copied redundantly (due to copyright or other technical issues), then playback would only be possible if the original publisher of the video continued to offer the video on some website.</p>
+      <p>For text, this would be the actual selected text.  For images and video, this would be the selected segment.   The reason I say "attempt to capture" is that video can be rather bulky (in size), and there might be copyright issues.   So when the full representation of the feedback item target cannot be captured and stored redundantly, a visible approximation (e.g., a screen shot or thumbnail) will be captured.   In such situations, the feedback item must contain enough meta data to allow playback of the user selected target.   For example, if the user comments on 10 seconds of a video from time offset 38 through 47 (in seconds), then ideally a video player could be used to replay just those 10 seconds.  It is of little value to have a user comment on 10 seconds of a 1 hour video, and then force a user to replay the entire video.   But the point of this requirement is not that a "seek" mechanism has to exist when playing back the video, but only that the feedback mechanism capture enough information so that if a rich playback mechanism exists, it can leverage meta data in the feedback item to accomplish "seek" behavior.  And obviously, when considering video content, if the video content cannot be copied redundantly (due to copyright or other technical issues), then playback would only be possible if the original publisher of the video continued to offer the video on some website.</p>
      </ul>
 
   <p>1.4 System will collect and store adjacent visible information so as to express the context of the feedback item target. </p> 
@@ -160,25 +160,25 @@
       <ul>   
          <p>Replying creates a totally separate feedback item, but the feedback item is said to be a "child" of the original feedback item.   What this means is the "reply" feedback item would appear as a nested feedback item (to the original) - this typically would be displayed as an indented item under the original feedback.  When replying to an existing feedback item, the context of the new "child" item is that of the parent feedback item (i.e., parent item's context is cloned and stored on the child item).</p>
       </ul>
-      
-   <p>4.2 Like/Dislike behavior shall be supported</p>  
-      <ul>   
-         <li>In general, all web content should display total likes and dislikes. 
-         <li>With appropriate permissions, a user shall be allowed to express their satisfaction or dissatisfaction.
-         <li>A user should not be allowed to "vote" more than once.
-         <li>A user should be allowed to change their designation at any point in time.
-         <li>A user should be able to see whether they expressed satisfaction (i.e., whether they voted).
-         <li>No other users shall be able to see how users voted (likes and dislikes are merely cumulative total).
-      </ul>      
-      
-   <p>4.3 Breaking the parent child relationship of a feedback item.</p>
+
+   <p>4.2 Breaking the parent child relationship of a feedback item.</p>
       <ul>
-         <p>Since a reply to a feedback item is considered a child of the original feedback item, the creator of the reply is allowed to break that child relationship.   If they do that, then the "child" reply has to be attached to something.  By default, a child reply which is broken from its parent feedback item inherits the parents meta data (i.e., what ever the parent reply is attached to).   If need be, the user breaking the child relationship can attached the feedback all the way up to the original web content - but if this is done, that user would have to ensure that the now root level feedback item has the appropriate content target specified.  Of course, breaking the parent relationship and attaching to the original web content is kind of like creating a new feedback item from scratch, so the user doing this should make sure that the feedback text is appropriate for the web content's target (i.e., when replying to an existing feedback item, a lot of context information is already established, so when breaking that relationship, the user might end up with a feedback item which is lacking context).  Anyway, it makes sense to support this requirement because a user can always attach a reply to the wrong feedback item, or at some later point in time, believe that their feedback item should stand alone.</p>
+         <p>Since a reply to a feedback item is considered a child of the original feedback item, the creator of the reply is allowed to break that child relationship.   If they do that, then the "child" reply has to be attached to something.  By default, a child reply which is broken from its parent feedback item is attached to the next higher feedback item in the hierarchy (or, if there is no parent feedback item, then the item is attched directly to the original web content).  It is the responsibility of the user breaking the parent child relationship to adjust reply item context information such that it makes sense for future readers.</p>
       </ul>
       
-   <p>4.4 System shall issue a warning if deleting feedback items which have descendants.</p>
+   <p>4.3 Like/Dislike behavior shall be supported</p>  
       <ul>   
-         <p>If a feedback item with descendants is deleted, the child feedback items are not deleted.  Instead, they are promoted up the feedback hierarchy chain.  An exception to this rule is when all the descendant feedback items are owned by the creator of the item being deleted - under this scenario, the system will ask the user if the descendant feedback items should also be deleted.  On delete of a feedback item, notifications are sent for impacted feedback items so that the owners can adjust feedback data when necessary.</p>
+         <li>In general, all web content should display total likes and dislikes. 
+         <li>With appropriate permission, a user shall be allowed to express their satisfaction or dissatisfaction.
+         <li>A user should not be allowed to "vote" more than once.
+         <li>A user should be allowed to change their designation at any point in time.
+         <li>A user should be able to see whether they expressed satisfaction (i.e., whether they voted, and if so, how they voted).
+         <li>All voting  is by secret ballot - a user shall be able to see how they voted, but will not be able to see how other people voted (i.e., likes and dislikes will always be displayed as a cumulative total).
+      </ul>      
+            
+   <p>4.4 System shall issue a warning when attempting to delete a feedback items which has descendants.</p>
+      <ul>   
+         <p>If a feedback item with descendants is deleted, the child feedback items are not deleted.  Instead, they are promoted up the feedback hierarchy chain.  An exception to this rule is when all the descendant feedback items are owned by the creator of the item being deleted - under this scenario, the system will ask the user if the descendant feedback items should also be deleted.  On delete of a feedback item, notifications are sent so that the owners of related items can adjust their feedback data (if necessary).</p>
       </ul>
       
    <p>4.5 Negotiating feedback between two or more parties (advanced topic).</p>
@@ -194,7 +194,7 @@
 <ul>
     <p>5.1 When adding content or feedback, the system shall issue a warning if the given content is already registered.</p>
        <ul>   
-         <p>Since it is possible that two or more URLs refer to the very same web content, when feedback is logged for an existing piece of web content with a different <em title="Universal Resource Locator">URL</em>, a duplicate warning will be issued.  The user will be able to proceed logging the feedback item with the new/different <em title="Universal Resource Locator">URL</em>, but this wont result in a second content record being logged.  Furthermore, the original <em title="Universal Resource Locator">URL</em> and new <em title="Universal Resource Locator">URL</em> will be indirectly related (since they both refer to the same bit of web content).  Of course, there is a not so obvious issue as to how a feedback repository would identify duplicate content - for that, see discussion of <em title="Universal Resource Name">URN</em>.</p>
+         <p>Since it is possible that two or more URLs refer to the very same web content, when feedback is logged for an existing piece of web content with a different <em title="Universal Resource Locator">URL</em>, a duplicate warning will be issued.  The user will be able to proceed logging the feedback item with the new/different <em title="Universal Resource Locator">URL</em>, but this won't result in a second content record being logged.  Furthermore, the original <em title="Universal Resource Locator">URL</em> and new <em title="Universal Resource Locator">URL</em> will be indirectly related (since they both refer to the same bit of web content).  Of course, there is a not so obvious issue as to how a feedback repository would identify duplicate content - for that, see discussion of <em title="Universal Resource Name">URN</em>.</p>
       </ul>
       
     <p>5.2 When adding a feedback item, there are certain helpful system functions which should be available:</p>
@@ -331,7 +331,7 @@
 	      <li> User must have the ability to override privacy settings for individual items when they are posted.
 	      <li> User must have the ability to change the privacy settings even after an item is posted.
 	      <li> The framework as a whole should attempt to be the most restrictive with respect to content exposure (e.g., user preferences should default to be the most restrictive view, if multiple privacy rules apply then the most restrictive rule in the set should be used).
-	      <li> All solicitations must be subject to user permission preferences, and a user which previously opted in for a given type of solicitation should be able to opt out at a later date (or be able to change the level of permission for a given solicitation type).  Note that expected solicitation types would likely include advertisement, feedback request, and assessment request.
+	      <li> All solicitations must be subject to user permission preferences, and a user which previously opted in for a given type of solicitation should be able to opt out at a later date (or be able to change the level of permission for a given solicitation type).  Note that expected solicitation types would likely include advertisement, feedback request, assessment request, and general correspondence from other users.
 		  <li> User can designate permissions for any groups which they are associated with (e.g., within some company org chart, perhaps all users within a single department should be allowed by default to see each other's stuff).
 	   </ul>
       
@@ -417,7 +417,7 @@
 	   <ul>	
 	     <p>System shall allow request for feedback from one or more explicit users.  It is assumed that a search mechanism exists based on name, group associations, user profile meta data, and community reviews (i.e., of users).  It is also assumed that a given user can request feedback by selecting some other user in context (from one of the many views which display user's name). </p>
 		 	
-	     <p>Role based feedback - system shall allow request for feedback based on any arbitrary tags.  It is assumed that the feedback mechanism has the ability to define arbitrary categories and then associate a list of values to those categories.</p>
+	     <p>Role based feedback - system shall allow request for feedback based on any arbitrary roles. It is assumed that the feedback mechanism has the ability to define arbitrary categories and then associate a list of values to those categories.</p>
 		 
 		 <p>Possible roles (for some made up review categories):</p>
             <ul>
@@ -450,6 +450,11 @@
 	     <p>System shall support notifications for unsolicited feedback.  However, a content publisher can disable notifications if they don't want to be bothered.  Furthermore, a content publisher can announce that feedback is no longer welcome (i.e., feedback loop is closed).   This won't prevent users from commenting (remember, we can't stop people from logging feedback), but it will give the content publisher an opportunity to express how he feels.  And note, closing a feedback loop or discussion thread shouldn't be viewed as a bad thing - this actually is a natural occurrence of the feedback loop methodology.  For instance, if an author is publishing a second edition of a book, and if they have a deadline for publication, it doesn't do any good to continue to take feedback after the second edition is published (well, unless there is going to be a third edition).	</p>	 
 	   </ul>
 	<p>10.7 The entire request and feedback loop is driven by notifications (messaging).</p>
+    
+	<p>10.8 Anti spam
+       <ul>
+           <p>To avoid spamming, users will be able to control who can request feedback from them.  Additionally, they will be able to control the time period under which solicitations can be requested (e.g., they might want to limit solicitations to only a few hours a day, week, or month).  All of this will be integrated into the user's profile and permissions.</p>    
+        </ul>
 </ul>
 <br>
 
@@ -513,12 +518,12 @@
        
 	<p>12.2 Survey tags</p>
        <ul>	
-	      <p>Survey tags are the key words which relate a given piece of content to a survey type (which would most appropriately assess the given content).  So given the sample survey data described above, if we had one web page for a casual dining restaurant, it might have a survey tag of "restaurant".  Now it perhaps would be valuable to allow a publisher to express an explicit survey_id (in that case, the publisher is rather specific that the assessment should be done by survey XYZ).   But in other instances, a publisher might not care that much about the exact survey as long as it is appropriate for restaurants in general.   And it likely makes sense to support multiple survey tags (e.g., there are different kinds of restaurants - fast food, casual dining, formal dining), and even beyond that, sometimes there are multiple sets of survey dimensions (i.e., questions) where this can be best expressed by multiple survey tags.</p>   
+	      <p>Survey tags are key words which relate a given piece of content to a survey type.  So given the sample survey data described above, if we had a web page for a casual dining restaurant, it might have a survey tag of "restaurant".  Now a rich design might call for the possibility of multiple survey tags, or even survey tag themes, but these are just more complicated variations on the very same thing - namely the need to relate some web content with a set of survey questions.</p>   
        </ul>
        
 	<p>12.3 Survey templates</p>
        <ul>	
-	      <p>A survey template is a list of one or more dimensions coupled with one or more dimension values.   And by convention, the order in which the dimension values are listed implies highest satisfaction to lowest satisfaction.   But survey answer satisfaction level is really only important when you're trying to quantify value from the survey - like when trying to convert the survey results into a numerical score.</p>
+	      <p>A survey template is a list of one or more dimensions (i.e., questions) coupled with one or more dimension values.   And by convention, the order in which the dimension values are listed implies highest satisfaction to lowest satisfaction.   But survey answer satisfaction level is really only important when you're trying to quantify value from the survey - like when trying to convert the survey results into a numerical score.</p>
 		 
 		  <p>So given the theme of a restaurant, let's consider two dimensions listed above and possible dimension values:</p>
             <ul>
@@ -538,16 +543,14 @@
        <ul>	
 	     <p>With respects to surveys, it probably is wise to limit survey results to one per user - and this is where identity integrity really can be helpful.  If users are allowed to create an unlimited number of virtual accounts, and if each one of those virtual accounts can submit a survey against a piece of web content, a vocal minority certainly would be able to skew the results (which seems unfair to me).</p>   
 		 
-		 <p>Furthermore, it probably would be appropriate for a publisher to be able to designate a limited scope of reviewers, and for such reviewers, perhaps could nominate a select few to complete surveys.  So behavior surrounding requests for assessments should have the same capabilities as that of text based feedback.</p>
+		 <p>Furthermore, it probably would be appropriate for a publisher to be able to designate a limited scope of reviewers, and for such reviewers, perhaps could nominate a select few to complete surveys.  So behavior surrounding request for assessments should have the same capabilities as that of text based feedback.</p>
        </ul>
        
     <p>12.6 User rating</p>
        <ul>		 
-		 <p>All feedback items shall support Like and Dislike buttons (both of which will allow users to optionally reply via a post of their own).  But regardless of whether the user wishes to respond via text, hitting (and confirming) either a Like or Dislike will increment the running counters for the given item.  It is assumed that all content will be displayed with their current Like and Dislike accumulations.</p>
-         
-		 <p>System shall collect and report favorability rating for its users (i.e., cumulative Likes and Dislikes for a given user will be available in their user profile).</p>
+		 <p>All feedback items shall support Like and Dislike buttons - cumulative Likes and Dislikes for system users will be aggregated to their user profile.</p>
 		 
-		 <p>And since surveys and survey templates exist within feedback mechanism, it is possible that templates might be defined to assess individual users.   Now it might not always make sense for a given feedback repository to leverage surveys to rate users, but for repositories used by a specific business or organization, it might.  And when desired, group owners will be able to define "user review" survey templates and have any completed surveys affect the individual user's favorability rating (again, as reported in the user's profile).</p>
+		 <p>And since surveys and survey templates exist within feedback mechanism, it is possible that templates might be defined to assess individual users.   Now it might not always make sense for a given feedback repository to leverage surveys to rate users, but some businesses and organizations might want to take advantage of this feature.  So when desired, group owners will be able to define "user review" survey templates and have any completed surveys affect the individual user's favorability rating (again, as reported in the user's profile).</p>
        </ul>
        
 	<p>12.7 System shall support analytics</p>
@@ -617,9 +620,11 @@
 	
 	<p>14.1 Within a feedback repository, users with historical identity integrity will be displayed with some sort of a visual clue.</p>
        <ul>	
-	     <p>The exact icon isn't that important - perhaps could be a gold star or a check mark.  And note, there might be multiple endorsements so it is possible that multiple stars or check marks could apply. Now the first level of integrity (e.g., first check mark) really just expresses that the user is a real person with a confirmed identity (i.e., a <em title="The premise is that by confirming against a tangible thing like a mailing address, it prevents a single person from creating a large number of aliases.">singleton</em>).  The second level of integrity (e.g., second check mark) expresses that the given user not only is a singleton, but is recognized with a single user name at lest some of the time.  Of course, this second endorsement cannot possibly assert that the given user never creates web accounts under an alias (that would be impossible absent a single national database - and I for one would be dead set against that).</p>
+	     <p>The exact icon isn't that important - perhaps could be a gold star or a check mark.  And note, there might be multiple endorsements so it is possible that multiple stars or check marks could apply. Now the first level of integrity (e.g., first check mark) really just expresses that the user is a real person with a confirmed identity (i.e., a <em title="The premise is that by confirming against a tangible thing like a mailing address, it prevents a single person from creating a large number of aliases.">singleton</em>).  The second level of integrity (e.g., second check mark) expresses that the given user not only is a singleton, but is recognized with a single user name (at least some of the time).  Of course, this second endorsement cannot possibly assert that the given user never creates web accounts under an alias (that would be impossible absent a single national database - and I for one would be dead set against that).</p>
 		 
 		 <p>Of course, since this is merely a convention, it is assumed that internet companies (including feedback mechanisms) will have a vested interest in supporting this convention.  It is also assumed that there would be some sort of certification process which helps assure that companies and frameworks which claim to support this convention actually have safeguards in place to ensure real integrity.</p>
+         
+         <p>Note - the notion of Single Sign On (SSO) already exists and is being supported by various web companies and web sites.  There are pros and cons to such systems, so I'm not implying here that a single sign on should or should not be used.  I'm merely asserting here that there is a level of benefit to everyone involved if it is possible to tell whether a web user is a recognizable single user with integrity.   So what I'm expressing is a convention, not a rigid implementation (although I do express below how integrity could perhaps be verified).</p>
        </ul>	
        
 	<p>14.2 When registering for a user account, it is assumed users will supply a <em title="Also referred to in this doc as an Endorsement company">validating company.</em></p>
@@ -748,7 +753,7 @@ Universal user:       Yes (since user name matches the name that John Smith esta
 	
 	<p>16.3 Calendar functions
        <ul>	
-	     <p>Although it would be nice to support calendar functions, for now, this will be considered out of scope.   For one, embedded calendar function would probably be of limited value since people won't want to replicate their calendars in one of potentially many feedback repositories.  So, it likely would be better to support an automated sync with external calendaring systems (but this just adds extra complexity and diversion to support an interface - which perhaps isn't universally accepted in the industry anyway).  So yes, it would be nice to express "unavailable" responses for things like notifications or explicit correspondence requests - but at present, this will have to be put on hold.</p>
+	     <p>Although it would be nice to support calendar functions, for now, this will be considered out of scope.   For one, embedded calendar function would probably be of limited value since people won't want to replicate their calendars in one of potentially many feedback repositories.  So, it likely would be better to support an automated sync with external calendaring systems (but this just adds extra complexity and diversion to support an interface - which perhaps isn't universally accepted in the industry anyway).  So yes, it would be nice to express "unavailable" for things like notifications or explicit correspondence requests - but at present, this will have to be put on hold.</p>
        </ul>
 		 
     <p>16.4 Content management</p>

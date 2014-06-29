@@ -3,32 +3,6 @@
 
 <head>
 <style>
-
-#labelDiv1 {
-    position: absolute;
-    top: 20px;
-    z-index: 1;
-}
-#canvas1 {
-    position: absolute;
-    top:  20px;
-    left: 65px;
-    z-index: 3;
-}
-
-#labelDiv2 {
-    position: absolute;
-    top: 40px;
-    z-index: 1;
-}
-#canvas2 {
-    position: absolute;
-    top: 40px;
-    left: 65px;
-    z-index: 3;
-}
-
-
 </style>
 
 <link rel=STYLESHEET TYPE="text/css" href="./stylesheets/stylesheet.css">
@@ -38,65 +12,19 @@
 
 <body>
 
-
-<div id="labelDiv1">
-<a onclick="draw_1();return false">Click ONE (to see first comment)</a><br>
-</div>
-
-<div id="labelDiv2">
-<a onclick="draw_2();return false">Click TWO (to see second comment)</a><br>
-</div>
-<br><br><br>
-<a href="https://www.google.com/">Some href - want to verify external style sheet can be included</a>
-<br><br>
-<button onclick="sayHello()">Say hello</button>
+The following is a sratch pad for ideas surrounding content and feedback management.  The goal is to 
+encourage discussion surrounding web site behavior which will benefit both consumers and businesses in this
+country.   There are tons of websites which offer feedback and other social functions - but at present, there isn't a ton
+of consistency.   To that end, I've started creating some demos, white papers and sample requirements to
+help steer discussion in a positive direction.  Note that I probably went off the deep end in regards to some political commentary (in the sample feedback mechanism demo), but you can still see the benefits of the underlying behavior.   And it is the requirements doc and case study which I think are truly valuable.
 <br><br>
 
-<a href="./Prototype1/FeedbackPrototypeBaseline1.html">Feedback mechanism initial prototype</a>
+As for the demos, they are only tested in Chrome and Mozilla (so if you use IE, they probably won't work).
 
-
-<canvas id="canvas1" width="300" height="10" style="border:0px solid #d3d3d3;">
-Your browser does not support the HTML5 canvas tag.</canvas>
-
-<canvas id="canvas2" width="300" height="10" style="border:0px solid #d3d3d3;">
-Your browser does not support the HTML5 canvas tag.</canvas>
-
-
-<script>
-
-
-function draw_1() {
-  var c=document.getElementById("canvas1");
-  var ctx=c.getContext("2d");
-  ctx.moveTo(0,0);
-  ctx.lineTo(600,0);
-  ctx.stroke();
-
-  var c2=document.getElementById("canvas2");
-  var ctx2=c2.getContext("2d");
-  ctx2.save();
-  ctx2.setTransform(1, 0, 0, 1, 0, 0);
-  ctx2.clearRect(0, 0, c2.width, c2.height);
-  ctx2.restore();
-}
-
-function draw_2() {
-  var c=document.getElementById("canvas2");
-  var ctx=c.getContext("2d");
-  ctx.moveTo(0,0);
-  ctx.lineTo(600,0);
-  ctx.stroke();
-
-  var c2=document.getElementById("canvas1");
-  var ctx2=c2.getContext("2d");
-  ctx2.save();
-  ctx2.setTransform(1, 0, 0, 1, 0, 0);
-  ctx2.clearRect(0, 0, c2.width, c2.height);
-  ctx2.restore();
-}
-
-
-</script>
+<ul>
+  <li><a href="./Prototype1/FeedbackPrototypeBaseline1.html">Feedback mechanism initial prototype</a>
+  <li><a href="./Assessments1/SurveyDemo1.html">Content assessment demo through the use of surveys</a>
+</ul>
 
 
 </body>

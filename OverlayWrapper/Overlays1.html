@@ -1,0 +1,94 @@
+<html>
+<head>
+
+<style>
+
+.InvokeSurveyAction {
+  color:blue;
+}
+
+.DoneAction {
+  color:blue;
+}
+
+.ClearAction {
+  color:blue;
+}
+
+.clickable {
+  color:blue;
+}
+
+p.small { line-height:10%; }
+
+div.small { line-height:1px; }
+
+</style>
+
+<script src="../javascripts/menuCommon.js"></script>
+<script src="../javascripts/jquery-2.1.1.js"></script>
+
+<link rel=STYLESHEET TYPE="text/css" href="../stylesheets/common.css">
+
+</head>
+
+<script>
+
+function SurveyObj(surveyId, dimensions) {
+  this.surveyId   = surveyId;
+  this.dimensions = dimensions;
+}
+
+$(document).ready(function()
+{
+/*
+    $("div").on("click", "a.InvokeSurveyAction", function(event){
+        invokeSurveyAction(event);
+    });
+*/
+});
+
+
+function initialize() 
+{
+    
+}
+
+function loadXMLDoc()
+{
+    var xmlhttp;
+    if (window.XMLHttpRequest)
+    {   // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp=new XMLHttpRequest();
+    }
+    else
+    {   // code for IE6, IE5
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    
+    xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)
+        {
+            document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+        }
+    }
+    xmlhttp.open("GET","http://mrdmadison.github.io/Test1/stylesheets/common.css",true);
+    xmlhttp.send();
+}
+
+
+</script>
+
+<body onload="initialize()">
+
+<h2>AJAX</h2>
+<button type="button" onclick="loadXMLDoc()">Request data</button>
+<div id="myDiv"></div>
+
+
+</body>
+</html>
+
+
+

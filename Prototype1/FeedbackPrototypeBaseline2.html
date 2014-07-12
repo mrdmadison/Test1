@@ -761,6 +761,12 @@ function handleMatch(firstMatchNode, searchPhrase, userText)
     var part1 = matchText.substr(0, position);
     var part2 = matchText.substr(position+searchPhrase.length);
 
+    part1 = part1.replace(/\</g,"&lt;");   //for <
+    part1 = part1.replace(/\>/g,"&gt;");   //for >       
+
+    part2 = part2.replace(/\</g,"&lt;");   //for <
+    part2 = part2.replace(/\>/g,"&gt;");   //for >    
+    
     var tagContext = "";
     tagContext = getTagContext(firstMatchNode, tagContext);
     

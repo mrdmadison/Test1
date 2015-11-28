@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<style>
+
+#labelDiv1 {
+    position: absolute;
+    top: 20px;
+    z-index: 1;
+}
+#canvas1 {
+    position: absolute;
+    top:  20px;
+    left: 65px;
+    z-index: 3;
+}
+
+#labelDiv2 {
+    position: absolute;
+    top: 40px;
+    z-index: 1;
+}
+#canvas2 {
+    position: absolute;
+    top: 40px;
+    left: 65px;
+    z-index: 3;
+}
+
+
+</style>
+
+<link rel=STYLESHEET TYPE="text/css" href="../commonWeb/css/common.css">
+<script src="../commonWeb/js/common.js"></script>
+
+</head>
+
+<body>
+
+
+<div id="labelDiv1">
+<a onclick="draw_1();return false">Click ONE (to see first comment)</a><br>
+</div>
+
+<div id="labelDiv2">
+<a onclick="draw_2();return false">Click TWO (to see second comment)</a><br>
+</div>
+<br><br><br>
+<a href="https://www.google.com/">Some href - want to verify external style sheet can be included</a>
+<br><br>
+<button onclick="sayHello()">Say hello</button>
+
+
+
+<canvas id="canvas1" width="300" height="10" style="border:0px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+
+<canvas id="canvas2" width="300" height="10" style="border:0px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+
+
+<script>
+
+
+function draw_1() {
+  var c=document.getElementById("canvas1");
+  var ctx=c.getContext("2d");
+  ctx.moveTo(0,0);
+  ctx.lineTo(600,0);
+  ctx.stroke();
+
+  var c2=document.getElementById("canvas2");
+  var ctx2=c2.getContext("2d");
+  ctx2.save();
+  ctx2.setTransform(1, 0, 0, 1, 0, 0);
+  ctx2.clearRect(0, 0, c2.width, c2.height);
+  ctx2.restore();
+}
+
+function draw_2() {
+  var c=document.getElementById("canvas2");
+  var ctx=c.getContext("2d");
+  ctx.moveTo(0,0);
+  ctx.lineTo(600,0);
+  ctx.stroke();
+
+  var c2=document.getElementById("canvas1");
+  var ctx2=c2.getContext("2d");
+  ctx2.save();
+  ctx2.setTransform(1, 0, 0, 1, 0, 0);
+  ctx2.clearRect(0, 0, c2.width, c2.height);
+  ctx2.restore();
+}
+
+
+</script>
+
+
+</body>
+</html>

@@ -25,7 +25,7 @@
      <ul>
          <li>For text based content - this could be a word or phrase, a paragraph, a page, a chapter (like in a book), or a <em title="Universal Resource Locator">URL</em>. 
          <li>For tabular based content - this could be one or more cells, rows or columns.
-         <li>For images - this could be the entire image, or could be some region within the image.
+         <li>For images - this could be the entire image, or could be some region within the image (see <a href="#AnnotatingAnImage">additional requirements below</a>).
          <li>For videos - this could be the entire video, or could be a portion of the video (perhaps based on time offsets).
      </ul>
 	  
@@ -75,6 +75,21 @@
 	  <li>Optional attributes 
 	  <li>Visibility and update permission rules
   </ul>
+  
+  <a name="AnnotatingAnImage">
+  <p>2.0 Detailed requirements surrounding annotating an image:
+  <ul>
+     <li>User should be able to designate a single point within an image and be offered a list of shapes (at least a circle and square). 
+	 <li>Once a shape is displayed within the image, the user should be allowed to resize and/or stretch the shape (this would perhaps change a square to a 
+	     rectangle, or a circle to an oval).
+	 <li>User should be able to move shapes such that they cover the precise region of the annotation.
+	 <li>The user should be able to toggle on/off all annotations within an image (similar to filtering annotations on the entire web page).
+	 <li>The user should be able to group multiple regions within an image together so that a single annotation can be applied to all of them.  This 
+	     implies that there must be a way to add or remove regions from a group.
+     <li>And for the seriously advanced client applications, it would be awesome if client application supported automatic shape detection.   This would require some seriously complex software - but it certainly exists in the world.  For example, there is video editing software that handles red-eye removal.  And there is yet other software that handles facial recognition.   So it possible that web based software could intelligently select shapes within an image based on colors and lines.  The exact means of expressing the coordinates for such recognized shapes might not be trivial, but it is still the in the realm of possibility.
+	 <li>And just to bring this requirement into the real world, consider someone renovating a bathroom - if there were defects in say a wall tile, since those shapes are fairly regular, software should be able to trace the border rather easily (well, I perhaps couldn't write the software, but someone really smart probably could).  And continuing the theme of renovations, consider a vanity top and sink faucet - merely selecting the hot water knob should be enough to identify the region worthy of an annotation.   So automatic shape detection seems like a hugely valuable thing for "in the field" real world usage of annotations.
+   </ul>
+  
 </ul>
 <br>
 
@@ -163,7 +178,7 @@
 
    <p>4.2 Breaking the parent child relationship of a feedback item.</p>
       <ul>
-         <p>Since a reply to a feedback item is considered a child of the original feedback item, the creator of the reply is allowed to break that child relationship.   If they do that, then the "child" reply has to be attached to something.  By default, a child reply which is broken from its parent feedback item is attached to the next higher feedback item in the hierarchy (or, if there is no parent feedback item, then the item is attched directly to the original web content).  It is the responsibility of the user breaking the parent child relationship to adjust reply item context information such that it makes sense for future readers.</p>
+         <p>Since a reply to a feedback item is considered a child of the original feedback item, the creator of the reply is allowed to break that child relationship.   If they do that, then the "child" reply has to be attached to something.  By default, a child reply which is broken from its parent feedback item is attached to the next higher feedback item in the hierarchy (or, if there is no parent feedback item, then the item is attached  directly to the original web content).  It is the responsibility of the user breaking the parent child relationship to adjust reply item context information such that it makes sense for future readers.</p>
       </ul>
       
    <p>4.3 Like/Dislike behavior shall be supported</p>  

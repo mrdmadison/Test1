@@ -1,0 +1,191 @@
+<html>
+<head>
+<script src="../javascripts/jquery-2.1.1.js"></script>
+<script src="../javascripts/menuCommon.js"></script>
+<script src="../javascripts/glossary.js"></script>
+<link rel=STYLESHEET TYPE="text/css" href="../stylesheets/common.css">
+
+<style>
+.Courier {
+    font-family: "Courier New", Courier, monospace;
+	font-size: 12px;
+}
+</style>
+
+<script>
+var sectionMenu=new Array()
+sectionMenu[0]='<a href="#Top">Top</a>'
+sectionMenu[1]='<a href="#Overview">Overview</a>'
+sectionMenu[2]='<a href="#RoleOfStandards">Role of standards</a>'
+sectionMenu[3]='<a href="#GuidingPrinciples">Guiding principles</a>'
+sectionMenu[4]='<a href="#CodeStyleBraces">Code style - braces</a>'
+sectionMenu[5]='<a href="#Feedback">Feedback</a>'
+
+</script>
+
+</head>
+
+<a name="Top">
+<h2>Coding Style - a practical recommendation</h2>
+<a name="Overview">
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '150px')" onMouseout="delayhidemenu()">Overview</em>
+<ul>
+   <p>Although this document is a recommendation about coding style (specifically related to Java), it will also address the topic of standards in general.   As you read on, you'll discover that I don't really believe in strict reliance on standards - at least not when they are very detailed.  I believe instead that <i>IT</i> professionals should be governed be a set of abstract goals and ideals, and everything they do, and everything they produce, should be aligned with those goals and ideals.  And actually, I think this is how people (in general) should live their lives.  If you want a real world example, just consider the 10 Commandments.  Now I'm not going to focus on the 10 Commandments from a religious perspective - instead I'm merely going to focus on the fact that there are only 10 of them.  Man was able to express 10 principles that have lasted for over 3000 years (that alone is remarkable).  And billions of  people on earth believe in those commandments (regardless of their religious beliefs), the commandments have been published in billions of books, and are even chiselled in stone in all four corners of the globe.   So my premise is that if you're going to insist on standards that everyone must follow, perhaps you should come up with 10 or less.  Man has demonstrated a unique ability to produce great things throughout history, but sadly, a bunch of rules, laws, and standards aren't necessarily man's best accomplishment.  If you want proof of that, just look at the U.S. tax code. 
+</ul>
+
+<a name="RoleOfStandards">
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '150px')" onMouseout="delayhidemenu()">The role of standards?</em>
+<ul> 
+   <p>Sadly, we're in the 21st century, and IT leaders are still focusing on coding standards like where to put the brace.   This is a topic which has been debated forever.   Some developers like to put the brace on the same line, while others like to put the brace on the subsequent line.   I guess this debate goes in the same category as "Coke versus Pepsi" and "Less filling / tastes great".   But because Sun documented a coding standard 20 years ago (which stated that the brace should be on the same line), software leaders and developers have been waging a holy war on this rather unimportant topic.  As you can imagine, my opinion is there shouldn't even be a standard on this topic - autonomous teams should evolve best practices (i.e., recommendations) and not even worry  about strict enforcement.   Because as I express in the overview section, the over reliance on standards is the true enemy.  
+
+   <p>But as you can imagine, I'm going to make a recommendation on coding style, and then do what is really important, explain why.   Because it is "why" that is way more important than the rule itself.   I think when we rely on standards for brain dead simple/stupid rules that we are expected to follow blindly, it is the IT development organization that becomes brain dead and stupid.  As for so called rules, I think a small set of abstract goals is way more important than a huge number of standards.  And the rule I always start with is that all things must be "Clear, Concise and Correct".   There are plenty that argue with me that the phrase "Clear, Concise and Correct" is vague and ambiguous.  When I challenge those who suggest that, they say that those words have many different meanings and that people will have  varying opinions on what is clear (as an example).  Well that may be true, but that doesn't for one second imply that the phrase "Clear, Concise and Correct" is anything other than clear, concise and correct.  After all, which of those words is unclear?   Obviously, the answer is none -  because I've never met one IT developer (ever) that didn't know the definition of any of those words, and when pressed, they could always use them in a sentence.  So if the words themselves are known by everyone, why on earth do some have a problem with using that phrase as the foundation for everything that is produced in IT?   
+	  
+   <p>Now when you dig a little deeper, the explanation why some in IT are dissatisfied with "Clear, Concise and Correct" as the foundation for coding style is because such IT leaders are extremely distrusting and feel that if they can just control everything that is produced, that will somehow lead to a high level of quality.   These leaders believe that consistency is the root of all quality, and without FORCED consistency, there will never be any consistency, and thus there will never be any quality.   Ironically, 30 years in IT has shown me just the opposite.  Reliance on standards can actually be a major contributing factor to inconsistent software - said another way, the standards themselves lead to much less consistency.   I know this seems counter intuitive, but let me explain.  In general, software developers working on a team would naturally gravitate toward consistency because they realize that there is some benefit to everyone doing things the same way.  Evolving teams would typically nominate one or more leaders, and those leaders would consolidate (and sometimes negotiate) the best practices, and establish some standards, procedures, and guidelines.   And as the team matures (transitions from a "forming team" to a "performing team"),  processes would naturally evolve (like code reviews, mentoring, joint team discussions, etc.) and this would steer toward consistency and quality.  But the reason "forced sameness" can lead to inconsistency is because standards in general exist to cover the common case (i.e., they aren't great for exceptional cases) and because there are some in IT that are very uncomfortable with any deviation from the rules, there becomes a conflict between the standard and what is truly best.   Because of these nuances, autonomous teams will diverge from standards and evolve large amounts of software which is "different" than other teams.   And since IT management rarely funds efforts to standardize across disparate teams, in general they accept the fact that software in a large organization will just not follow a single set of standards.   
+	  
+   <p>But how does this lead to inconsistency?   Well this has to do with cross pollination of teams.   As software developers move from team to team, if common practices on those two teams is different, then a developer coming from another team might introduce software which follows a completely different set of rules.   And if this isn't caught early in the process, those on the team might have to suffer with the inconsistencies indefinitely (remember, IT management doesn't like to fund rework).   
+   
+   <p>But if teams didn't have such strong reliance on standards, how can consistency ever exist?  Well let's go back to the abstract goal of "Clear, Concise and Correct".  If that is used as the rule, then all of your quality assurance processes can use that as a compass to steer by.   For instance, design and code reviewers can merely apply that principle to the design documents or code, and when reading the work products, they can use their brains to assess the material.  After all, IT professionals are paid to think, not just to be glorified secretaries.  If we are nothing more than typists following X number of standards, then virtually all the jobs could either be outsourced or programmed into a computer (and rely on automated reviews and artificial intelligence).  But until we evolve to that world, my recommendation is to leverage abstract rules and inspire and cultivate outstanding judgement, collaboration, and cooperation.  In any IT organization, this will lead to a much higher level of consistency and quality than any forced sameness attempted by relying on standards.   And if you want more proof of this, just think back to a speech Scott McNealy (formerly of Sun MicroSystems) gave 20 years ago at JavaOne.  Scott's speech on the 10,000 year clock was mostly about how software should be a blue print for future change.   He asserted rather passionately that there couldn't be a separate set of instructions, standards, guidelines, and the like - because there was no guarantee that those viewing the supporting documents would even speak the same language.  So his point was the software needed to explain to those "owning it" in 10,000 years how to operate it, how to maintain it, how to repair it, and how to extend it.   So at least from my perspective, this demonstrates that at least Scott McNealy believes that the software itself should be the guideline for standards and quality.  And if the software itself follows the principles of "Clear, Concise and Correct", that should be a really good place to start.
+</ul>  
+
+<a name="GuidingPrinciples">
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '150px')" onMouseout="delayhidemenu()">GuidingPrinciples</em>
+<ul> 
+   <p>People always ask me, "if you don't define detailed standards, how are you going to get people to write quality software?"   So with this in mind, and considering the point about the 10 Commandments, let me try to express 10 ideals for software development.  I'll then follow up on that with 10 methodology principles which IT organizations should follow.
+   
+   <p>Software principles:
+   <ol>
+      <p><li>Software should be Clear, Concise and Correct.
+
+	  <p><li>All artifacts should be named appropriately and use a well established vernacular.
+
+	  <p><li>All artifacts should be highly cohesive and loosely coupled.
+
+	  <p><li title="Logical decomposition is the essence of all software development - think about applications, packages, classes, methods, test suites, etc.">All artifacts should be <i>appropriately decomposed</i>.
+
+	  <p><li>The notion of public apis and private implementation should be leveraged.
+
+	  <p><li>All artifacts should be easy to operate, comprehend, and maintain.
+
+	  <p><li>Performance optimization should consider <i title="Be careful about premature optimization - often time is wasted worrying about things that have only theoretical impact - so focus on the major things, not tiny specs.  And never optimize without confirmable proof that optimization is required, and when optimization is attempted, there should be demonstratable proof that the performance objective is met.">cost effectiveness</i>, and from a comprehension perspective, optimize for <i title="The time spent reading material is hundreds of times greater than the time it takes to create or change something, so spend extra time making things as clear as possible.">human consumption</i>. 
+
+	  <p><li>All software should have automated regression suite which demonstrates validity.
+
+	  <p><li title="Operations, maintenance, and extensibility should be built directly into the software - consider Google Chrome and how plugins can be added on the fly.  Other topics include polymorphism and backward compatibility (but there are too many to list individually).">The software itself should serve as a blue print for <i>future change</i>.
+	  
+	  <p><li>Be conservative with code comments - 
+	  <i title="There is a software myth that code comments will be well maintained because they are closest to the code - but don't be fooled.  30 years of IT history has demonstrated to me that comments in the code, especially when excessively detailed, will NOT be well maintained.  And if you choose to believe in this myth, consider simply improving the code such that comments aren't needed.  After all, there is something that is even closer to the code than the code comments, and that is the code itself - so if you focus on the principles expressed here and simply evolve awesome code, comments will be unnecessary most of time.">focus on why, not what</i>, and consider 
+	  <i title="The designers of java were very clever when they included the doc-files concept - you can put any documentation you want in the package doc-files directory - I tend to prefer raw html.  Overview docs for important subject areas are way more valuable than documentation about classes and methods.  In fact, I find alphabetic listing of classes useless - I want to see diagrams, concept guides and object collaboration.  It is only once you have that frame of reference that linkage to one or more classes is valuable.">doc-files</i> as an alternative to to javadocs. 
+   </ol>
+
+   <p>IT methodology principles:
+   <ol>
+   	  <p><li>All artifacts should be easily accessible and readily available (available to view on any platform/device, searchable, linkable, available 24 by 7).
+
+      <p><li>All artifacts should be versioned in <i title="Think about the need for backups, defect resolution and change management.">some repository</i>.
+
+	  <p><li>All artifacts should participate in a quality review process.
+
+	  <p><li>All artifacts should have a published record of their quality assessment (e.g., QA rating, outstanding defects, status, etc.).
+
+	  <p><li>All artifacts follow a change management process.
+
+	  <p><li>All artifacts should exist within an <i title="Everything has to be owned by someone (and some department), and since everyone in a company organization works for someone else, all artifacts would end up in an ownership hierarchy.">ownership hierarchy</i>.
+
+	  <p><li>Local autonomy should be given priority when considering <i title="The organization that owns an artifact is generally the best steward of the artifact (i.e., they are the experts, so they should have the highest degree of control and autonomy).">ownership hierarchy</i>.
+
+	  <p><li>As the scope of artifacts and apis widen, preference regarding local autonomy diminishes.
+
+	  <p><li>Artifacts within a sphere of control should link to each other, but not to <i title="Consider bidirectional relative path URLs - e.g., data docs link to process docs, and the process docs link back to the data docs.  This works great if both the process docs and data docs live within the same repository (e.g., can store the content locally, or even on a thumb drive - so online/offline is possible).  But this falls down completely if relative path URLs cannot be leveraged.">external artifacts</i>.
+
+	  <p><li>Leveraging evolving artifacts should be <i title="Too often common functions are prematurely included in the solution (because of the DRY principle). This can lead to a ton of wasted time because the common classes end up being poorly designed.  And sadly, once forced into the solution, hacks are later introduced to compensate for missing or incorrect behavior, and then backward compatibility becomes a problem.  Under these circumstances, control coupling often leads to side effects (i.e., bugs).  So be careful of this other software myth - sure there is the principle that you can write once and use everywhere, and fix once and fix everywhere - but the problem is that if you break once, you break everywhere - so be warned - only leverage common functions once they are mature (e.g., have gone through at least 1 release of system test, but preferably 2 or more).">discouraged</i>.
+   </ol>
+   
+</ul>
+
+<a name="CodeStyleBraces">
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '150px')" onMouseout="delayhidemenu()">Code style - braces</em>
+<ul>
+   <p>The reason to adopt a coding style is to promote code <i title="This is especially important for those that frequently review code for quality, as well as for newer team members that aren't yet system experts.  But coding style objective is slightly different from other coding standards - e.g., 'All conditional statements must be wrapped in braces - even single line blocks.' - that rule is enacted to minimize confusion and prevent coding bugs.  So there should be more flexibility with regards to style (as compared to standards that protect against coding bugs) - because one size doesn't fit all.">comprehension</i>.
+   
+   <p>The most common recommendation is to put the brace on the same line.  This is what 
+   <a href="http://www.oracle.com/technetwork/java/codeconvtoc-136057.html"><i>Java</i></a> and 
+   <a href="https://google.github.io/styleguide/javaguide.html"><i>Google</i></a> 
+   recommend.  Now some IT organizations consider this "preferred", some insist on adherence, and yet others don't care one way or the other.   But from a reality perspective, it really doesn't matter which category the IT organization falls into, it is almost a certainty that the code is NOT consistent in regards to location of the brace.   So any IT organization that mandates brace location is just setting itself up for disappointment - because there will never be full compliance, and management will never fund full compliance.
+   
+   <p>And ironically, merely having a standard (i.e., by talking about it at all) triggers a huge waste of time.  This is because developers often go out of their way to change code to match the standard - and this merely introduces tons of deltas in the code which obscure truly important changes.
+
+   <p>Before I express what I think is appropriate in regards to brace location, let me show you what the Java (and Google) coding standard would look like.  I consider the standard outdated - mostly because the standard isn't designed to promote comprehension, it exists to minimize the number of lines of code.  And ironically, there is another coding convention (regarding blank lines) which actually conflicts with the notion of minimizing the number of lines of code (blank lines bloats the number of lines, and putting the brace on the same line shrinks the number of lines).
+
+   <p>Below is some made up code (only for illustrative purposes) which demonstrates the Java and Google coding style convention.
+   
+<pre class="courier">    private void <b title="Method names are one of the most important things in software - notice that the method name is obscured by the if statement below.">updateCustomer</b>(Customer customer, CustomerDetails customerDetails, DatabaseAccessor dbAccessor) {
+        <b title="If conditions are both important and error prone, and the entire if condition is obscured by lines above and below, and it obscures the for loop below.">if (customerDetails.areValid() && customerDetails.needCommit()) {</b>
+            <b title="Typically loops are important (and are error prone), so it shouldn't be obscured by if condition above.">for (CustomerAddress customerAddress : customer.getAddresses()) {</b>
+                customerAddress.setCommitNeeded();
+                dbAccessor.addToBatch(customerAddress);
+            }
+        } else {
+            dbAccessor.insertCustomer(customer, customerDetails);
+        }
+    }
+</pre>
+
+    <p>So what is the problem with the coding style above?
+	<ul>
+	   <p><li>From a readability perspective, one of the most important things in a program is method names.  This is important from a calling  perspective (when methods are invoked), but it is just as important when reading the actual method.  In fact, when reviewing a method's body, a reviewer will frequently glance back up at the method name and confirm that all functionality in the method is consistent with the method name.  Remember from above that <i>high cohesion</i> is a fundamental principle.   Well one technique employed to confirm cohesion is to ensure that all functionality in a method is consistent with the method's name.
+	   
+	   <p><li>A huge number of software bugs are because of conditional statements and loops.
+	   
+	   <p><li>Now take your cursor and hover over the bolded lines in the sample code above - hopefully this will drive home my concerns.
+	</ul>
+
+    <p>So how can refining the coding style help with code comprehension - simple, consider the following:
+
+
+
+<pre class="courier">    private void <b title="Notice now that the method name stands out.">updateCustomer</b>(Customer customer, CustomerDetails customerDetails, DatabaseAccessor dbAccessor) 
+    {
+        <b title="Notice now that the if condition stands out (and doesn't obscure for loop below).">if (customerDetails.areValid() && customerDetails.needCommit())</b>
+        {
+            <b title="Now the for loop stands out (i.e., isn't obscured by if statement above).">for (CustomerAddress customerAddress : customer.getAddresses())</b>
+            {            
+                customerAddress.setCommitNeeded();
+                dbAccessor.addToBatch(customerAddress);
+            }
+        }<b title="I typically suggest else is aligned with the block that it matches (but this is just a personal preference).  Point above about not obscuring important code is so much more important.   So I would suggest no standard on this at all.  But note, I typically put the brace on the same line as the else because the else doesn't obscure the line of code below it.">
+        else {</b>
+            dbAccessor.insertCustomer(customer, customerDetails);
+        }
+    }
+</pre>
+
+    <p>Conclusion:
+	<ul>
+	   <p><li>Since code is read way more than it is written (and maintained), comprehendability is paramount.
+	   
+	   <p><li>Dense code leads to obscurity, so authors should leverage white space to call attention to important things while obscuring unimportant things -  and blank lines are an excellent means of accomplishing this.
+	   
+	   <p><li>Hopefully it is obvious that putting the brace on the subsequent line is really no different than including a blank line (which BTW, doesn't violate either the Java or Google coding standards at all).  This is why I suggest that the standard is actually conflicted.  It is also why I always assert that sound judgement trumps brain dead simple/stupid rules.  Software developers are paid for great judgement, so we should mentor and inspire them.  If we do that, we won't be disappointed, and we can begin to trust them (because they will be awesome).
+	   
+	   <p><li>And if you want more evidence that the style I suggest above is generally accepted, consider how many times we see method signatures which are followed by a blank line.  To me, this is an instance of a coder being afraid to do the right thing (because they don't want to "violate" the coding standard), yet they know in their heart that the standard is wrong.   My premise is we should just stop the charade and merely do the right thing to <i title="We should think of the standard much like the Pirate's Code (it is more of a guideline).">begin with</i>.
+	   
+	</ul>
+	
+
+</ul>
+
+
+<a name="Feedback">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Feedback</em>
+<ul>
+  <a href="https://darrellmadison.wordpress.com/">My blog</a><br>
+  <a href="https://www.facebook.com/dee.madison.796">Facebook</a><br>
+  <a href="https://twitter.com/MrDMadison">Twitter: @MrDMadison</a><br>
+</ul>
+
+
+</html>
+
+
+
+

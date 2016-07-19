@@ -1,0 +1,258 @@
+<html>
+<head>
+<script src="../javascripts/jquery-2.1.1.js"></script>
+<script src="../javascripts/menuCommon.js"></script>
+<script src="../javascripts/glossary.js"></script>
+<link rel=STYLESHEET TYPE="text/css" href="../stylesheets/common.css">
+
+<style>
+.Courier {
+    font-family: "Courier New", Courier, monospace;
+	font-size: 12px;
+}
+</style>
+
+<script>
+var sectionMenu=new Array()
+sectionMenu[0]='<a href="#Top">Top</a>'
+sectionMenu[1]='<a href="#Overview">Overview</a>'
+sectionMenu[2]='<a href="#Requirements">Requirements</a>'
+sectionMenu[3]='<a href="#RecommendedToolset">Recommended toolset</a>'
+sectionMenu[4]='<a href="#ProposedSolution">Proposed solution</a>'
+sectionMenu[5]='<a href="#AnExample">An example</a>'
+sectionMenu[6]='<a href="#HistoricalIdentityIntegrityTestPlan">HistoricalIdentityIntegrityTestPlan</a>'
+sectionMenu[7]='<a href="#HistoricalIdentityIntegrityUseCases">HistoricalIdentityIntegrityUseCases</a>'
+sectionMenu[8]='<a href="#Summary">Summary</a>'
+sectionMenu[9]='<a href="#Feedback">Feedback</a>'
+
+</script>
+
+</head>
+
+<a name="Top">
+<h2>Trackable items - javadoc can help</h2>
+<a name="Overview">
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '250px')" onMouseout="delayhidemenu()">Overview</em>
+<ul>
+   <p>In an  <a href="Javadocs.html"><i>earlier article</i></a>, I describe some of the short comings of javadoc as a tool for documenting overall system design (although I do mention some areas where javadocs can actually help - like with 3rd party libraries and foundation classes).  In this article, I'm going to explore how javadocs can help with trackable items, as well as the relationships between trackable items. 
+   
+   <p>Before I get started, I need to first explain what I mean by a trackable item.   When considering software development projects, most think of the software artifacts that are built - namely the packages, classes and methods.   So it shouldn't be surprising that when most think about javadocs, they think about documentation for packages, classes and methods.   But such documentation is typically only of interest to the software developers themselves - and even then, such documentation is infrequently used.  But I'm going to suggest that there are a far greater number of other items which are of interest to those involved in software development, and very often these other items are an after thought (i.e., they are done after the development life cycle, and often they are done by other organizations).   So I'm going to suggest that if you want to have total software quality, then perhaps these other items should be integrated into the overall software solution.  This isn't an exhaustive list, but hopefully the following illustrates some trackable items that you might recognize: 
+   
+   <ul>
+      <li>Business requirements
+	  <li>Functional requirements
+	  <li>Use cases
+	  <li>Test plans
+	  <li>Test cases
+	  <li>Data configuration settings
+	  <li>Hardware deployment options
+	  <li>Execution status (e.g., the running of a test plan for a given release)
+   </ul>
+   
+   <p>And note, although this article will describe a possible solution, that doesn't imply that companies should jump right in and do this.  There are tons of cultural issues within a compnay that need to be considered, so know your company, and know what you are looking to accomplish, before considering recommendations in this article.  And besides, it is possible that there are frameworks (possibly even free ones) which can handle some or most of what I express below.  So I suggest this article be used as a focus for creative thinking and critical assessment of your current methodology - perhaps it will help.
+</ul>
+
+<a name="Requirements">
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '250px')" onMouseout="delayhidemenu()">Requirements</em>
+<ul> 
+   <p>Before showing how javadocs could be used for trackable items, I will first define a set of requirements.
+   
+   <ol>
+     <li>No new software can be purchased.
+	 <li>Any new processes shall be built upon existing processes and existing software.
+	 <li>Any new process shall be familiar to the organization (shouldn't require additional training or processes which are foreign to the organization).
+	 <li>Solution shall help manage trackable items and the relationship between trackable items.
+	 <li>Trackable items can be hierarchical in nature, so solution must support logical groupings and infinitely deep decomposition.
+	 <li>There shall be automated verification of where trackable items are <i title="For this, think about a 'where used' report.  Also think about a means of displaying instances where a referenced item is spelled incorrectly, or where a trackable item was deleted, but references to item still exists.">used and misused</i>.
+	 <li>Users which compose relationships between trackable items should be able to do so in a convenient way which <i title="GUIs which allow selection from a list as opposed to manual typing is the simplest example I can think of.">minimizes trivial mistakes like mistyping</i>.
+   </ol>
+</ul>
+
+<a name="RecommendedToolset">
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '250px')" onMouseout="delayhidemenu()">Recommended toolset</em>
+<ul> 
+   <p>The following are the tools and processes which can be used to solve the requirements above:
+   
+   <ol>
+     <li>Java
+	 <li>Javadoc
+	 <li>Svn
+	 <li>IDE (e.g., Eclipse, IntilJ)
+	 <li>Web browser
+	 <li>Web server hosting svn
+	 <li>Web server hosting generated javadocs
+	 <li>Daily build process which generates javadocs
+   </ol>
+</ul>
+
+<a name="ProposedSolution">
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '250px')" onMouseout="delayhidemenu()">Proposed solution</em>
+<ul> 
+   <p>Java and javadoc</p>
+   <ul>
+      <p>Java obviously supports packages, classes and methods - so it is a perfect toolset for defining an infinitely deep logical organization of things (where the things are the trackable items, as well as the relationships between the trackable items).
+	  
+	  <p>Assuming trackable items are defined as methods in classes, then javadoc comments could be written for those methods thus expressing the details about the item, and javadoc tags could be used for point and click navigation between items.
+	  
+	  <p>As for "where used" and other programmatic validation of relationships, since java classes are used, the method body can be used to reference other trackable items - this will give you compile time validation of relationships and typical IDE search capability can give you "where used" report.
+   </ul>
+
+   <p>Web browser and web server hosted content
+   <ul>
+     <p>With the use of packages, classes and methods, the logical structure of trackable items and their relationships is defined (mentioned above).  It is the web browser and generated javadocs which allow a user to easily navigate between the various views.  For example, a user might want to start with test suite X which contains 10 test cases.  The user navigates to each test case (using the point and click nature of the javadoc link tag), reads the comments about the test cases, and then follows links to the business requirements which the test case satisfies.   All of this is possible via relationship tags embedded in the javadoc comments about the various trackable items.
+   </ul>
+   
+   <p>Daily build and IDEs
+   <ul>
+     <p>Although generation of javadocs can be done locally (by a given developer, on their laptop), a daily build process ensures that javadocs are always available via a web server which hosts the generated javadocs.
+   </ul>
+</ul>
+
+
+<a name="AnExample">
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '250px')" onMouseout="delayhidemenu()">An example</em>
+<ul> 
+   <p>I'm going to demonstrate the use of trackable items for a trivial test plan (happens to be for a yet to be developed tagging and user feedback framework).
+   
+   <p>Two separate items are created:
+   <ul>
+      <li><p><a href="#HistoricalIdentityIntegrityTestPlan">HistoricalIdentityIntegrityTestPlan</a> - this contains the description of how to execute the test (which could be automated or manual - that isn't really relevant for the purposes of this article).
+	  
+	  <li><p><a href="#HistoricalIdentityIntegrityUseCases">HistoricalIdentityIntegrityUseCases</a> - this contains the set of use cases for registering a user with some service provider and subsequently viewing that user with their confirmed <a href="http://mrdmadison.github.io/Test1/Prototype1/CollaborationChapter4.htm#14-Historical_identity_integrity" title="If you review the requirements spec, you'll see that I suggest that knowing whether a given web user is a real person, and whether that person has a consistent web identity, can add value to those interacting with the given user.">endorsements</a>. 
+    </ul>
+	  
+    <p>And although not shown in the example below, it is obviously possible to include both javadoc link tags and trackable item references directly within automated test drivers.  Once the trackable items are mature (and highly valued), it makes sense to reference them.   Remember, in an earlier Javadocs <a href="Javadocs.html"><i> article</i></a>, it is mentioned that inclusion of links from multiple places increases viewership and thus can aid in the overall quality of content.	
+</ul>
+
+
+
+<a name="HistoricalIdentityIntegrityTestPlan">
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '250px')" onMouseout="delayhidemenu()">HistoricalIdentityIntegrityTestPlan.java</em>
+<ul>
+<pre>
+public class HistoricalIdentityIntegrityTestPlan extends TestPlan 
+{
+    /**
+     * &lt;p&gt;This test plan validates the end to end process of creating an registering a new user account such that user
+     * is displayed with historical identity integrity endorsements (i.e., is a real human being with a single
+     * identity, and also uses a common user name across multiple web accounts).
+     * 
+     * &lt;p&gt;Validation procedures:
+     * &lt;ol&gt;
+     *   &lt;li&gt;User John Smith wants to create an account on Facebook and confirms that user name JohnS_2877 is available.
+     *   &lt;li&gt;John Smith sets up an authorization request with Dish Network (assumes that Dish Network is a valid endorsement company).
+     *   &lt;li&gt;John Smith goes to Facebook and creates an account with a user name of JohnS_2877 and informs Facebook that he wants to be
+     *       endorsed by Dish Network.
+     *   &lt;li&gt;John Smith submits the request for the new account with Facebook, Facebook sends an identity confirmation request to Dish Network.
+     *   &lt;li&gt;Dish Network returns an authorization request expressing that John Smith is in fact a real human being and is using a common 
+     *       user name.
+     *   &lt;li&gt;When John Smith is diplayed on Facebook, his user name appears with two historical identity integrity endorsements
+     *       (i.e., real human being, and single web pressence).
+     * &lt;/ol&gt;
+     * 
+     * &lt;p&gt;Related links:
+     * &lt;ul&gt;
+     *   &lt;li&gt;&lt;a href="http://mrdmadison.github.io/Test1/Prototype1/CollaborationChapter2.htm#R3-ManagingIdentity"&gt;High level requirements&lt;/a&gt;
+     *   &lt;li&gt;&lt;a href="http://mrdmadison.github.io/Test1/Prototype1/CollaborationChapter4.htm#14-Historical_identity_integrity"&gt;Detailed requirements&lt;/a&gt;
+     * 
+     *   &lt;p&gt;Use cases:
+     *   &lt;ul&gt;<b title="Using @link tag in javadocs offers point and click navigation via the generated javadocs - this helps with usefulness of documentation from a human consumption perspective.">
+     *      &lt;li&gt; {@link com.HistoricalIdentityIntegrityUseCases#displayOfIdentifyEndorsementCertificate() displayOfIdentifyEndorsementCertificate}
+     *      &lt;li&gt; {@link com.HistoricalIdentityIntegrityUseCases#identityIntegrityEntityEndorsesAValidatedUser() identityIntegrityEntityEndorsesAValidatedUser} 
+     *      &lt;li&gt; {@link com.HistoricalIdentityIntegrityUseCases#identityIntegrityEntityUndergoesIdentityEndorsementAudit() identityIntegrityEntityUndergoesIdentityEndorsementAudit}
+     *      &lt;li&gt; {@link com.HistoricalIdentityIntegrityUseCases#endUsersWillBeDisplayedWithHistoricalIdentityEndorsements() endUsersWillBeDisplayedWithHistoricalIdentityEndorsements}</b>
+     *   &lt;/ul&gt; 
+     * &lt;/ul&gt;
+     *  
+     */
+    public void NewAccountRegistrationAndEndorsementEndToEnd() 
+    {<b title="Referencing related items in the class body helps in 'where used' reporting and when searching within an IDE.  This also helps with change management because compile errors will show broken references.  This is far superior than text based documentation - remember, text based documentation doesn't compile.">
+        HistoricalIdentityIntegrityUseCases.get().identityIntegrityEntityUndergoesIdentityEndorsementAudit();
+        HistoricalIdentityIntegrityUseCases.get().displayOfIdentifyEndorsementCertificate();
+        HistoricalIdentityIntegrityUseCases.get().identityIntegrityEntityEndorsesAValidatedUser();
+        HistoricalIdentityIntegrityUseCases.get().endUsersWillBeDisplayedWithHistoricalIdentityEndorsements(); </b>
+    }
+}
+</pre>
+
+<p>Generated javadoc:</p>
+<ul>
+<a href="http://mrdmadison.github.io/Test1/Prototype1/CollaborationChapter1.htm"><img src="SampleTestPlan.jpg"/></a>
+</ul>
+</ul>
+
+
+<a name="HistoricalIdentityIntegrityUseCases">
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '250px')" onMouseout="delayhidemenu()">HistoricalIdentityIntegrityUseCases.java</em>
+<ul>
+<pre>
+public class HistoricalIdentityIntegrityUseCases extends UseCase
+{
+    public static HistoricalIdentityIntegrityUseCases get() { return new HistoricalIdentityIntegrityUseCases(); }
+
+    /**
+     * Companies and organizations which want to participate in historical identity integrity must be certified that they
+     * are adhere to all the guidelines and best practices surrounding validating end users.  The endorsing entity will
+     * apply for certification, and once they successfully complete the audit process, they will be awarded an
+     * identity integrity certificate.   
+     * 
+     */
+    public void identityIntegrityEntityUndergoesIdentityEndorsementAudit() {}
+	
+    /**
+     * Companies and organizations that endorse end users as having valid historical identity integrity must display
+     * proof that they adhere to all guidelines and best practices.  Upon request, such companies must present their
+     * endorsement audit certificate.
+     */
+    public void displayOfIdentifyEndorsementCertificate() {}
+    
+    /**
+     * End users which have been successfully registered and validated will be granted historical identity integrity
+     * endorsements.
+     */
+    public void identityIntegrityEntityEndorsesAValidatedUser() {}
+    
+    /**
+     * End users which have been successfully registered and validated will be displayed (on the web) with their
+     * historical identity endorsements.  For example, a validated user on Facebook might have the following endorsements
+     * <ol>
+     *    <li>Single human being (non virtual account)
+     *    <li>Identified with a common user name.
+     */
+    public void endUsersWillBeDisplayedWithHistoricalIdentityEndorsements() {}    
+}
+</pre>
+
+<p>Generated javadoc:</p>
+<ul>
+<a href="http://mrdmadison.github.io/Test1/Prototype1/CollaborationChapter1.htm"><img src="SampleUseCases.jpg"/></a>
+</ul>
+</ul>
+
+
+<a name="Summary">
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '250px')" onMouseout="delayhidemenu()">Summary</em>
+<ul> 
+    <li><p>If you have a need express details about various items of interest, and if there is a need to track the relationship between these items, consider using java/javadocs to manage this.  When coupled with javadoc generation and viewing view a web browser or via an <i>IDE</i>, the user experience will be far superior than trying to manage the <i title="As an alternative, some IT organizations try to manage this in MS word documents coupled with spreadsheets and manual tracking of relationships.">details manually</i>.
+	  
+    <li><p>If attempting to roll this out, be aware that tracking of a large number of interrelated items will not go smoothly initially.   Like all hierarchies, if you create a lot of line items but don't get the decomposition correct, making changes after the fact can be painful.
+	
+	<li><p>It is likely that small empowered teams will have a better chance of rolling out something that is useful - because they will be most familiar with their domain set, and they will be able to control the creation and maintenance of the trackable items better.   Attempting to roll-out on a large scale probably should not be done until all the kinks are worked out.
+	
+	<li><p>Research should be done to see if there are any off the shelf products which help in the management of trackable items.
+</ul>
+
+
+<a name="Feedback">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Feedback</em>
+<ul>
+  <a href="https://darrellmadison.wordpress.com/">My blog</a><br>
+  <a href="https://www.facebook.com/dee.madison.796">Facebook</a><br>
+  <a href="https://twitter.com/MrDMadison">Twitter: @MrDMadison</a><br>
+</ul>
+
+</html>
+
+
+
+

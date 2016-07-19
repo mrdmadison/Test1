@@ -1,0 +1,175 @@
+<html>
+<head>
+<script src="../javascripts/jquery-2.1.1.js"></script>
+<script src="../javascripts/menuCommon.js"></script>
+<script src="../javascripts/glossary.js"></script>
+<link rel=STYLESHEET TYPE="text/css" href="../stylesheets/common.css">
+
+<style>
+.Courier {
+    font-family: "Courier New", Courier, monospace;
+	font-size: 12px;
+}
+</style>
+
+<script>
+var sectionMenu=new Array()
+sectionMenu[0]='<a href="#Top">Top</a>'
+sectionMenu[1]='<a href="#Overview">Overview</a>'
+sectionMenu[2]='<a href="#SoftwareMyths">Software myths</a>'
+sectionMenu[3]='<a href="#OutstandingDocumentation">Outstanding documentation</a>'
+sectionMenu[4]='<a href="#Recommendation">Recommendation</a>'
+sectionMenu[5]='<a href="#SoftwareMythsDeepDive">Software myths - deep dive</a>'
+sectionMenu[6]='<a href="#Conclusion">Conclusion</a>'
+sectionMenu[7]='<a href="#Feedback">Feedback</a>'
+
+</script>
+
+</head>
+
+<a name="Top">
+<h2>Javadoc - a practical recommendation</h2>
+<a name="Overview">
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '200px')" onMouseout="delayhidemenu()">Overview</em>
+<ul>
+   <p><a href="http://www.oracle.com/technetwork/articles/java/index-jsp-135444.html"><i>Javadoc</i></a> can be a very useful tool to manage and publish system documentation.  However, it is important to understand its strengths and weaknesses.  It is by understanding this that sound decisions can be made as to how, and when, javadoc generated content should be used on a given software project.  
+</ul>
+
+
+<a name="SoftwareMyths">
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '200px')" onMouseout="delayhidemenu()">Software myths</em>
+<ul>
+    <p>There are plenty of software myths that seem quite reasonable, and are thus believed without any hesitation or skepticism.   Here are just a few:
+	
+	<ul>
+        <li><p>Javadoc comments in classes and methods will be well maintained because the comments are closer to the code.   This is often a selling point for javadoc comments as opposed to external documentation.
+	
+	    <li><p>Javadoc comments will be well expressed because they will be established as a best practice and thus will be scrutinized during peer reviews.
+	  
+	    <li><p>Since javadoc comments are so valuable, they should be the exclusive documentation strategy for a software project, and as such, all classes and methods should utilize javadoc comments.
+		
+		<li><p>Forced consistency through standards, templates, and compliance reviews will lead to overall system quality and cost effectiveness.
+	</ul>
+	
+	<p>Now some reading this might get the impression that I'm against javadoc comments altogether.  For me personally, I'm mostly neutral regarding the use of javadocs.  I understand the need for outstanding system documentation, and when appropriate, I'm perfectly fine with using javadocs.  But the key point to remember is that one size doesn't fit all.  And although javadocs could perhaps be leveraged for "everything", I'm going to suggest that there are better strategies, especially when considering the  distinctions between developer guides as compared to software product documentation.
+	
+	<p>As for the software myths I mention above, I address these again in section <a href="#SoftwareMythsDeepDive">Software myths - deep dive</a>.
+</ul>  
+
+
+<a name="OutstandingDocumentation">
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '200px')" onMouseout="delayhidemenu()">Outstanding documentation</em>
+<ul> 
+   <p>There are several factors which contribute to the evolution of outstanding system documentation.  And these factors are interconnected, so focusing on just one or two doesn't really help.   It is through the careful consideration of all of these factors that sound policies can be established.
+   
+   <ol>
+      <li><p>A document doesn't compile - it is only humans which can tell whether it is correct and effective.   Sure, we can use syntax checkers for spelling and grammar, but that doesn't help with more advanced concepts like redundancy, accuracy, and usefulness.   So the creation and maintenance of outstanding documentation must involve continuous and thoughtful review of the material.
+	  
+	  <li><p>Virtually all information is related to other information - so related links are a must (and relative path URLs are <i title="Relative path URLs can be used when online and offline, where as absolute URLs only work when online.  Plus, absolute URLs are much more susceptible to breakage.">highly   recommended</i>).
+   
+   	  <li><p>Everything isn't created at once, so an evolution path is a must.  Typically this means that place holders are added into documents, but they aren't completed until later releases.  It is important to offer the highest degree of value to an end user, even when portions of the overall documentation are incomplete.
+	  
+	  <li><p>We live in a complex world, so functional decomposition is essential.   But with functional decomposition, it is easy to get lost in the weeds.   So concept guides and overviews should be used to keep readers focused.
+	  
+	  <li><p>Readers only have so much patience, so the size of a given document is important.   Typically documents which are more than 5-10 <i title="Computer screens - like when paging down in a web browser.">pages</i> tend to be <i title="If the subject mater is larger than 5-10 pages, certainly consider functional decomposition and possibly even related links.">problematic</i>.
+
+	  <li><p>Diagrams can be an extremely effective means of communicating complex concepts.   But when using diagrams, consider the value of active regions for <a href="http://mrdmadison.github.io/Test1/Prototype1/CollaborationChapter1.htm">fly over help</a> and links.  
+	  
+	  <li><p>The benefit of inter-related content is actually more important than one might originally think.  If you can include references to a bit of content from multiple sources, it increases the number of times the content is viewed.  And remember, the more frequently a bit of content if viewed, the greater the likelihood that it will be well maintained - and well maintained and frequently viewed almost always implies 'highly valued'.
+	  
+	  <li><p>Those authoring content need to consider their audience, and this often involves a variety of user roles.  Documentation isn't a one size fits all solution.  Developers, operators, managers, testers, and <i>SME</i>s all consume information differently, so content style and format which embraces this will be greatly appreciated.  Many of the suggestions mentioned in this article are geared to this <i title="E.g., related links, document size, overview diagrams, fly over help and active regions for diagrams.">very point</i> and all contribute to a document's usability.  This often allows readers serving diverse roles to consume the content efficiently.
+	  
+	  <li><p>Using html opens the door to so many other interesting things.  For example, web pages can be optimized for efficiency by leveraging javascript features.   The key to these sort of efficiencies is not being constrained by the limitations of the past.  If you can imagine it, you can make it happen - we just need to inspire people to be creative, and get out of their way.  The individual teams will be able to manage the creativity and innovation, and when effective, new strategies will be adopted.  And when these things are really effective, they likely will spread to other project teams. A few such trivial features are as follows:
+	  <ul>
+	     <p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '200px')" onMouseout="delayhidemenu()">Drop down menus</em> - this can be an effective means of informing the user of other interesting topics in a given document (it is sort of like having a table of contents from multiple locations in a given document).
+		 
+		 <p>Glossary of terms - with inclusion of <a href="../javascripts/glossary.js">glossary.js</a>, any visually distinguishable html element can offer fly over help (hover over <i>glossary.js</i> to see this in action).
+		 
+		 <p>A poor man's <a href="http://www.liquidinformation.org/hyperwords-intro.html">hyperwords</a> - If you double click on <b>annotation</b>, you'll notice a pop-up where the term is defined.  The glossary allows definition of secondary text (other than what is used for fly over help). This secondary text can be raw html - which means that one or more links can be added.  By utilizing a common glossary, a software project can connect any two documents without having to hardwire links in the individual documents.  Now Hyperwords does this for you - but that requires browser plugin, as well as server side script and data storage mechanism (so it involves a lot more overhead).  Still, Hyperwords is probably a more robust solution if a company is willing to invest in it - but if not, glossary.js is better than nothing at all.
+		 
+		 <p>There are tons of other visual optimizations that can be dreamed up - all that is needed is inspiration and empowerment.
+	  </ul>
+   </ol>
+   
+</ul>
+
+
+
+<a name="Recommendation">
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '200px')" onMouseout="delayhidemenu()">Recommendation</em>
+<ul> 
+    <li><p>Create overviews for all the important areas of a system.  Obviously, functional decomposition is a must.  
+
+	<li><p>Have overviews link to important classes - offering access to classes via typical javadoc index page is virtually useless.  Absent the context offered in an overview page, a reader wouldn't even know what to look for (well, assuming they weren't an expert, and if they were an expert, they wouldn't need the javadoc in the first place, they would go directly to the code).  And remember, alphabetic listing of packages and classes is useless (kind of like trying to learn the English language by reading a dictionary), so invest in overviews and concept guides - these will be the most frequently used documents in your entire solution.
+	
+	<li><p>Diagrams can be extremely helpful in overview documents.  Fly over help and active links can make the diagrams even more useful.  But I would caution about overly complicated diagrams - these tend to be a maintenance nightmare (i.e., the more symbols that are included, the stronger the desire to add yet more - because of the notion of "completeness").  So pick some limited amount of detail and try to stick with it.   When necessary, consider decomposition to yet other diagrams.  And remember, it can be modestly painful to define coordinates for active regions in an image file, so high maintenance of the diagram leads to yet more headaches.
+	
+	<li><p>It is suggested that overview documents be created as raw html.  These should be saved in some <i title="doc-files is a javadoc concept which allows any content stored in the directory to be automatically copied to the javadoc destination directory.  Anything in the doc-files directory can be referenced via relative path URL.">doc-files directory</i> within your component. 
+	
+	<li><p>Leverage package.html for any packages which will benefit from overview documentation.  (and overview.html for component wide documentation).
+	
+	<li><p>Save all diagrams in the format they are created in (e.g., powerpoint, visio, etc.), and then also save as a similarly named <i title="E.g., jpg, gif, png">image file</i>.  The source diagram and image should be saved in the very same directory (this makes things much easier to maintain).
+
+	<li><p>For html files, never use an html editor - instead use a plain text editor.  This is important because html editors typically include a ton of formatting tags - and this will completely invalidate the benefit of using diffs when comparing multiple versions of a doc.   And it is suggested that basic indentation rules are followed so that the html content can be easily read in a text editor.
+	
+    <li><p>When including javadoc comments for classes and methods, only specify things which are truly essential (think about what the great software developer <i title="Jack Nicholson in 'As Good As It Gets', said the following: ' I'm drowning here and you're describing the water.' - so when writing javadocs, please don't describe the water.">Jack Nicholson once said</i>).  Remember, the method signature can be seen by everyone (absent additional javadoc comments), so if all you're doing is repeating what can be understood by the method signature itself, then don't include any javadoc comments at all.  And if you must, consider using either 
+	<a href="http://docs.oracle.com/javase/7/docs/technotes/guides/javadoc/taglet/overview.html">taglet feature</a> of javadocs, 
+	or even something as trivial as a common glossary, as opposed to repeating the same brain dead stuff over and over again. 
+	
+	<li><p>And although the following is off topic for this article, if you want to see an example of how javadoc could be used to solve a real problem, consider <a href="TrackableItemsViaJavadocs.html"><i>using javadocs with trackable items</i></a>.
+</ul>
+
+
+<a name="SoftwareMythsDeepDive">
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '200px')" onMouseout="delayhidemenu()">Software myths - a deep dive</em>
+<ul> 
+   <p>Javadoc comments will be well maintained because they are close to the code.
+   <ul>
+       <p>I think this myth is perpetuated by some in management (and even by those in development) because they want to believe it.  We want to do a good job, and we think that if we are honest about the reality (i.e., that javadoc comments are actually not well maintained), it will imply that we have somehow given up on the notion of quality.  But I've expressed above better strategies for system documentation, so I'm merely going into a deep dive here to hopefully kill the myth once and for all. Throughout my <i title="Which has spanned almost 30 years.">professional career</i>, I find that comments in the code, be it javadoc or otherwise, are typically NOT expressed well, and over time, they erode to an even lower level of quality.  Sure, there are pockets of development where documentation, including code comments, is outstanding.  But if you look closer at the make-up of such systems, the software is typically <i title="High money maker, or a foundation library which is used in many places within a company.">highly valued</i>, and the teams which support the software typically have a small number of developers, have low turn over rate, and have software which is modestly mature.  But in general, I would estimate by a factor of 10 to 1, that comments in the code are either not helpful or are incorrect.  So when we force developers to add comments <i title="There are some software leaders that believe that all methods should have javadoc comments - such a practice is almost certainly counter productive when dealing with real world factors.  Typically these leaders are focusing on a theoretical world which in no way represents reality.  And often such leaders have a fixation on consistency and standards - which is yet another delusion which conflicts with real word factors - see Coding style recommendation for more information on that.">everywhere</i>, we are actually making the system worse by a factor of 10 to 1.  This doesn't sound like a wise strategy to me.
+   
+       <p>But let's dig a little bit deeper - the decomposition of methods isn't necessarily aligned with the way people comprehend things. For one, all people don't learn things the same way, so one size doesn't fit all.  And even more importantly, class and method design has nothing to do with human comprehension, so why would we assume that expressing documentation aligned with class and method structure would be appropriate in the first place.  I would argue that concept guides and overviews are WAY more important in regards to learning system behavior, and that class and method documentation is some of the least interesting stuff ever.  In fact, with regards to javadoc method documentation, it is only when using 3rd party libraries that I even bother looking at javadoc comments, and for complex concepts, the individual class methods aren't that helpful anyway.   If I'm trying to learn how to use something new, very often multiple classes and methods are involved, and it is the overview and sample object collaboration which is WAY more valuable to me.   Fortunately there are plenty of "how to" docs on the internet, so google search is modestly effective.   But the key point is that class methods for well designed things are modestly simple to use once you understand the concepts.   Sure, every now and then you might want to look at the javadoc for a given method (mostly just to confirm an assumption or to try to figure out why something isn't working).  But in regards to using class and method documentation to comprehend new concepts, it is only when they are written extremely well, and only when adequate context and overview information is supplied, that the javadocs are useful at all.   So in a nut shell, for a limited scope of software artifacts (e.g., 3rd party foundation libraries), javadocs can be useful.   But as a general framework for expressing overall system design, I would steer toward the recommendations expressed above and not rely on javadoc class method comments.
+	   
+	   <p>And there is even more.  Let's go back to the notion that the comments are "closer to the code".  Well this doesn't begin to address the notion of public versus private methods.   Quite often javadocs are not generated for private methods.  So if you establish a policy that ALL design documentation must be in javadoc comments (and no place else), and if you elect to only generate javadocs for public methods, that would imply that the public methods would have to include all the comments regarding the full behavior of the system.  And if this were the case, it would completely invalidate the argument that the comments were "close to the code", because the private methods might be located in completely different sections of the source code (so they wouldn't necessarily be viewed at the same time as the code).
+	   
+	   <p>Another challenge with placing comments in the code is the very essence of software development.  Layering of behavior is a very common practice in java (actually, it is a common practice in software development in general).  In the simplest terms, consider an interface and implementation class.   Now javadoc actually has considered this possibility and will substitute the documentation in a base class or interface for that of an implementing method if that method doesn't contain any javadoc comments at all.   But even with this, any instances of non perfect compliance and consistency can lead to redundancy (which will almost certainly be the case).  And if the relative quality of the comments isn't outstanding to begin with, any redundancy will just <i title="Remember, wrong comments are often worse than no comments at all.  Just consider the notion of asking someone for directions - if they don't know, you just move on to someone else.  But if they give you the wrong directions, you could be in big trouble.">compound the problem</i>.  And BTW, even though java perhaps can minimize redundancy with base classes and interfaces, that doesn't come close to addressing the notion of versioned plugins and other layered approaches in an overall solution.   All of this can be a source of redundant information - and the challenge of managing it well is compounded by the fact that method decomposition is based on software design principles, NOT how humans comprehend things.
+	   
+	   <p>And BTW, there is one thing which is even closer to the code, and that is the actual code itself.  So if this is your rationale for javadocs, perhaps you should refocus your energy on making the code better.  Awesome code absent javadocs is way better than sloppy code with javadocs which explain the sloppiness.  And why would anyone assume that developers that evolve less than ideal code would somehow have the skills to evolve well expressed documentation.  Software development offers the benefit of compilers and a runtime engine, where as expression of ideas using words and diagrams does not.  So I find it illogical to assume that those that struggle with code will be awesome at documentation - especially when you consider the challenges with multi language and high team member turn over.  Now I'm not implying that there is no room for javadocs - for external interfaces, 3rd party libraries and foundation classes, it is very important (perhaps even essential).  But a naive view that javadocs should somehow be our savior is completely wrong - and forced compliance absent serious consideration, be it with javadocs, coding standards, or anything else, is a recipe for disaster.
+   </ul>
+</ul>
+
+
+<a name="Conclusion">
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '200px')" onMouseout="delayhidemenu()">Conclusion</em>
+<ul> 
+   <li><p>Focus on <a title="This links to coding style principles, but these principles could easily be applied to documentation (same goes for the IT methodology principles)." href="CodingStyleRecommendation.html#GuidingPrinciples">abstract goals and ideals</a>, and always measure output against those ideals.  It doesn't do any good to measure output against an <i title="Verifying that a document follows a certain template or standard is of no value - this will merely lead to the creation of a bunch of useless garbage.">approximation of ideals</i> - this will only lead to disappointment.
+   
+   <li><p>System documents which are frequently viewed will be of most value, and only documents of value will be frequently viewed.
+
+   <li><p>Documents should be optimized for human consumption - time spent reading documents is dramatically higher than time spent creating/maintaining them.
+   
+   <li><p>Evolving a culture which encourages frequent and easy update to system documents will yield the highest level of quality.
+   
+   <li><p>Evolving a culture of cooperation, collaboration and empowerment is essential to overall quality documentation.
+   
+   <li><p>Understanding the needs of the various users is important in establishing a <i title="And this speaks to an obvious need to cross reference documents via URLs so as to minimize redundancy and encourage cross peer reviews.">total solution</i> for documentation.   
+
+   <li><p>Leveraging an appropriate <i title="At present, the obvious choice would seem to be html - after all, billions of users and billions of web sites make a pretty persuasive argument.">document format</i> is essential.
+   
+   <li><p>Creating effective documentation is not something that comes naturally to everyone, so mentoring and patience is needed.
+   
+</ul>
+
+
+<a name="Feedback">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Feedback</em>
+<ul>
+  <a href="https://darrellmadison.wordpress.com/">My blog</a><br>
+  <a href="https://www.facebook.com/dee.madison.796">Facebook</a><br>
+  <a href="https://twitter.com/MrDMadison">Twitter: @MrDMadison</a><br>
+</ul>
+
+</html>
+
+
+
+

@@ -12,16 +12,16 @@
 // Title attribute will only be overridden if not explicitly set by the user in the source html doc.
 //
 // This script also supports glossary lookup via text selection.  But for that behavior, a dynamic division is
-// added to the document.  The benefit of this behavior is that related links to common documentation is
-// included automatically on the "popup" which is added to the document.  So any document which includes this
-// script will have access to the main documentation.  Note that the following window events will be used:
+// added to the document (behaves much like a popup which would have to be closed explicitly by the user). 
+//
+// Note that the following window events will be used:
 //
 //   double click - this can be used for any single word text
 //   right click - if multiple words need to be checked in the glossary, select with mouse and then use right click                 
 // 
 // Another benefit of using the text selection feature is the ability to link any word/phrase with any other documents.  This 
-// truly is where the notion of "hyperwords" comes into the picture.   Although it many not be possible to incorporate
-// hyperwords into the culture of a company (well, that will take time), it certainly is possible to link otherwise unrelated
+// truly is where the notion of "hyperwords" comes into the picture.   Although it may not be possible to incorporate
+// hyperwords into the culture of a company (well, that migtht take some time), it certainly is possible to link otherwise unrelated
 // documents by virtue of this glossary file.   The second element in the list (associated with the given word or phrase)
 // can be rich html text.  This means that any word or phrase can be linked with any number of other documents.  The first
 // element in the list is required, and is always the fly over text (used for title attribute, and thus should not
@@ -32,7 +32,7 @@
 // Known bugs - There is an unfortunate consequence if user selects a link and then invokes glossary popup.  The problem is
 // that the popup glossary element is added as a child element to its parent - this allows the popup to be displayed in 
 // close proximity to the selected text.  But the problem for links is that the inherited attributes cause the popup to
-// behave like its parent link, and thus clicking anywhere in the popup activates the parents link (so there close popup
+// behave like its parent link, and thus clicking anywhere in the popup activates the parents link (so the close popup
 // control wouldn't work).  As a work around, merely reload the main page and the popup will close.  There probably is a modestly
 // easy way to fix this, but at present, it is a known bug.
 
@@ -59,8 +59,6 @@ var originalSelectedText = null;  // This won't be converted to lower case
 // Electing to use double click for single word glossary lookup and right click for multi word selection.
 // This will be the least intrusive.  It is necessary to have a solution for multi word selection because it certainly
 // makes sense to have glossary terms which are more than one word (although that perhaps will be the less common case).
-// And if a user merely wants to invoke the common popup to navigate to the main QCM pages, then double click on any
-// text will suffice.
 
 document.ondblclick = doSomethingWithSelectedText;
 window.oncontextmenu = doSomethingWithSelectedText;

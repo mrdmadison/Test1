@@ -40,6 +40,8 @@ var glossary = {};
   
 glossary['annotation'] = ['An annotation is nothing more than a note or a tag about something.  The concept is relevant in the context of the internet because it allows users to attach notes and/or links to things of interest.  This allows the users to augment web content without changing the original source.  And when annotations are used as tags, it allows web content to be found and shared much more easily.', 'See <a href=\'https://en.wikipedia.org/wiki/Web_annotation\'>web annotations</a> for more information.'];
 
+glossary['ems'] = ['Emergency Management Services'];
+
 glossary['glossary.js'] = ['Glossary.js is a javascript powered dictionary which injects fly over help in html elements.'];
 
 glossary['hyperwords'] = ['Hyperwords is a browser based plugin which allows easy access to secondary repositories of information (via selection of text and right click, then user picks the desired external repository from a drop down list).  Hyperwords allows user to install custom scripts - so a company can leverage their own custom search engines.', 'Two challenges exist with Hyperwords.  For one, a company has to figure out how to get Hyperwords installed on all of their employee\'s computers (i.e., Hyperwords is a browser plugin).  And secondly, a company would have to manage their own server side scripts and repositories.  See <a href=\'http://www.liquidinformation.org/hyperwords-intro.html\'>hyperwords</a> for more information.'];

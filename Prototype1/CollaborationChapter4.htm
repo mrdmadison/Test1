@@ -568,6 +568,7 @@
 		 <p>And since surveys and survey templates exist within feedback mechanism, it is possible that templates might be defined to assess individual users.   Now it might not always make sense for a given feedback repository to leverage surveys to rate users, but some businesses and organizations might want to take advantage of this feature.  So when desired, group owners will be able to define "user review" survey templates and have any completed surveys affect the individual user's favorability rating (again, as reported in the user's profile).</p>
        </ul>
        
+<a name="Analytics">
 	<p>12.7 System shall support analytics</p>
 	   <ul>
 	     <p>This will include things like:</p>
@@ -577,6 +578,85 @@
 		       <li>Break down across survey dimensions
 		       <li>Break down across respondent meta data attributes
             </ul>
+			
+		<p>Hypothetical example - 2016 election (assume votes were reported to 
+		<a href="../WriteInVote/ElectionChoice.html#TwitterVotingTemplate"><u>Twitter</u></a> 
+		along with a selfie of the ballot.  Warning - see 
+		<a href="../WriteInVote/MyVoteForPresident2016.html"><u>Ballot Selfie Ban</u></a> for restrictions).
+		
+		<p title="Note that this isn't a real web address (i.e., it is just a sample)."><u>http://xzy.com/TwitterReportingService/tags?writeInVote</u>
+		
+		<pre>
+Tags for #writeInVote:
+
+    State	
+    Party
+    Gender</pre>
+		
+		
+		<p title="Note that this isn't a real web address (i.e., it is just a sample)."><u>http://xyz.com/TwitterReportingService/stats?writeInVote&State</u>
+		
+		<pre>
+Stats for #writeInVotes, group by State:
+		
+    Donald Trump
+        Florida          42.683
+        New York         39.923
+        North Carolina   42.084
+        ....
+	
+    Hillary Clinton
+        Florida          41.318
+        New York         44.923
+        North Carolina   41.527
+        ....
+	
+    Ben Carson
+        Florida          1.082
+        New York         2.837
+        North Carolina   1.927
+        ....
+		
+    Bernie Sanders
+        Florida          5.902
+        New York         7.241
+        North Carolina   1.534
+        ....</pre>		
+		
+		</pre>
+
+		<p title="Note that this isn't a real web address (i.e., it is just a sample)."><u>http://xzy.com/TwitterReportingService/stats?writeInVote&Party+Gender</u>		
+		<pre>
+Stats for #writeInVotes, group by Party, Gender:
+
+    Donald Trump
+        Democrat-Male      22.081
+        Democrat-Female    09.381
+        Republican-Male    92.852
+        Republican-Female  64.084
+        Independent-Male   ......
+	
+    Hillary Clinton
+        Democrat-Male      68.325
+        Democrat-Female    74.989
+        Republican-Male    02.852
+        Republican-Female  18.084
+        Independent-Male   ......
+	
+    Ben Carson
+        Democrat-Male      02.893
+        Democrat-Female    05.381
+        Republican-Male    03.881
+        Republican-Female  09.793
+        Independent-Male   ......
+		
+    Bernie Sanders
+        Democrat-Male      07.874
+        Democrat-Female    06.482
+        Republican-Male    00.162
+        Republican-Female  01.390
+        Independent-Male   ......
+		</pre>
        </ul>
        
     <p>12.8 System shall allow designation of optional assessment strategy.</p>

@@ -40,6 +40,8 @@ var glossary = {};
   
 glossary['annotation'] = ['An annotation is nothing more than a note or a tag about something.  The concept is relevant in the context of the internet because it allows users to attach notes and/or links to things of interest.  This allows the users to augment web content without changing the original source.  And when annotations are used as tags, it allows web content to be found and shared much more easily.', 'See <a href=\'https://en.wikipedia.org/wiki/Web_annotation\'>web annotations</a> for more information.'];
 
+glossary['dry'] = ['Don\'t Repeat Yourself', 'Click <a title=\'Wikipedia\'href=\'https://en.wikipedia.org/wiki/Don%27t_repeat_yourself\'>here</a> for more information.'];
+
 glossary['ems'] = ['Emergency Management Services'];
 
 glossary['glossary.js'] = ['Glossary.js is a javascript powered dictionary which injects fly over help in html elements.'];

@@ -36,11 +36,14 @@ sectionMenu[9]='<a href="#Feedback">Feedback</a>'
 <ul>
    <p>In an  <a href="Javadocs.html"><i>earlier article</i></a>, I describe some of the short comings of Javadoc as a tool for documenting overall system design (although I do mention some areas where Javadoc can actually help - like with 3rd party libraries and foundation classes).  In this article, I'm going to explore how Javadoc can help with trackable items and the relationships between trackable items. 
    
-   <p>Before I get started, I need to first explain what I mean by a trackable item.   When considering software development projects, most think of the software artifacts that are built - namely the packages, classes and methods.   So it shouldn't be surprising that when most think about Javadoc, they think about documentation for packages, classes and methods.   But such documentation is typically only of interest to the software developers themselves - and even then, such documentation is infrequently used.  But I'm going to suggest that there are a far greater number of other items which are of interest to those involved in software development, and very often these other items are an after and are not fully integrated into the overall software documentation strategy.   So I'm going to suggest that if you want to have total software quality, then perhaps these other items should be integrated into the overall software solution.  This isn't an exhaustive list, but hopefully the following illustrates some trackable items that you might recognize: 
+   <p>Before I get started, I need to first explain what I mean by a trackable item.   When considering software development projects, most think of the software artifacts that are built - namely the packages, classes and methods.   So it shouldn't be surprising that when most think about Javadoc, they think about documentation for packages, classes and methods.   But such documentation is typically only of interest to the software developers themselves - and even then, such documentation is infrequently used.  But I'm going to suggest that there are a far greater number of other items which are of interest to those involved in software development, and very often these other items are an after thought which are not fully integrated into the overall software documentation strategy.   So I'm going to suggest that if you want to have total software quality, then perhaps these other items should be integrated into the overall software solution.  This isn't an exhaustive list, but hopefully the following illustrates some trackable items that you might recognize: 
    
    <ul>
       <li>Business requirements
 	  <li>Functional requirements
+      <li>Feature documents
+      <li>Concept guides and subject area views
+      <li>Release notes
 	  <li>Use cases
 	  <li>Test plans
 	  <li>Test cases
@@ -92,9 +95,13 @@ sectionMenu[9]='<a href="#Feedback">Feedback</a>'
    <ul>
       <p>Java obviously supports packages, classes and methods - so it is a perfect toolset for defining an infinitely deep logical organization of things (where the things are the trackable items, as well as the relationships between the trackable items).
 	  
-	  <p>Assuming trackable items are defined as methods in classes, then Javadoc comments could be written for those methods thus expressing the details about the item, and Javadoc tags could be used for point and click navigation between items.
+	  <p>Assuming trackable items are defined as 
+      <i title="In order for something to be a trackable item, it must be addressable via a URL - so methods in classes seem like a good fit because of the way web browsers support # with regards to anchored subsections.">methods in classes</i>, 
+      then Javadoc comments describe the item, and Javadoc tags could be used for point and click navigation between items.  In a nut shell, the rigor of Java with respect to packages, classes and methods allow the methods themselves to be the logically grouped trackable items, and the Javadoc comments become the expressive rich text (written in HTML) which describe them.
 	  
 	  <p>As for "where used" and other programmatic validation of relationships, since Java classes are used, the method body can be used to reference other trackable items - this will give you compile time validation of relationships and typical IDE search capability can give you "where used" report.
+      
+      <p>Since Java is the basis for the data storage, features like inheritance allow for sub-types and consistency of common attributes (e.g., owner, status, QA-rating, last review date, etc.).  But note, the one downside of Java is the lack of a structured query language - so a data mining / dashboard mechanism would have to be evolved (but perhaps not day one).
    </ul>
 
    <p>Web browser and web server hosted content
@@ -244,6 +251,8 @@ public class HistoricalIdentityIntegrityUseCases extends UseCase
 	<li><p>It is likely that small empowered teams will have a better chance of rolling out something that is useful - because they will be most familiar with their domain set, and they will be able to control the creation and maintenance of the trackable items better.   Attempting to roll-out on a large scale probably should not be done until all the kinks are worked out.
 	
 	<li><p>Research should be done to see if there are any off the shelf products which help in the management of trackable items.  But be careful - such frameworks need to be fully integrated with the application software, the automated regression tests, and all application documentation.
+    
+    <li><p>Remember that if Java/Javadoc is going to be used, no structured query language exists so a data mining / dashboard mechanism would ultimately be needed (but perhaps not day one).  But also remember that if some other home grown solution were evolved, the very same problem would exist - and you wouldn't get all the benefits of Java/Javadoc.  So this shouldn't be considered an impediment - just be aware.   The real decision is whether an IT organization is going to invest in total integration of software, documentation, testing and traceability.
 </ul>
 
 

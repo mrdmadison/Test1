@@ -1,0 +1,46 @@
+<html>
+<head>
+<script src="../javascripts/jquery-2.1.1.js"></script>
+<link rel=STYLESHEET TYPE="text/css" href="../stylesheets/common.css">
+
+<script>
+
+// This successfully demonstrates setting and getting of localStorage attributes which persist even when browser is closed
+// (or page is reloaded).  The saved value of "players" is copied to text area and displayed on a separate div.   When text
+// area is changed and click button is pressed, separate div is updated and permenant storage is saved.   If page is reloaded,
+// the last saved value is redisplayed.
+
+$(document).ready(function () 
+{
+    document.getElementById("result").innerHTML = localStorage.getItem("players");
+
+    $("[name='textarea1']").val(localStorage.getItem("players"));
+    
+    
+});
+
+function storePlayers() 
+{
+    var playersTA = $("[name='textarea1']");
+
+    if (playersTA.val().length > 0) 
+    {            
+        localStorage.setItem("players", playersTA.val());
+        document.getElementById("result").innerHTML = playersTA.val();
+    }
+}
+</script>
+
+</head>
+
+<body>
+
+<textarea name="textarea1"></textarea>
+
+<p><button onclick="storePlayers()" type="button">Click me!</button></p>
+<div id="result"></div>
+
+
+
+</body>
+</html>

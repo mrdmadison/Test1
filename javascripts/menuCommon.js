@@ -55,8 +55,13 @@ caseStudyMenu[2]='<a href="CollaborationChapter3.htm#3-CorporateAmerica">3 - Cor
 caseStudyMenu[3]='<a href="CollaborationChapter3.htm#4-Consumers_watching_video_content">4 - Consumers watching TV</a>'   
 
    
-   
-   
+var standardsMenu=new Array()
+standardsMenu[0]='<a href="FacebookAndTwitterMonopoly.htm#Background">Background</a>'   
+standardsMenu[1]='<a href="FacebookAndTwitterMonopoly.htm#Standards">Role of standards on the internet</a>'   
+standardsMenu[2]='<a href="FacebookAndTwitterMonopoly.htm#SocialNetworkingStandards">Standards for social functions</a>'   
+standardsMenu[3]='<a href="FacebookAndTwitterMonopoly.htm#ImpactOfSocialNetworkStandards">Impact of social network standards</a>'   
+standardsMenu[4]='<a href="FacebookAndTwitterMonopoly.htm#Conclusion">Conclusion</a>'   
+
 
 		
 var menuwidth='5000px' //default menu width

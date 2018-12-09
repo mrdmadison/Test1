@@ -1,0 +1,113 @@
+<html>
+<head>
+<script src="../javascripts/jquery-2.1.1.js"></script>
+<script src="../javascripts/menuCommon.js"></script>
+<script src="../javascripts/glossary.js"></script>
+<link rel=STYLESHEET TYPE="text/css" href="../stylesheets/common.css">
+
+<style>
+.Courier {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 12px;
+}
+</style>
+
+<script>
+var sectionMenu=new Array()
+sectionMenu[0]='<a href="#Top">Top</a>'
+sectionMenu[1]='<a href="#Overview">Overview</a>'
+
+sectionMenu[8]='<a href="#Summary">Summary</a>'
+sectionMenu[9]='<a href="#Feedback">Feedback</a>'
+
+</script>
+
+</head>
+
+<a name="Top">
+<h2>The most over hyped principles of all: Consistency and Don't Repeat Yourself (DRY)</h2>
+<a name="Overview">
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '250px')" onMouseout="delayhidemenu()">Overview</em>
+<ul>
+   In the first 3 articles I wrote on software development, there are some not so subtle jabs at the notion of consistency and commonality.  But many that have read the earlier articles still raise questions and concerns, so I offer this article to clarify why I consider consistency and commonality to be potentially harmful.  And the first point I'll make is an implied word that often preceeds the terms consistency and commonality (but this depends upon each particular IT organization and its underlying culture).  But the full terms that I'm referring to are <i>forced</i> consistency and <i>forced</i> commonality.  It is the forcing, the coercion to singleness or sameness, which causes me major concern.   In the over 30 years I've spent in IT, there are a few axioms that I've observed which need to be considered (and remember, not every IT organization is the same, and even within an IT organization, not every individual project is the same):
+   
+   <p><ol>
+     <li>Every few years a new methodology is rolled out (be it coding style, standards, templates, documentation repository, culture, etc.).
+     <li>Even as the new methodology is rolled out, there are tweaks and changes to the methodology (i.e., it evolves).
+     <li>One justification for the new methodology is consistency, which is supposed to lead to higher efficiency and cost effectiveness.
+     <li>Existing software and processes are migrated to new methodogy (at a decent expense).
+     <li>Although consistency was one of the major factors inspiring the change, not all legacy components will be migrated to 
+         <i title="Ironically, even migrating toward consistency isn't done consistently.">new methodology</i>.
+   </ol>
+   
+   <p>As for commonality, the following often occurs:
+   
+   <ol>
+     <li>Commonality is identified as part of initial software design, so user community often uses alpha or beta version of the component.
+     <li>Due to budgetting issues (and the notion of "just in time software development"), the common component is delivered half baked.
+     <li>Because commonality was the justification for component in the first place, the priority is to grow the user community.
+     <li>Growing the user community involves adding more and more stuff into the common component.
+     <li>Common components tend to bloat and are frequently changed - this tends to cause pain for the user community.
+     <li>Common components are often abandoned with the promise of efficiency never realized.
+   </ol>
+   
+   <p>So the first question to ask yourself is why - why is consistency and commonality such a dominant theme in IT.  And remember, no one writes an article on the web about how consistency and commonality is bad (well, I am, but I'm in the minority on most things anyway, so perhaps there is just something wrong with me).  But seriously, who is going to get paid a lot of money as an IT consultant recommending that a given company write the very same software multiple times?  The answer is rather obvious - no one!   No one is going to be brought in from the outside to recommend that a given company write more redundant software, or adopt policies that lead to inconsistency - so let's just put that to rest.   But if you agree with me on this point, then you're half way to understanding why the points I mention above are fairly common, yet we are collectively powerless to stop focusing on consistency and commonality.
+   
+   <p>But is there anything else going on here?  The answer is that we are humans.  Humans aren't computers, we're not good at reconciling differences.  We typically don't speak, read or write effectively in multiple languages.  And even those that are fluent in multiple languages aren't equally effective in all of the languages.  As for me, I've written software in many different programming languages over the last 30 years, and whatever language I'm currently writing software in is the language I'm typically most effective in.  Today, that language is Java, but for almost 20 years, that would have been C++.  But the bottom line is that as humans, we crave consistency because it makes things easier for us.  I often joke that I crave consistency as much as any human on earth (and if you knew me, you'd realize that I'm only partially joking).  But it is this recognition in myself (and in others), that causes me to fight every day against the evil associated with forced sameness.
+   
+   <p>Now some might think I'm using hyperbole when I refer to forced sameness as "evil", but let me explain.   In the U.S., for many years companies have lauded the virtures of diversity.  In fact, many companies require their employees go through diversity training each and every year.   One of the primary selling points of diversity is maximizing potential by leveraging all the unique and effective skills of those within the company.  But if this is truly effective, then why wouldn't it also apply to diversity of methodology, diversity of documentation, and diversity of software.  Now the short answer is it certainly does apply.   In fact, the only reason IT organizations aren't aware of the money (and opportunity) that they are losing is because there is no way to measure it.  After all, how can you tell how many software widgets are not being created per hour because methodology 1 was choosen over methodology 2. It is true that if a company switches from one methodology to another, they can compare the results they currently get to that of prior methodology.  But they can't tell what they would produce if they tried other methodologies because they wouldn't know until they try.   So hopefully all those that thought I was crazy should at least consider the possibility that I am not (I still could be, but perhaps it isn't a slam dunk).
+   
+   <p>When you combine our strong craving for consistency (since it is easier for us), and then factor in the idea that it is either impossible or at least very difficult to measure any missed opportunity cost, it kind of makes gravitating to consistency rather easy.  So the remainder of this article won't so much encourage inconsistency and redundancy, but instead will raise attention to warning signs and perhaps point out situations where limited inconsistency and limited redundancy might actually lead to quantum leaps of innovation and improvement.  
+</ul>
+
+
+<a name="AlternativeUniverse">
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '250px')" onMouseout="delayhidemenu()">Alternative universe</em>
+<ul>
+    Instead of trying to convince you that inconsistency and redundancy is good (which seems like an uphill battle), let me merely list some bullet points here and let you think about them.   It is these points which will serve as the basis for the remainder of the article.
+    
+    <ul>
+      <p><li>We're all familar with the benefit of commonality in that you can write once and use everywhere, and fix once, fix everywhere.  But what about the notion of change once, affect everyone, break once, break everyone? 
+      
+      <p><li>Consider the size of your IT organization - does the relative size affect whether commonality if helpful (e.g., for a very large project, do you feel you get adequate support for common utilities)?  
+      
+      <p><li>Considering the geography of your IT organization (especially with respect to timezone), does this impact the support you get for common utilities?
+      
+      <p><li>Considering the two points regarding size of the IT organization and number of timezones, does the level of support stay consistent over time, or does the level of support get better over time?
+    
+      <p><li>Does your IT organization typically write outstanding modules the first time, or is there a lot of refactoring, are common components allowed to grow stale, and is there a decent amount of throw away software?
+      
+      <p><li>Does your IT organization focus heavily on short term deadlines, and do these deadlines take a higher priority over software quality and software robustness?
+      
+      <p><li>Is there a decent amount of turn over in your IT organization, or, are there subject matter experts that are available to help support common frameworks?
+      
+      <p><li>Is your IT organization developing a core product or are they evolving a custom solution for a fee?
+      
+      <p><li>Is your IT organization attempting to evolve creative or innovative software, or is it more commodity grade softwrae?
+      
+      <p><li>Are there "time to market" constraints which might cause an IT organization to cut corners to get a foot in the door?      
+      
+    </ul>
+</ul>
+
+
+<a name="Summary">
+<p><em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '250px')" onMouseout="delayhidemenu()">Summary</em>
+<ul> 
+    <li><p>...
+</ul>
+
+
+<a name="Feedback">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Feedback</em>
+<ul>
+  <a href="https://darrellmadison.wordpress.com/">My blog</a><br>
+  <a href="https://www.facebook.com/dee.madison.796">Facebook</a><br>
+  <a href="https://twitter.com/MrDMadison">Twitter: @MrDMadison</a><br>
+</ul>
+
+</html>
+
+
+
+

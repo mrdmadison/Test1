@@ -1,5 +1,6 @@
 <html>
 <head>
+<link rel=STYLESHEET TYPE="text/css" href="../stylesheets/common.css">
 
 <script>
 
@@ -14,11 +15,11 @@
 //        For short term, don't worry about head to head tie breaker, and don't worry about strength of scheduled.
 //
 
+window.onload = initialPageLoad;
 
-$(document).ready(function () 
+function initialPageLoad()
 {
- 
-});
+}
 
 var tournamentsList = new Array();
 var tournament = new Object();
@@ -309,9 +310,10 @@ function initializeTournament()
             return;
         }              
 
-        var nbrOfGamesToWinMatch = prompt("Please enter number of games needed to win a qualifying round match (e.g., 1, 2, 3)", "2");
+        var userData = prompt("Please enter number of games needed to win a qualifying round match (must be 1, 2, or 3)", "2");
+        var nbrOfGamesToWinMatch = Number(userData);
         
-        if (nbrOfGamesToWinMatch == null || nbrOfGamesToWinMatch == "" || nbrOfGamesToWinMatch < 1 || nbrOfGamesToWinMatch > 3)
+        if (isNaN(userData) || userData == null || userData == "" || nbrOfGamesToWinMatch < 1 || nbrOfGamesToWinMatch > 3)
         {
             alert("Invalid number of games to win match, must be between 1 and 3 (default is 2).")
             return;
@@ -394,7 +396,7 @@ function startTournament()
 {            
     if (tournament.state != 1) 
     {
-        alert("Tournament cannot be started because it is in an invalid state - should be 1-INITIALIZED, but is instead:" + tournament.state);
+        alert("Tournament cannot be started because it is in an invalid state - should be 1-INITIALIZED, but is instead in: " + getTournamentStateLabel());
         return;
     }
      
@@ -887,7 +889,7 @@ function validateGameScore(player1Score, player2Score)
     {
         if (Math.abs(scoreDiff) != 2)
         {
-            return "Duce matches must be decided by exactly 2 points.";    
+            return "Deuce matches must be decided by exactly 2 points.";    
         }
     }
 
@@ -941,7 +943,7 @@ function displayTournament()
     var output = "";
 
     output += "<br>Tournament category: " + tournament.compositeKey;
-    output += "<br>Tournament progress: " + getTournamentStateAsHTML();
+    output += "<br>Tournament progress: " + getTournamentStateLabel();
     output += "<br>Qualifying round games to win match: " + tournament.nbrOfGamesToWinMatch;
 
     document.getElementById("tournamentData").innerHTML = output;    
@@ -958,28 +960,28 @@ function displayTournament()
 //   3 - Semi finals started - only applies for 2 round playoff
 //   4 - Finals started (applies to both 1 and 2 round playoff format)
 //   5 - Tournament closed (final round playoff scores entered - final ranking published)
-function getTournamentStateAsHTML()
+function getTournamentStateLabel()
 {
     var output = "";
     
     if (tournament.state == 1) {
-        return "1-INITIALIZED: Players registered in category but not finalized, players can be adjusted, no matches have been scheduled."
+        return "1-INITIALIZED"
     }
     else
     if (tournament.state == 2) {
-        return "2-QUALIFYING_ROUND_STARTED: Players finalized, qualifying round matches have been scheduled, scores can be added."    
+        return "2-QUALIFYING ROUND STARTED"    
     }
     else
     if (tournament.state == 3) {
-        return "3-SEMI_FINALS_STARTED: Qualifying round scores entered and finalized, semi final matches are scheduled, scores can be added (only applies for 2 round playoff format)."
+        return "3-SEMI FINALS STARTED"
     }
     else
     if (tournament.state == 4) {
-        return "4-FINALS_STARTED: Championship match scheduled, scores can be added."    
+        return "4-FINALS STARTED"    
     }
     else
     if (tournament.state == 1) {
-        return "5-CLOSED: Championship match completed and finalized - final results have been published."    
+        return "5-TOURNAMENT CLOSED"    
     }
     
     return "UNKNOWN_STATE (some sort of application error occurred)."
@@ -1261,26 +1263,55 @@ function manageSemiFinal2Scores()
     }
 }
 
+
+function startSemiFinals() 
+{            
+    if (tournament.state != 2) 
+    {
+        alert("Cannot start semi-finals because tournament isn't currently in qualifying round - it is currently in state: " + getTournamentStateLabel());
+        return;
+    }
+    
+    alert("Transition to semi-finals is not yet coded (coming soon)");
+}
+
+function startFinals() 
+{            
+    if (tournament.state != 2 || tournament.state == 3) 
+    {
+        alert("Cannot start finals because tournament isn't currently in qualifying round or semi-finals - it is currently in state: " + getTournamentStateLabel());
+        return;
+    }
+    
+    alert("Transition to finals is not yet coded (coming soon)");
+}
+
+function closeTournament() 
+{            
+    if (tournament.state != 4) 
+    {
+        alert("Cannot close tournament because finals haven't been started yet - currently in state: " + getTournamentStateLabel());
+        return;
+    }
+    
+    alert("Transition to finals is not yet coded (coming soon)");
+}
+
 </script>
 
 </head>
 
 <body>
 
-<p><button onclick="clearAllLocalStorage()" type="button">clearAllLocalStorage</button></p>
+<table id="TournamentActions" cellspacing="15">
+  <tr>
+      <td> <p><button onclick="initializeTournament()" type="button">1. Select a tournament</button> ==>> </p> </td>
+      <td> <p><button onclick="startTournament()" type="button">2. Start tournament</button>  ==>> </p> </td>
+      <td> <p><button onclick="startSemiFinals()" type="button">3a. Start semi-finals</button>  ==>> </p> </td>
+      <td> <p><button onclick="startFinals()" type="button">3b. Start finals</button>  ==>> </p> </td>
+      <td> <p><button onclick="closeTournament()" type="button">4 Close tournament</button> </p> </td>
+</table>
 
-<p><button onclick="getAllLocalStorage()" type="button">getAllLocalStorage</button></p>
-
-<p><button onclick="initializeTournament()" type="button">Initialize tournament</button></p>
-
-<p><button onclick="startTournament()" type="button">Start tournament</button></p>
-
-<p><button onclick="dumpAllGlobalData()" type="button">Dump raw tournament data</button></p>
-
-<p><button onclick="displayTournament()" type="button">Display tournament</button></p>
-
-
-<div id="appDebuggingData"></div>
 
 <div id="tournamentData"></div>
 
@@ -1337,7 +1368,16 @@ function manageSemiFinal2Scores()
   
 </table>
 
+<br>
+<table id="DebuggingActions" cellspacing="15">
+  <tr>
+      <td> <p><button onclick="displayTournament()" type="button">Display tournament</button></p> </td>
+      <td> <p><button onclick="clearAllLocalStorage()" type="button">clearAllLocalStorage</button></p> </td>
+      <td> <p><button onclick="getAllLocalStorage()" type="button">getAllLocalStorage</button></p> </td>
+      <td> <p><button onclick="dumpAllGlobalData()" type="button">Dump raw tournament data</button></p> </td>
+</table>
 
+<div id="appDebuggingData"></div>
 
 </body>
 </html>

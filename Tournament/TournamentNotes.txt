@@ -1,0 +1,151 @@
+Administrator
+  - name (keyed and stored by name - this is global data scross all tournaments)
+  - emailAddress
+
+Player (keyed and stored by name - this is global data across all tournaments)
+  - name
+  - skillLevel
+  - emailAddress
+  - overallRankingNum
+  
+Tournament (stored when tournament players are registered - i.e., tournament starts, and when qualifying and playoff rounds are finalized)
+  - compositeKey (skillLevel and poolNum)
+  - tournamentDate
+  //- Map<Match> (keyed by matchNum, which is also stored in Match)
+
+TournamentPlayer (stored in the context of Tournament)
+  - name
+  - tournamentSeedingNum
+  - derivedQualifyingScore
+  
+Match (keyed by Tournament composite key plus matchNum, persisted when game scores are entered, removed when containing round is persisted in Tournament)
+  - compositeKey
+  - matchNum
+  - player1Name
+  - player1Seed
+  - player1MatchWinCnt (1 if player won, otherwise 0)
+  - player1GameDiff
+  - player1GamesWon
+  - player1PointDiff
+  - player1DerivedQualifyingScore
+  - player2Name
+  - player2Seed  
+  - player2MatchWinCnt (1 if player won, otherwise 0)  
+  - player2GameDiff
+  - player2GamesWon
+  - player2PointDiff  
+  - player2DerivedQualifyingScore
+  - List<GameScore> (on GUI, games are separated by comma - each score is separated by dash.  e.g., 11-9, 12-10, 8-11, 11-8, player1 won match 3 to 1)
+  - matchType (QUALIFIER, SEMI-FINALS, FINALS)
+
+GameScore (stored in the context of Match or Tournament)
+  - gameNum
+  - player1Score
+  - player1GameDiff
+  - player1PointerDiff
+  - player2Score
+  - player2GameDiff
+  - player2PointerDiff  
+  
+States
+  1. IN-REGISTRATION
+  2. IN-QUALIFYING-ROUNDS
+  3. IN-SEMI-FINALS
+  4. IN-FINALS
+  5. TOURNAMENT-CLOSED
+  
+Events:
+
+  1. START-REGISTRATION
+  
+     a. User requests start of a tournament and supplies a skill level.
+     b. Tournament date is always based on sys-date.
+     c. User enters (or selects) players for the tournament.   If no players are registered for the given skill level, 
+        user must enter the player's names by hand (email addresses can be managed later).  As new players are added
+        to a tournament, they are automatically added to Player data store (there will be a separate form for player 
+        data management).
+     
+     If there are more than 8 players for a given skill level, the user would start multiple tournaments for the given
+     skill level.   These would be totally independent of each other - but the forms might offer a means of selecting
+     even or odd players (e.g., if there were two pools needed, even/odd would work well).  If 4 pools were needed, 
+     every 4th player would be appropriate.  This would allow seeded players to be split evenly across all the pools.  Or,
+     user can do this manually by selecting from list.   No validation will be done to ensure that all players are 
+     put in some pool (because only user knows which players plan to play in a tournament), and if the user wants to have
+     a player play in multiple pools, that is okay too.
+     
+     When all players are supplied, user will start the qualifying round.  When starting a qualifying round, the user must 
+     acknowledge poolNum (accept default of 1), or change when appropriate.
+     
+     As part of state transition to qualifying rounds, app will scheule the matches (1 thru N) based on the number of players.
+     A hard wired algorithm is used to have modestly even strength of schedule in relation to player seeding.  
+     
+  2. IN-QUALIFYING-ROUNDS
+  
+    Once in qualifying rounds, user can enter scroe of matches.   All matches will be scheduled (and shown) and do not have to be played 
+    in order.  User must enter score for all matches before advancing to next state.  Score format is shown above.   There is no 
+    requirement to play 2 out of 3, or 3 out of 5.  This is up to the descretion of the user.  However, cannot advance to next state
+    until all matches have at least 1 score - and must have an odd number of games in every match (otherwise, there might not be an obvious winner). 
+    
+    After all qualifying round scores are entered, user signals start of playoffs.  For 4 or more player tournament, even for single final
+    playoffs, a consolidation match will be scheduled (but user isn't required to supply score for consolation match).  For 3 player
+    tournaments, only a single final is possible.  For 4 or more, user can designate either 1 or 2 round playoff.  For 4 and 5 player
+    tournaments, default will be a single final with a consolation match.   For 6 thru 8 players, the default will be for 2 round playoff.
+     
+  3. IN-SEMI-FINALS
+  
+    When qualifying round is closed out, app enters IN-SEMI-FINALS if user selects 2 round playoff.
+
+    User enters score for each of the two semi-final matches.
+    
+    When both sets of scores have been entered, user closes out the semi-finals and the final round matches are scheduled.  
+    
+  4. IN-FINALS
+  
+    This state is entered when the user closes out qualifying round and designates only a single playoff round, or when user closes
+    out the semi-final round.
+    
+    User enters score of the final match (and consolidation match).
+    
+    When scores are completely entered, the user closes out the tournament.
+     
+  5. TOURNAMENT-CLOSED
+  
+    Once the score of the finals is supplied, the user "finalizes" the tournament by closing it out.  A final readout of player ranking is 
+    shown.
+
+  6. Send email of final results
+  
+     By default, email will be sent (if confirmed by user) to the app administrator.  But if players in tournament have supplied email address,
+     email of final results can be sent to them as well.
+    
+  N. Clear tournament - erases all data regarding a tournament (confirmation of action is required).
+
+Other operations/events:
+
+  A. Dump app meta data (players, categories, tournament data, etc.) and send in email.  
+  
+     There is no backend database for app - instead, all data is stored locally on the device.   To backup data, it can be exported (via email)
+     and re-imported to some other device (or multiple devices).   Tournaments can only be managed on a single device, but once closed, that data,
+     and app data in general, can be extracted and shared.
+     
+  B. Add, update delete player data.
+    
+  
+Tie breaker rules for 2 round qualifier:
+
+1. Total matches won
+2. Total game differential (e.g., 3-0 match is +3 differential, 3-2 match is only +1).
+3. Total point differential (all games played by each player in the tie).
+4. Coin toss (random) 
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  

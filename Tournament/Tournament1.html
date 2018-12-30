@@ -4,16 +4,9 @@
 
 <script>
 
-// 12/29/2018:  Match type added to matches display.
-//              Strength of schedule added to players display.
-//              Fixed bug with player stats undefined (were never initialized).
-//              Added validation for games such that both players cannot win match, and no player may win
-//              more than number of games designated for the qualifying rounds.
-//              Fixed bug where user couldn't clear ALL games in a match (app thought this was the same as cancel).
-// 
-// TODO - Need to add state transition to playoffs and schedule playoffs based on final qualifying round rankings.  
-//        For short term, don't worry about head to head tie breaker, and don't worry about strength of scheduled.
+// 12/30/2018:  Added support for starting semi finals and finals - no commit of playoff data exists yet.
 //
+// TODO - definitely want to add protection for clear all (make them confirm that all data is to be destroyed).
 
 window.onload = initialPageLoad;
 
@@ -25,6 +18,7 @@ var tournamentsList = new Array();
 var tournament = new Object();
 var playersList = new Array();
 var matchesList = new Array();
+var playoffMatchesList = new Array();
 
 // This clears both localStorage and tournamentData stored in global form objects.
 function clearAllLocalStorage()
@@ -35,6 +29,7 @@ function clearAllLocalStorage()
     tournament = new Object();
     playersList = new Array();
     matchesList = new Array();    
+    playoffMatchesList = new Array();
     
     document.getElementById("appDebuggingData").innerHTML = "";
     
@@ -49,6 +44,7 @@ function dumpAllGlobalData()
     output += "<br>tournament=" + getAsJsonString(tournament);
     output += "<br>playersList=" + getAsJsonString(playersList);
     output += "<br>matchesList=" + getAsJsonString(matchesList);
+    output += "<br>playoffMatchesList=" + getAsJsonString(playoffMatchesList);
 
     document.getElementById("appDebuggingData").innerHTML = output;  
 }
@@ -221,6 +217,7 @@ function createTournament(compositeKey, tournamentPlayersString, nbrOfGamesToWin
     tournament.compositeKey = compositeKey;
     tournament.state = 1;   // 1 - players registered but tournament not started (no matches are scheduled)
     tournament.nbrOfGamesToWinMatch = nbrOfGamesToWinMatch;
+    tournament.nbrOfnbrOfPlayoffRounds = 0;  // Won't set a real default until players are assigned and qualifying round is started.
     
     createPlayersList(tournamentPlayersString);  // Constructs and loads playersMap
     matchesList = new Array();
@@ -431,6 +428,14 @@ function startTournament()
     }
     
     tournament.state = 2;   // TOURNAMENT_STARTED (maches are now scheduled - user can now enter game scores).
+    
+    if (playersList.lengh < 6)
+    {
+        tournament.nbrOfPlayoffRounds = 1;  // Small number of players don't require 2 round playoffs (this is only a default)
+    }
+    else {
+        tournament.nbrOfPlayoffRounds = 2;  // Larger number of players benefit from 2 round playoffs (this is only a default) 
+    }
     
     setLocalStorageTournament();
 
@@ -687,12 +692,65 @@ function initializeMatchStats(matchObj)
     matchObj.player2DerivedQualifyingScore = 0; 
 }
 
-function summarizeAllMatches()
+function finalizeQualifyingRoundMatches()
 {
-    tournament.matches.forEach(function(item, index, array) 
+    matchesList.forEach(function(item, index, array) 
     {
         summarizeMatchGames(item);
     });
+    
+    var errorString = "";
+    
+    matchesList.forEach(function(item, index, array) 
+    {
+        if (item.player1MatchWinCnt == 0 && item.player2MatchWinCnt == 0)
+        {
+            if (errorString.length > 0) {
+                errorString += ", ";
+            }
+            errorString += "\nMatch '" + item.matchNum + "' isn't complete";
+        }
+    });
+
+    if (errorString.length > 0)
+    {
+        alert("Cannot finalize qualifying round because not all matches have been completed." + errorString);
+        return errorString;
+    }
+    
+    deriveQualifierRoundRanking();
+        
+    return "";   // Everything okay.
+}
+
+// Adds bonus points to players with 1 win where the player beat another player with 1 win.
+function applyTieBreakPointsToPlayerStats(matchObj)
+{
+    var player1 = playersList[matchObj.player1Seed - 1];  // This works because players are added to playersList in seeded order.
+
+    if (player1.qualifyingRoundWinCnt == 1 &&   // Player 1 has exactly 1 win
+        matchObj.player1MatchWinCnt == 1)       // Player 1 won the match, so check if bonus points are needed
+    {
+        var opponentPlayer = playersList[matchObj.player2Seed - 1];
+
+        if (opponentPlayer.qualifyingRoundWinCnt == 1)  // Bonus points apply to player that beat this player
+        {
+            player1.derivedQualifyingScore += 1000;
+        }
+    }
+
+    var player2 = playersList[matchObj.player2Seed - 1];  // This works because players are added to playersList in seeded order.
+
+    if (player2.qualifyingRoundWinCnt == 1 &&   // Player 1 has exactly 1 win
+        matchObj.player2MatchWinCnt == 1)       // Player 1 won the match, so check if bonus points are needed
+    {
+        var opponentPlayer = playersList[matchObj.player1Seed - 1];
+        
+        if (opponentPlayer.qualifyingRoundWinCnt == 1)  // Bonus points apply to player that beat this player
+        {
+            player2.derivedQualifyingScore += 1000;
+        }
+    } 
 }
 
 function deriveQualifierRoundRanking()
@@ -706,6 +764,11 @@ function deriveQualifierRoundRanking()
     {
         applyMatchResultsToPlayerStats(item);  // Summarizes stats across matches for the players related to the the given match
     });
+    
+    matchesList.forEach(function(item, index, array) 
+    {
+        applyTieBreakPointsToPlayerStats(item); // Adds bonus points to players with 1 win where the player beat another player with 1 win.
+    });    
 }
 
 function initializePlayerStats(player)
@@ -737,7 +800,7 @@ function applyMatchResultsToPlayerStats(matchObj)
 }
 
 function summarizeMatchGames(matchObj)
-{    
+{
     initializeMatchStats(matchObj);
 
     matchObj.gameScores.forEach(function(item, index, array) 
@@ -760,7 +823,7 @@ function summarizeMatchGames(matchObj)
     
     if (matchObj.player1GamesWon > tournament.nbrOfGamesToWinMatch || matchObj.player2GamesWon > tournament.nbrOfGamesToWinMatch)
     {
-        var errorString = "Too many games for qualifying round - number of games to win a match is: " + tournament.nbrOfGamesToWinMatch;
+        var errorString = "Too many games played - number of games to win a match is: " + tournament.nbrOfGamesToWinMatch;
         alert(errorString)
         return errorString;
     }
@@ -784,8 +847,9 @@ function summarizeMatchGames(matchObj)
     
     if (matchObj.matchType == 1 && matchObj.gameScores.length > 0)   // 1-Qualifier, 2-Semis, 3-Finals
     {
-        matchObj.player1DerivedQualifyingScore =  50000 + (matchObj.player1GameDiff * 1000) + matchObj.player1PointDiff;
-        matchObj.player2DerivedQualifyingScore =  50000 + (matchObj.player2GameDiff * 1000) + matchObj.player2PointDiff;
+        // Leaving 1000 multiplier for tie breaker bonus points.
+        matchObj.player1DerivedQualifyingScore = (matchObj.player1MatchWinCnt * 10000) + (matchObj.player1GameDiff * 100) + matchObj.player1PointDiff;
+        matchObj.player2DerivedQualifyingScore = (matchObj.player2MatchWinCnt * 10000) + (matchObj.player2GameDiff * 100) + matchObj.player2PointDiff;
     }
     
     return "";   // Everything okay
@@ -945,6 +1009,11 @@ function displayTournament()
     output += "<br>Tournament category: " + tournament.compositeKey;
     output += "<br>Tournament progress: " + getTournamentStateLabel();
     output += "<br>Qualifying round games to win match: " + tournament.nbrOfGamesToWinMatch;
+    
+    if (tournament.nbrOfPlayoffRounds != 0)
+    {
+        output += "<br>Number of playoff rounds (default): " + tournament.nbrOfPlayoffRounds;    
+    }
 
     document.getElementById("tournamentData").innerHTML = output;    
     
@@ -952,6 +1021,8 @@ function displayTournament()
     document.getElementById("playerData").innerHTML = output;    
     
     displayMatchesOnForm();
+    
+    displayPlayoffs();
 }
 
 // States:
@@ -1078,26 +1149,70 @@ function displayMatchesOnForm()
     }
 }
 
+function displayPlayoffs()
+{
+    if (tournament.state < 3)
+    {
+        return;
+    }
+
+    playoffMatchesList.forEach(function(item, index, array) 
+    {
+        displayPlayoffMatch(item, index+1);          
+    });    
+}
+
+function displayPlayoffMatch(matchObj, matchNum)
+{
+    var players = "";
+    var cellId; 
+    
+    cellId = "PlayoffMatch" + matchNum + "Cell1";
+    document.getElementById(cellId).innerHTML = "P" + matchNum;    
+
+    cellId = "PlayoffMatch" + matchNum + "MatchType";
+    document.getElementById(cellId).innerHTML = getMatchTypeAsString(matchObj.matchType);
+        
+    players += getPlayer1NameForMatch(matchObj);
+    players += " - ";
+    players += getPlayer2NameForMatch(matchObj);
+        
+    cellId = "PlayoffMatch" + matchNum + "CellPlayers";
+    document.getElementById(cellId).innerHTML = players;    
+
+    cellId = "PlayoffMatch" + matchNum + "CellScore";
+    document.getElementById(cellId).innerHTML = matchObj.gameScoresString; 
+}
+
+
 function getPlayer1NameForMatch(matchObj)
 {
+    if (matchObj.player1MatchWinCnt == 1)
+    {
+        return "<b><u>" + matchObj.player1Name + "</u></b>";    
+    }
+
     if (matchObj.player1GameDiff > 0)
     {
         return "<b>" + matchObj.player1Name + "</b>";
     }
-    else {
-        return matchObj.player1Name;
-    }
+    
+    return matchObj.player1Name;
 }
 
 function getPlayer2NameForMatch(matchObj)
 {
+    if (matchObj.player2MatchWinCnt == 1)
+    {
+        return "<b><u>" + matchObj.player2Name + "</u></b>";    
+    }
+
     if (matchObj.player2GameDiff > 0)
     {
         return "<b>" + matchObj.player2Name + "</b>";
     }
-    else {
-        return matchObj.player2Name;
-    }
+    
+    return matchObj.player2Name;
 }
 
 function getMatchTypeAsString(matchType)
@@ -1122,6 +1237,38 @@ function getMatchTypeAsString(matchType)
 
 
 // Note that matchNum is actual number (from user's perspective), and not 0 based offset.
+function managePlayoffMatchScores(matchNum)
+{    
+    if (playoffMatchesList.length >= matchNum)
+    {
+        matchObj = playoffMatchesList[matchNum - 1];
+        var newGameScoresString = prompt("Match '" + getPlayoffMatchTitle(matchObj, matchNum) + "' game scores (comma separated list, scores separated by dash - e.g., 11-9, 8-11).", 
+                                         matchObj.gameScoresString);
+
+        if (newGameScoresString == null)  // User hit cancel on prompt
+        {
+            alert("Game scores have not changed (user aborted action).");
+            return;
+        }
+                
+        if (newGameScoresString != matchObj.gameScoresString) 
+        {            
+            var errorString = processGameScores(matchObj, newGameScoresString)
+
+            if (errorString.length > 0)
+            {
+                return;
+            }
+
+            displayTournament();
+        }
+        else {
+            alert("Game scores have not changed");
+        }  
+    }
+}
+
+// Note that matchNum is actual number (from user's perspective), and not 0 based offset.
 function manageQualifyingRoundMatchScores(matchNum)
 {    
     if (matchesList.length >= matchNum)
@@ -1129,8 +1276,6 @@ function manageQualifyingRoundMatchScores(matchNum)
         matchObj = matchesList[matchNum - 1];
         var newGameScoresString = prompt("Match '" + getMatchTitle(matchObj) + "' game scores (comma separated list, scores separated by dash - e.g., 11-9, 8-11).", 
                                          matchObj.gameScoresString);
-         
-        //  if (newGameScoresString == null || newGameScoresString == "")   TODO - removing null string - user might want to clear games
 
         if (newGameScoresString == null)  // User hit cancel on prompt
         {
@@ -1150,23 +1295,13 @@ function manageQualifyingRoundMatchScores(matchNum)
             setLocalStorageMatchesList();
             
             deriveQualifierRoundRanking();   // Need to apply all matches to all players - delta updates are too difficult.
+            
+            displayTournament();
         }
         else {
             alert("Game scores have not changed");
-        }
+        }  
     }
-    else {
-        alert("Match '" + matchNum + "'is not scheduled");
-    }
- 
-    var cellId = "Match" + matchNum + "CellScore";
-    
-    displayTournament();
-    
-    //document.getElementById(cellId).innerHTML = matchObj.gameScoresString;   // This updates the individual match results
-    
-    //var playerDataAsHtml = getPlayersAsHTML();
-    //document.getElementById("playerData").innerHTML = playerDataAsHtml;
 }
 
 function getMatchTitle(matchObj)
@@ -1174,6 +1309,10 @@ function getMatchTitle(matchObj)
     return matchObj.matchNum + " (" + matchObj.player1Name + "-" + matchObj.player2Name + ")";
 }
 
+function getPlayoffMatchTitle(matchObj, matchNum)
+{    
+    return matchNum + " (" + matchObj.player1Name + "-" + matchObj.player2Name + ")";
+}
 
 function manageMatch1Scores()
 {
@@ -1215,54 +1354,35 @@ function manageMatch8Scores()
     manageQualifyingRoundMatchScores(8);
 }
 
-function manageFinalsScores()
+function managePlayoff1Scores()
 {
-    if (tournament.state == 4)   // Finals in-progress
+    if (playoffMatchesList.length < 1)
     {
-        alert("Updating finals scores");
+        return;
     }
-    else
-    if (tournament.state < 4)
-    {
-        alert("Finals haven't started yet");
-    }
-    else {
-        alert("Finals have already completed");
-    }
+    
+    managePlayoffMatchScores(1);
 }
 
-function manageSemiFinal1Scores()
+function managePlayoff2Scores()
 {
-    if (tournament.state == 3)   // Semi-finals in-progress
+    if (playoffMatchesList.length < 2)
     {
-        alert("Updating semi-finals scores");
+        return;
     }
-    else
-    if (tournament.state < 3)
-    {
-        alert("Semi-finals haven't started yet");
-    }
-    else {
-        alert("Semi-finals have already completed");
-    }
+    
+    managePlayoffMatchScores(2);
 }
 
-function manageSemiFinal2Scores()
+function managePlayoff3Scores()
 {
-    if (tournament.state == 3)   // Semi-finals in-progress
+    if (playoffMatchesList.length < 3)
     {
-        alert("Updating semi-finals scores");
+        return;
     }
-    else
-    if (tournament.state < 3)
-    {
-        alert("Semi-finals haven't started yet");
-    }
-    else {
-        alert("Semi-finals have already completed");
-    }
+    
+    managePlayoffMatchScores(3);
 }
-
 
 function startSemiFinals() 
 {            
@@ -1272,7 +1392,65 @@ function startSemiFinals()
         return;
     }
     
-    alert("Transition to semi-finals is not yet coded (coming soon)");
+    if (playersList.length < 4)
+    {
+        alert("There are only 3 players, so there can't be two rounds of playoffs.");
+        return;
+    }
+
+    var errorString = finalizeQualifyingRoundMatches();
+    
+    if (errorString.length > 0) {
+        return;
+    }
+        
+    var confirmStr = prompt("You have requested start of semi-finals, all qualifying round matches appear to be complete - but please confirm that all scores have been validated and are correcxt.  Press ok to continue to semi-finals, otherwise press cancel.", "Confirmed");
+    
+    if (confirmStr == null || confirmStr != "Confirmed") 
+    {
+        return;
+    }
+
+    tournament.state = 3;
+    tournament.nbrOfPlayoffRounds = 2;        
+    
+    var sortedMatchesList = clonePlayersList().sort(playersCompareToFunction);
+    
+    var playoffMatch1Obj = createMatch(tournament.compositeKey, 0, 3,     // Semi-finals 1
+                                         sortedMatchesList[0],   // 1st seed
+                                         sortedMatchesList[3]);  // 4th seed
+    
+    var playoffMatch2Obj = createMatch(tournament.compositeKey, 0, 3,     // Semi-finals 2
+                                         sortedMatchesList[1],   // 2nd seed
+                                         sortedMatchesList[2]);  // 3rd seed 
+   
+    playoffMatchesList.push(playoffMatch1Obj);
+    playoffMatchesList.push(playoffMatch2Obj);
+    
+    // TODO - commit changes for newly scheduled matches, changes to player data, and updated tournament state.
+    
+    displayTournament();
+}
+
+function clonePlayersList()
+{
+    var clonedList = new Array();
+    
+    playersList.forEach(function(item, index, array) 
+    {
+        clonedList.push(item);
+    }); 
+    
+    return clonedList;
+}
+
+function playersCompareToFunction(a,b) 
+{
+    if (a.derivedQualifyingScore < b.derivedQualifyingScore)
+        return 1;
+    if (a.derivedQualifyingScore > b.derivedQualifyingScore)
+        return -1;
+    return 0;
 }
 
 function startFinals() 
@@ -1283,7 +1461,61 @@ function startFinals()
         return;
     }
     
-    alert("Transition to finals is not yet coded (coming soon)");
+    var confirmStr = prompt("You have requested start of finals while in qualifying round - this implies semi-finals will be skipped.  To skip semi-finals and proceed immediately to finals, press ok button, otherwise, press cancel.", "Confirmed");
+    
+    if (confirmStr == null || confirmStr != "Confirmed") 
+    {
+        return;
+    }
+  
+    var semiFinalsWinnerPlayer1;
+    var semiFinalsWinnerPlayer2;
+  
+    if (tournament.state == 2)
+    {
+        tournament.nbrOfPlayoffRounds = 1;   // When going from qualifier round to finals, there is obviously only 1 playoff round.
+    
+        finalizeQualifyingRoundMatches();
+    }
+    else {    
+        // Verify semi final matches are complete (todo)  - set function variables semiFinalsWinnerPlayer1 and semiFinalsWinnerPlayer2
+    }
+    
+    var playoffMatch1Obj;
+    var playoffMatch2Obj;
+    
+    if (tournament.state == 3)  // If coming from semi-final round, then there is only a single final match to be scheduled.
+    {        
+        playoffMatch1Obj = createMatch(tournament.compositeKey, 0, 4,   // Finals match only
+                                       semiFinalsWinnerPlayer1,
+                                       semiFinalsWinnerPlayer2);  
+                                       
+        playoffMatchesList.push(playoffMatch1Obj);
+    }
+    else {
+        var sortedMatchesList = clonePlayersList().sort(playersCompareToFunction);    
+    
+        playoffMatch1Obj = createMatch(tournament.compositeKey, 0, 4,      // Finals match
+                                       sortedMatchesList[0],   // 1st seed
+                                       sortedMatchesList[1]);  // 2rd seed  
+
+        playoffMatchesList.push(playoffMatch1Obj);
+
+        if (sortedMatchesList.length > 3)
+        {
+            playoffMatch2Obj = createMatch(tournament.compositeKey, 0, 2,  // Consolation match
+                                           sortedMatchesList[2],   // 3rd seed
+                                           sortedMatchesList[3]);  // 4th seed 
+                                           
+            playoffMatchesList.push(playoffMatch2Obj);
+        }
+    }
+
+    tournament.state = 4;
+
+    // TODO - commit changes for newly scheduled matches, changes to player data, and updated tournament state.
+    
+    displayTournament();
 }
 
 function closeTournament() 
@@ -1354,16 +1586,16 @@ function closeTournament()
       <td id="Match8Cell1"></td> <td id="Match8CellMatchType"></td> <td id="Match8CellPlayers"><td id="Match8CellScore"></td> 
   </tr>  
 
-  <tr id="SemiFinal1Match"  onclick="manageSemiFinal1Scores()">
-      <td id="SemiFinalMatch1Cell1"></td> <td id="SemiFinalMatch1MatchType"></td> <td id="SemiFinalMatchCell1Players"><td id="SemiFinalMatch1CellScore"></td> 
+  <tr id="Playoff1Match"  onclick="managePlayoff1Scores()">
+      <td id="PlayoffMatch1Cell1"></td> <td id="PlayoffMatch1MatchType"></td> <td id="PlayoffMatch1CellPlayers"><td id="PlayoffMatch1CellScore"></td> 
   </tr>  
 
-  <tr id="SemiFinal2Match"  onclick="manageSemiFinal2Scores()">
-      <td id="SemiFinalMatch2Cell1"></td> <td id="SemiFinalMatch2MatchType"></td> <td id="SemiFinalMatch2CellPlayers"><td id="SemiFinalMatch2CellScore"></td> 
+  <tr id="Playoff2Match"  onclick="managePlayoff2Scores()">
+      <td id="PlayoffMatch2Cell1"></td> <td id="PlayoffMatch2MatchType"></td> <td id="PlayoffMatch2CellPlayers"><td id="PlayoffMatch2CellScore"></td> 
   </tr> 
     
-  <tr id="FinalsMatch"  onclick="manageFinalsScores()">
-      <td id="FinalsMatchCell1"></td> <td id="FinalsMatchMatchType"></td> <td id="FinalsMatchCellPlayers"><td id="FinalsMatchCellScore"></td> 
+  <tr id="Playoff3Match"  onclick="managePlayoff3Scores()">
+      <td id="PlayoffMatch3Cell1"></td> <td id="PlayoffMatch3MatchType"></td> <td id="PlayoffMatch3CellPlayers"><td id="PlayoffMatch3CellScore"></td> 
   </tr>  
   
 </table>

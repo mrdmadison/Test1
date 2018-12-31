@@ -6,13 +6,28 @@
 
 // 12/31/2018:  First beta release (everything seems to be working fine - will go through user acceptance testing)
 //
-// TODO - Could perhaps add tournament labels (when multiple tournaments exist) so user can merely click once to
-//        switch to a different tournament.  could use an html table sort of like "tabs".  This would be one click instead of 3.
+// 12/31/2018:  Added tournament label buttons to make it easier to switch between tournaments.
+//
+// 12/31/2018:  Added edit to ensure that player names are unique (no duplicates).
 
 window.onload = initialPageLoad;
 
 function initialPageLoad()
 {
+    getLocalStorageTournamentsList();
+    
+    if (tournamentsList.length > 0)
+    {
+        rebuildTournamentListMenu();
+        
+        var existingTournament = getLocalStorageTournament(tournamentsList[0]);
+    
+        if (existingTournament != null)
+        {
+            resumeExistingTournament(existingTournament);
+            return;
+        }
+    }
 }
 
 var tournamentsList = new Array();
@@ -178,6 +193,27 @@ function getAsJsonString(obj)
     return myJSON;
 }
 
+function findDuplicates(playerNamesString) 
+{
+  let result = [];
+
+  data = playerNamesString.split(",");
+  
+  data.forEach(function(element, index) {
+    
+    // Find if there is a duplicate or not
+    if (data.indexOf(element, index + 1) > -1) {
+      
+      // Find if the element is already in the result array or not
+      if (result.indexOf(element) === -1) {
+        result.push(element);
+      }
+    }
+  });
+
+  return result;
+}
+
 function verifyTournamentCompositeKey(compositeKey)
 {
     var validityStr = "";
@@ -190,6 +226,24 @@ function verifyTournamentCompositeKey(compositeKey)
     return validityStr;
 }
 
+function trimSpacesInTokenList(tokenListString, tokenSeparator)
+{
+    var strParts = tokenListString.split(tokenSeparator);
+    
+    var trimmedOutput = "";
+    
+    strParts.forEach(function(element, index) 
+    {
+        if (trimmedOutput.length > 0)
+        {
+            trimmedOutput += ",";
+        }
+        trimmedOutput += element.trim();
+    });
+
+    return trimmedOutput;
+}
+
 function verifyTournamentPlayers(tournamentPlayersString)
 {
     var validityStr = "";
@@ -197,14 +251,23 @@ function verifyTournamentPlayers(tournamentPlayersString)
     if (tournamentPlayersString == null || tournamentPlayersString == "")
     {
         validityStr = "Tournament players is not defined - it should be of the form: playerName1,playerName2,...,playerName8";
+        return validityStr;
     }
-    else {
-        var strParts = tournamentPlayersString.split(",");
+    
+    var strParts = tournamentPlayersString.split(",");
         
-        if (strParts.length < 3 || strParts.length > 8)
-        {
-            validityStr = "Tournament players are invalid - list must be between 3 and 8 (i.e., playerName1,playerName2,...,playerName8)";
-        }
+    if (strParts.length < 3 || strParts.length > 8)
+    {
+        validityStr = "Tournament players are invalid - list must be between 3 and 8 (i.e., playerName1,playerName2,...,playerName8)";
+        return validityStr;
+    }
+        
+    var dups = findDuplicates(tournamentPlayersString);
+
+    if (dups.length > 0)
+    {
+        validityStr = "Tournament players contain duplicates: " + tournamentPlayersString + "\n" + dups;
+        return validityStr;
     }
     
     return validityStr;
@@ -220,7 +283,7 @@ function createTournament(compositeKey, tournamentPlayersString, nbrOfGamesToWin
     
     createPlayersList(tournamentPlayersString);  // Constructs and loads playersMap
     matchesList = new Array();
-    
+
     return tournament;
 }
 
@@ -296,7 +359,9 @@ function initializeTournament()
             return;
         }
         
-        var tournamentPlayersString = prompt("Please enter player names.  Names should be offered in comma separated list (and be in seeded order)", tournamentPlayersString);    
+        var tournamentPlayersString = prompt("Please enter player names.  Names should be offered in comma separated list (and be in seeded order)", tournamentPlayersString);  
+
+        tournamentPlayersString = trimSpacesInTokenList(tournamentPlayersString, ",");
 
         validityStr = verifyTournamentPlayers(tournamentPlayersString);
         
@@ -306,18 +371,23 @@ function initializeTournament()
             return;
         }              
 
-        var userData = prompt("Please enter number of games needed to win a qualifying round match (must be 1, 2, or 3)", "2");
+        var userData = prompt("Please enter number of games needed to win a qualifying round match (must be 2 or 3)", "2");
         var nbrOfGamesToWinMatch = Number(userData);
         
-        if (isNaN(userData) || userData == null || userData == "" || nbrOfGamesToWinMatch < 1 || nbrOfGamesToWinMatch > 3)
+        if (isNaN(userData) || userData == null || userData == "" || nbrOfGamesToWinMatch < 2 || nbrOfGamesToWinMatch > 3)
         {
-            alert("Invalid number of games to win match, must be between 1 and 3 (default is 2).")
+            alert("Invalid number of games to win match, must be between 2 or 3 (default is 2).")
             return;
         }
         
         createTournament(compositeKey, tournamentPlayersString, nbrOfGamesToWinMatch);
             
         tournamentsList.push(tournament.compositeKey);
+            
+        if (tournamentsList.length > 1)
+        {
+            rebuildTournamentListMenu();
+        }
             
         setLocalStorageTournamentsList();
             
@@ -361,6 +431,8 @@ function resumeExistingTournament(existingTournament)
         });     
 
         newTournamentPlayersString = prompt("Please adjust or confirm tournament player names.  Names should be offered in comma separated list (and be in seeded order)", tournamentPlayersString);    
+
+        newTournamentPlayersString = trimSpacesInTokenList(newTournamentPlayersString, ",");
 
         validityStr = verifyTournamentPlayers(newTournamentPlayersString);
         
@@ -1003,13 +1075,22 @@ function displayTournament()
 {
     document.getElementById("appDebuggingData").innerHTML = "";  // Just in case it was displayed.
 
+    rebuildTournamentListMenu();
+    
     deriveQualifierRoundRanking();
     
     var output = "";
-
-    output += "<br>Tournament category: " + tournament.compositeKey;
-    output += "<br>Tournament progress: " + getTournamentStateLabel();
-    output += "<br>Number of games to win a match: " + tournament.nbrOfGamesToWinMatch;
+    
+    output += "Category: " + tournament.compositeKey;
+    output += ", &nbsp;&nbsp;&nbsp;&nbsp Progress: " + getTournamentStateLabel();
+    
+    if (tournament.nbrOfGamesToWinMatch == 2)
+    {
+        output += ", &nbsp;&nbsp;&nbsp;&nbsp Best of 3";
+    }
+    else {
+        output += ", &nbsp;&nbsp;&nbsp;&nbsp Best of 5";    
+    }
 
     document.getElementById("tournamentData").innerHTML = output;    
     
@@ -1036,19 +1117,15 @@ function getTournamentStateLabel()
     }
     else
     if (tournament.state == 2) {
-        return "2-QUALIFYING ROUND STARTED"    
+        return "2-QUALIFYING ROUND"    
     }
     else
     if (tournament.state == 3) {
-        return "3-SEMI FINALS STARTED"
+        return "3-SEMI FINALS"
     }
     else
     if (tournament.state == 4) {
-        return "4-FINALS STARTED"    
-    }
-    else
-    if (tournament.state == 1) {
-        return "5-TOURNAMENT CLOSED"    
+        return "4-FINALS"    
     }
     
     return "UNKNOWN_STATE (some sort of application error occurred)."
@@ -1600,6 +1677,42 @@ function startFinals()
     displayTournament();
 }
 
+function rebuildTournamentListMenu()
+{
+    if (tournamentsList.length <= 1)
+    {
+        document.getElementById("TournamentListTableId").innerHTML = "";
+    }
+    else {
+        var output = "<tr>";
+        
+        tournamentsList.forEach(function(item, index, array) 
+        {
+            output += "\n<td> <button type='button' id='TournamentListsId_" + item + "' onclick='switchTournament(this.textContent)'>" + item + "</button></td>";
+        });
+        
+        output += "</tr>";
+        
+        document.getElementById("TournamentListTableId").innerHTML = output;
+    }
+    
+}
+
+function switchTournament(compositeKey)
+{
+    if (tournament.compositeKey == compositeKey)
+    {
+        return;
+    }
+
+    var existingTournament = getLocalStorageTournament(compositeKey);
+    
+    if (existingTournament != null)
+    {
+        resumeExistingTournament(existingTournament);
+        return;
+    }
+}
 
 </script>
 
@@ -1607,14 +1720,16 @@ function startFinals()
 
 <body>
 
-<table id="TournamentActions" cellspacing="15">
+<table id="TournamentActions" cellspacing="10">
   <tr>
-      <td> <p><button onclick="initializeTournament()" type="button">1. Select (or begin) a tournament</button> ==>> </p> </td>
+      <td> <p><button onclick="initializeTournament()" type="button">1. Create a new tournament</button> ==>> </p> </td>
       <td> <p><button onclick="startTournament()" type="button">2. Start qualifying round</button>  ==>> </p> </td>
       <td> <p><button onclick="startSemiFinals()" type="button">3a. Start semi-finals</button>  ==>> </p> </td>
       <td> <p><button onclick="startFinals()" type="button">3b. Start finals</button></p> </td>
 </table>
 
+<table id="TournamentListTableId" cellspacing="10">
+</table>
 
 <div id="tournamentData"></div>
 
@@ -1671,7 +1786,6 @@ function startFinals()
   
 </table>
 
-<br>
 <table id="DebuggingActions" cellspacing="15">
   <tr>
       <td> <p><button onclick="displayTournament()" type="button">Display tournament</button></p> </td>

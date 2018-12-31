@@ -1377,32 +1377,26 @@ function manageMatch8Scores()
 
 function managePlayoff1Scores()
 {
-    if (playoffMatchesList.length < 1 || tournament.state == 4)
+    if (playoffMatchesList.length == 1 || playoffMatchesList.length == 2)  // Either a single final game, or only 2 semi-final matches
     {
-        return;
+        managePlayoffMatchScores(1);
     }
-    
-    managePlayoffMatchScores(1);
 }
 
 function managePlayoff2Scores()
 {
-    if (playoffMatchesList.length < 2 || tournament.state == 4)
+    if (playoffMatchesList.length == 2)  // Two semi-final matches
     {
-        return;
+        managePlayoffMatchScores(2);
     }
-    
-    managePlayoffMatchScores(2);
 }
 
 function managePlayoff3Scores()
 {
-    if (playoffMatchesList.length < 3)
+    if (playoffMatchesList.length == 3)  // If there are 3 playoff games, then must be in the finals.
     {
-        return;
+        managePlayoffMatchScores(3);
     }
-    
-    managePlayoffMatchScores(3);
 }
 
 function startSemiFinals() 

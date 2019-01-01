@@ -214,18 +214,6 @@ function findDuplicates(playerNamesString)
   return result;
 }
 
-function verifyTournamentCompositeKey(compositeKey)
-{
-    var validityStr = "";
-    
-    if (compositeKey == null || compositeKey == "")
-    {
-        validityStr = "Tournament label was not supplied - this is required (it is how a specific tournament is identified).";
-    }
-    
-    return validityStr;
-}
-
 function trimSpacesInTokenList(tokenListString, tokenSeparator)
 {
     var strParts = tokenListString.split(tokenSeparator);
@@ -318,10 +306,11 @@ function initializeTournament()
     getLocalStorageTournamentsList();
     
     var compositeKey = "";
+    var promptData = "";
     
     if (tournamentsList.length == 0)
     {
-        compositeKey = prompt("No tournaments have been started, please enter a tournament label to initialize a new tournament.", "");
+        promptData = prompt("No tournaments have been started, please enter a tournament label to initialize a new tournament.", "");
     }
     else {
         var compositeKeys = "";
@@ -334,23 +323,20 @@ function initializeTournament()
             compositeKeys += item;
         });    
     
-        compositeKey = prompt("Some tournaments have already been started, please limit to a single tournament label or enter a new tournament label (to initialize a new tournament).", compositeKeys);    
+        promptData = prompt("Some tournaments have already been started, please limit to a single tournament label or enter a new tournament label (to initialize a new tournament).", compositeKeys);    
     }
-    
+        
+    if (promptData != null && promptData != "")
+    {
+        compositeKey = promptData.trim();
+    }
+        
     if (compositeKey == null || compositeKey == "") 
     {
         alert("User aborted, no tournament will be started or resumed!");
         return;
     }
-    else {
-        var validityStr = verifyTournamentCompositeKey(compositeKey);
-    
-        if (validityStr.length > 0)
-        {
-            alert(validityStr);
-            return;
-        }        
-    
+    else {    
         var existingTournament = getLocalStorageTournament(compositeKey);
     
         if (existingTournament != null)
@@ -359,11 +345,24 @@ function initializeTournament()
             return;
         }
         
-        var tournamentPlayersString = prompt("Please enter player names.  Names should be offered in comma separated list (and be in seeded order)", tournamentPlayersString);  
+        promptData = prompt("Please enter player names.  Names should be offered in comma separated list (and be in seeded order)", tournamentPlayersString);  
+        
+        var tournamentPlayersString = "";
+        
+        if (promptData != null && promptData != "")
+        {
+            tournamentPlayersString = promptData.trim();
+        }
+        
+        if (tournamentPlayersString.length == 0)
+        {
+            alert("No tournament players were supplied, so no tournament will be started or resumed.");
+            return;
+        }
 
         tournamentPlayersString = trimSpacesInTokenList(tournamentPlayersString, ",");
 
-        validityStr = verifyTournamentPlayers(tournamentPlayersString);
+        var validityStr = verifyTournamentPlayers(tournamentPlayersString);
         
         if (validityStr.length > 0)
         {
@@ -430,8 +429,19 @@ function resumeExistingTournament(existingTournament)
             tournamentPlayersString += item.name
         });     
 
-        newTournamentPlayersString = prompt("Please adjust or confirm tournament player names.  Names should be offered in comma separated list (and be in seeded order)", tournamentPlayersString);    
+        var promptData = prompt("Please adjust or confirm tournament player names.  Names should be offered in comma separated list (and be in seeded order)", tournamentPlayersString);    
 
+        if (promptData != null && promptData != "")
+        {
+            newTournamentPlayersString = promptData.trim();
+        }
+        
+        if (newTournamentPlayersString.length == 0)
+        {
+            alert("No tournament players were supplied, so no tournament will be resumed.");
+            return;
+        }        
+        
         newTournamentPlayersString = trimSpacesInTokenList(newTournamentPlayersString, ",");
 
         validityStr = verifyTournamentPlayers(newTournamentPlayersString);
@@ -1722,10 +1732,11 @@ function switchTournament(compositeKey)
 
 <table id="TournamentActions" cellspacing="10">
   <tr>
-      <td> <p><button onclick="initializeTournament()" type="button">1. Create a new tournament</button> ==>> </p> </td>
-      <td> <p><button onclick="startTournament()" type="button">2. Start qualifying round</button>  ==>> </p> </td>
-      <td> <p><button onclick="startSemiFinals()" type="button">3a. Start semi-finals</button>  ==>> </p> </td>
+      <td> <p><button onclick="initializeTournament()" type="button">1. Create a new tournament</button> </p> </td>
+      <td> <p><button onclick="startTournament()" type="button">2. Start qualifying round</button> </p> </td>
+      <td> <p><button onclick="startSemiFinals()" type="button">3a. Start semi-finals</button> </p> </td>
       <td> <p><button onclick="startFinals()" type="button">3b. Start finals</button></p> </td>
+      <td> <a href="UsersGuide.html">User's Guide</a></td>
 </table>
 
 <table id="TournamentListTableId" cellspacing="10">

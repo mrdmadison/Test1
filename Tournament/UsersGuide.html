@@ -1,0 +1,170 @@
+<html>
+<head>
+<link rel=STYLESHEET TYPE="text/css" href="../stylesheets/common.css">
+</head>
+
+<body>
+
+<b>Tournament manager - Overview</b>
+<ul>
+    <p>The tournament manager application exists to schedule tournament matches and collect game scores.  One or
+    more tournaments can be managed concurrently - tournaments are identified by a "Category".  The category is nothing
+    more than a label which helps user distinguish between the various tournaments.  If there are two or more tournaments,
+    the category labels will be displayed across the top of the form - this allows for easy navigation between tournaments.
+    The main benefit of this particular tournament manager surrounds the complexity of having a two match qualifying round
+    followed by one or two playoff rounds.  After entering tournament players, the user will then begin the 
+    qualifying round - this will trigger the scheduling of the qualifying round matches.   Once the qualifying round
+    begins, the tournament players are frozen.
+    
+    <p>The user enters match scores until all the qualifying matches are complete.  Once the scores have been confirmed
+    (user would typically visually review the scores to see if they were entered correctly), the user would begin 
+    the playoffs by selecting either "Start semi-finals", or "Start finals".  Once a playoff round is started, scores in
+    an earlier round are frozen.
+    
+    <p>When scheduling playoff matches, the qualifying round results will be used to rank the players (see playoff ranking
+    below for more information).
+</ul>
+
+<b>Creating a tournament</b>
+<ul>
+    <p>When initially starting the application, there would be no tournaments created - so the first thing the user would do is
+    select "1. Create a new tournament".  The user will be prompted for a tournament label, a list of players, and number of games to
+    win a match.   The tournament label can be anything, but it is recommended that the label be something short so as to not take
+    up too space on the form (i.e., if managing tournament from a Smart phone, screen size might be a bit of a challenge).  And note, 
+    when switching between tournaments, it is the tournament label which is used to identify a particular tournament. 
+    
+    <p>Until the qualifying round is started, user will be able to update the list of tournament players - so each time the tournament
+    is selected, if the qualifying round is not started, the player list will be displayed.  
+    
+    <p>Since qualifying round matches are scheduled based on player seeding, the players registered for a tournament should be entered
+    based on their ranking (i.e., relative skill level, from top to bottom).
+    
+    <p>The application manages tournaments of between 3 and 8 players.  If more than 8 players exist, two or more tournaments must
+    be created (e.g., if you have 13 players, two tournaments of 6 and 7 players could be used).  Note that separate concurrent 
+    tournaments are completely unrelated (from application perspective) so it would be up to the user to distribute the seeded players
+    evenly to the various "tournament pools".  Clever use of tournament labels can help when splitting a tournament up into sub-pools
+    (e.g., consider labels of "A1" and "A2").  
+    
+    <p>When starting application where there is previously committed tournament data, those tournaments will be displayed and any
+    in-progress tournaments can be resumed.
+</ul>
+
+
+<b>Starting the qualifying round</b>
+<ul>
+    <p>After players have been entered, the qualifying round can be triggered by the user.  When this is done, the player list is
+    frozen and the tournament matches are scheduled.  The application attempts to schedule matches so that all players have roughly
+    the same "strength of schedule".  This isn't a perfect formula, but in general, the application attempts to schedule
+    one "difficult" match and one "easier" match for each player.  The players "strengh of schedule" is shown in the players list
+    (updated once the qualifying round matches are scheduled).
+    
+    <p>Once the qualifying round is started, the matches would begin and user would enter match results.
+    Match results are entered by selecting a particular tournament match and supplying game scores.  See entering game scores below.
+    
+    <p>Match scores can be added or updated as needed until all the matches are complete.  Once complete, user finalizes the 
+    qualifying round by starting the playoff round.
+</ul>
+
+
+<b>Entering match scores</b>
+<ul>
+    <p>To enter game scores for a particular match, select the match and enter game scores. The following
+    rules apply to game scores:
+    <ul>
+       <li>Game scores are separated by a dash (e.g., 11-9).
+       <li>Games are separated by a comma (e.g., 11-9, 11-8).
+       <li>Games are played to 11, so one player must have at least 11 points.
+       <li>If matches go to deuce (i.e., 10-10), the match must be decided by exactly 2 points.
+       <li>Matches are won either best of 3, or best of 5, so based on that setting (expressed when creating a tournament),
+           no match may exceed that number of winning games.
+       <li>The first player to reach "number of games to win a match" is the winner.  If matches are best of 3, then no player
+           may win more than 2 games (for best of 5, no player may win more than 3 games).
+       <li>It is invalid for both players to win "number of games to win a match" (e.g., if matches are best of 3, it wouldn't make
+           sense for both players to win 2 games).
+       <li>Game scores are entered based on the order of the player names in the match.  So for player 1 versus player 2, the following
+           game scores would express that player 1 won the match by a score of 2 to 1:   11-9, 8-11, 11-9.
+    </ul>
+    
+    <p>As game scores are entered, the player that is leading in the match will be shown in bold.  Once a player has "won", their
+    name will be underlined.  Note that until the playoffs have been started, match results are not finalized, so any mistakes in 
+    data entry can be corrected.
+</ul>
+
+<b>Starting playoff rounds</b>
+<ul>
+    <p>Playoffs are started once all the qualifying round scores are entered.  If user attempts to start playoffs when one or more
+       matches are still in-progress, the application will issue a warning and not allow playoffs to begin.
+       
+    <p>Playoff can either be one or two rounds.  For two round playoffs, the user first starts semi-final round.  This will schedule
+       the top 4 players from the qualifying round, where top player will play 4th player, and 2nd and 3rd players will play each other.
+       
+    <p>If user elects to skip semi-finals, then the top 2 players will play in the championship match and the 3rd and 4th players will
+       play in a consolation match.
+       
+    <p>If there are only 3 players in a tournament, there obviously cannot be any semi-final matches.
+</ul>
+
+<b>Qualifying round player ranking</b>
+<ul>
+    <p>Since there are only 2 qualifying round matches per player, there is a high likelihood that match victories alone cannot
+       be used as an exclusive means of ranking the players.  So for ties, the following tie breaking algorithm is used:
+     
+       <ol>
+         <li>Match victories
+         <li>Bonus points (only applies for players with exactly 1 win)
+         <li>Game differential
+         <li>Point differential
+         <li>Player seeding       
+       </ol>
+       
+    <p>Bonus points are added to players with exactly one win if they have beaten a player who also has exactly 1 win.  This 
+       resolves both "head to head" scenario as well as cyclic scenario (e.g., A beats B, B beats C, and C beats A, where D also has
+       one win, but only beat a player that has 0 victories).
+       
+    <p>Overall qualifying round ranking is expressed as a numeric score shown in players list under "Qualifying round ranking".
+       The number is derived by multiplying player's win count by 10,000, adding 1,000 bonus points for one win players if they beat
+       a player with one win, then adding game differential times 100, and lastly adding point differential.
+</ul>
+
+<b>Application technology</b>
+<ul>
+    <p>The application is pure html and javascript using localStorage to manage application data.  Local storage was used so as to
+    avoid the need for server based storage (and the headache associated with user accounts, security, and the like).  It would have been
+    possible to merely cache data locally in javascript, but that would suffer from a negative consequence of having all data lost if
+    the browser were closed (perhaps by accident).  Tournament data is saved each time it is collected, so nothing is lost.  
+    
+    <p>Since localStorage is used, tournament data is not publicly available on the Internet.  This is actually a good thing in that
+    no data is ever transmitted from the browser.  
+    
+    <p>Application is only going to work if cookies are allowed (at least for the application's URL).  This perhaps could be changed
+    in the future to allow data to only be cached in the browser, but that seems risky since closing of the browser would lose
+    all tournament data.
+    
+    <p>If web data is cleared on the device, this obviously would erase tournament data.  Note that virtually all browsers and
+    devices allow web data to be cleared (so users should be careful to not do this accidently while managing tournament data).
+    
+    <p>Application offers administrative functions at the bottom of the screen to clear local storage as well as dump the internal
+    memory of the application.  Dumping of raw application data would typically only be necessary for "debugging" purposes so users 
+    would typically have no need to do this.  
+    
+    <p>If tournaments are played on a daily or weekly basis, it may be desirable to export tournament data and email it somewhere (this
+    is at the discretion of the user).  To email tournament data, can merely select data from the screen and paste it into email
+    body (same goes for a dump of raw tournament data - e.g., if there were a problem with the application, user could dump 
+    the raw data and then email it to a developer for further research).
+    
+    <p>Since historical tournament data is not managed within the application, if there is a desire to start new tournaments using
+    the same tournament categories as earlier tournaments (which is likely the case for periodic tournaments), the user would need
+    to clear all local storage (using button on the bottom of the screen).
+    
+    <p>Since this tournament application manages essentially trivial data about tournament players and match scores, there should be
+    no concern about security with respect to exposing personally identifiable or sensitive data.  Plus, since no 3rd party javascript
+    libraries are included, cross site scripting attacks aren't be possible.  Still, users should always be careful when entering
+    any data on a device, especially when browsers and javascript are being used.   So it is recommended that first name and
+    perhaps last name initial be entered (as opposed to player's full name).  And certainly, player's cellphone or email address would likely 
+    not serve as a good way to identifying tournament players.  This point is only mentioned to remind users to think about
+    Internet security when entering data on any device.
+</ul>
+
+</body>
+</html>
+ 

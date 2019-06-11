@@ -1,0 +1,170 @@
+<html>
+<head>
+<script src="../javascripts/menuCommon.js"></script>
+
+<script>
+var sectionMenu=new Array()
+sectionMenu[0]='<a href="#Top">Top - Role of Government</a>'
+sectionMenu[1]='<a href="#EverIncreasingComplexity">Ever Increasing Complexity</a>'
+sectionMenu[2]='<a href="#RollingOutComplexSolutions">Rolling Out Complex Solutions</a>'
+sectionMenu[3]='<a href="#EstablishingStandards">Establishing Standards</a>'
+</script>
+
+</head>
+
+<link rel=STYLESHEET TYPE="text/css" href="../stylesheets/common.css">
+
+
+<a name="Top">
+<table style="width:100%">
+  <tr>
+    <td><h2 onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Public Safety App - Role of Government</h2></td>
+	
+    <td valign="top"><img src="MASlogo-small.jpg"></td> 
+  </tr>
+</table>
+
+<ul>
+    <p>Government obviously has a major role to play in public safety, for it is local, state and federal agencies which:
+       <ul>
+          <li>Enact laws and regulations
+          <li>Provide law enforcement and first responders
+          <li>Establish standards
+          <li>Promote accountability through periodic audits and inspections
+       </ul>
+   
+    <p>Of course, the private sector also has a role in public safety, some examples are:
+       <ul>
+          <li>Creates products and services, including innovative technology, which are used by law enforcement and first responders
+          <li>Contributes to standards
+          <li>Supplies guidance (expertise) to government agencies
+          <li>Interacts with law enforcement and first responders during a crisis
+        </ul>
+</ul>
+
+
+<a name="EverIncreasingComplexity">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Why ever increasing complexity in technology sector mandates a paradigm shift</em>
+
+<ul>
+    <p>As we all rely on technology more and more, and as the solutions become more and more complicated, government agencies have quite a challenge keeping up.  Let's consider some of the real world challenges that those in government have to deal with:
+       
+       <ul>
+           <li>Although a given public safety crisis happens locally, the technology and solutions exist at a national level.
+           <li>Complex technologies are never created at once, they instead evolve over time (so you have to dive in before solution is fully baked).
+           <li>The volume of data created today necessitates seamless, automated, and virtually instantaneous interoperability. 
+           <li>Near total reliance on technical solutions puts everyone at risk when disruptions in service occur.
+           <li>Technology changes impact facilities (buildings, electrical, and hardware), and migration to newer standards takes time.
+           <li>Because of legacy systems, multiple standards and multiple solutions have to co-exist.
+           <li>Sometimes solution require multiple service providers (when no one vendor has full functional footprint).
+           <li>Requirements and standards are frequently changing.
+           <li>Evolving solutions often require software upgrades, and sometimes this necessitates complex data conversions.
+           <li>Rate of change, and complexity of solution, make it extremely difficult for those in government to effectively evaluate solutions.
+           <li>Test cycles can help confirm satisfaction of requirements, but this takes time, and often world changes between start and
+               completion of test cycle.
+           <li>Government agencies may not have the resources to constantly confirm upgrades to overall solution.
+       </ul>
+       
+    <p>So given these real world factors, how can a local or state government possibly know which set of services will best promote public safety?  And even if they identify the services they want, how can they be sure the vendor they select will truly satisfy all of their current and future needs.  And once a government agency goes down a particular path (with a specific vendor's solution), it may be difficult to switch gears if dissatisfied with solution.  In a later section, a methodology will be described which can improve the overall process and raise confidence, but even that won't be perfect.   
+       
+    <p>So what factors should a government agency consider when dealing with the topic of technology and public safety  (this is just a partial list):
+       <ul>
+           <li>Are system features well documented?
+           <li>Are system features easily confirmable through an automated test suite?
+           <li>Is confirmation through automated test suite reproducable, and can this be reproduced easily and quickly?
+           <li>Can solution be "ported" to a different service provider should government agency become dissatisfied with current vendor?
+           <li>Is port-in / port-out a documented requirement of the solution, and is this confirmable as part of automated test suite?
+           <li>Is the product's future "road map" published?
+           <li>Are Service Level Agreements (SLAs) published - e.g., continuous availability?
+           <li>Is compliance to SLAs covered as part of automated test suite?
+           <li>Do SLAs cover software upgrades (e.g., assurances that future roadmap will be satisfied as per documented timeline)?
+           <li>Are there impacts to hardware or facilities as technology changes, or as product roadmap is evolved?
+           <li>Are there impacts to operational demands (e.g., staffing demands, including staff training) as product roadmap is evolved?
+           <li>What penalties (if any) are expressed for non compliance by service provider?
+           <li>Are there any requirements which government agency must satisfy which could invalidate SLA and/or SLA penalties?
+       </ul>       
+    
+    <p>Hopefully it is becoming obvious that although local and state governments are the ones that have the need for public safety, they cannot solve their problems in a vacuum.  The challenge is too complex, too fluid, and too important for solution to be architected by a single entity.   And hopefully it is becoming obvious that a single service provider shouldn't be allowed to hold any government agency "hostage" by being the only game in town.   In the next section, a new paradigm will be expressed which should allow those in government to at least have a fighting chance to meet their needs for public safety.
+</ul>
+
+
+<a name="RollingOutComplexSolutions">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">How to rollout complex solutions in an ever changing world</em>
+
+<ul>
+    <p>To address this topic, let's first consider the topic of public safety.  Let's assume that video surveillance and programmatic analysis (of video content) is going to be an important component in the overall public safety strategy.  With this in mind, let's itemize some important services which would be required in the overall solution:
+    
+    <ul>
+       <li>Video cameras are installed on a site (e.g., a school).
+       <li>Video streams are displayed locally in a command center console.
+       <li>Video streams are stored locally (on N number of computers at the given site).
+       <li>Software, running locally on those N computers, analyzes the video content looking for suspicious behavior.
+       <li>When suspicious behavior is detected, "alarms" are triggered.
+       <li>Video content is periodically backed up.
+       <li>During crisis, video content is transported to remote servers for additional analysis and potential distribution.
+    </ul>
+       
+    <p>There are tons of other system functions that would be needed, but the above items illustrate enough behavior to demonstrate what is needed (and what should be avoided).  It might not be obvious to those that aren't in the IT sector, but the above items would likely be satisfied by individual software artifacts known as "components".  The components would accept some input, perform some task, and deliver some output.  The manner in which the task is performed is up to the inner working of the component, but a key aspect is the input and output.  Typically software is implemented through a series of Application Programming Interfaces (APIs) which have a rigid input and output.  The benefit of APIs is that they can be "re-used" in a variety of context, thus making overall application development more cost effective.   In fact, virtually all commercial software (be it for pay, or free software), is developed this way.  
+    
+    <p>But a key aspect is whether the APIs are governed by any service level agreements.  A company which is offering an end to end solution will likely use APIs under the covers, but may not advertise those APIs publically.  The benefit of not advertising them publically is that the company is free to change those APIs (including their input and output) at any time.  Conversely, if the APIs are offered publically and are constrained by "backward compatibility", then a company is obligated to maintain the old style of the API even when they evolve newer technology.  It is the notion of public APIs and backwards compatibility which allows software written by one IT vendor to be used by some other IT vendor.
+    
+    <p>The notion of public APIs is intimately related to the notion of standards, for it is the rigid standards which allow software vendors to evolve APIs and have faith that their solution won't be invalidated.  For example, there are billions of pages on the internet written using basic HTML.  Even though the newer HTML5 standard was introduced, it purposefully didn't invalidate older versions of HTML (otherwise, those billions of web pages would be broken).  In the past, software vendors have attempted to manipulate standards to give themselves a competitive advantage.  But in general, standards are considered a good thing, and most IT vendors embrace standards because they realize that it is the only way they can stay in business.  
+    
+    <p>So let's consider whether there are any standards related to the features described above.   For video streams, there certainly are standards (but even those have evolved over the years when you consider DVD, Blueray, 720p, 1080i, 1080p, and now the 4K formats).  Still, there are enough hardware manufacturers building TVs and cameras such that there is some level of stability and standardization with regards to video formats.  But, when you consider parsing and analyzing video content, there may not be any industry standard which describes how analytics are communicated.   Amazon's AWS services offer video transport and analysis APIs, but it isn't obvious whether these are generally accepted APIs (i.e., governed by industry standards), or whether AWS merely invented APIs and then offered them publically.  If the APIs are not governed by industry standard, then an integrator using AWS for video analysis would be locked into using AWS.  And if integrator elected to switch to a different video analysis vendor (in the future), they would be obligated to re-code a portion of their solution.
+
+    <p>Now some might think that if a vendor is providing an end to end solution, then it is their problem to deal with video parsing APIs, and if they want to switch internal vendors, that is their problem, and it is at their expense.  But remember, software upgrades can be very painful for the end user, and large scale complex systems are very difficult to confirm.   Even internal changes (under the covers) can require data conversions and upgrades to hardware.  And validation of a new release can take a fair amount of time.   And because of this, an end user may need to run dual systems (legacy and new system) for some period of time.   All of this adds extra expense and headaches.  So hopefully it is becoming  obvious that a government entity which wants to utilize video parsing and analytics should encourage the adoption of an industry standard.  This way, end to end solutions won't be required to re-invent the wheel.   The key is to not be locked in to a single vendor, and to be able to port-in / port-out when you are dissatisfied with service.  Of course, standards alone don't alleviate all of the release upgrade headaches, but they certainly can help.
+    
+    <p>When you consider other aspects of public safety using an automated solution, things like distributing video streams, sending alearts, and interacting with facility (e.g., alarms, auto locking doors, etc.), all have the very same needs with respect to standards, public APIs, and backward compatibility.  In the next section, additional attention will be placed on how to evolve standards.    
+</ul>
+
+
+<a name="EstablishingStandards">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Establishing standards - it takes a community</em>
+
+<ul>
+    <p>To evolve standards, it takes:
+       <ul>
+           <li>A community willing to collaborate and cooperate
+           <li>Centralized documentation
+           <li>Baselining organization
+       </ul>
+
+    <p>The good news is that the world has already demonstrated a strong desire and ability to standardize things.  The internet wouldn't exist without standards.  And given that standards do exist (and have been well managed), the internet has gained so much momentum that it is impossible to shut it down.   So the short answer for government agencies is they merely need to get organized, inspire collaboration and cooperation, and work the process.  The methodology needed to evolve standards is well documented, and there are plenty of organizations which can help.
+    
+    <p>So this section is going to address how various business entities can self organize so that the needs for public safety can be met, while allowing IT vendors to compete for business and generate revenue.  This will be expressed from the perspective of local and state government (but any consumer of public safety would work just as well):
+    
+    <ul>
+        <li>Begin to evolve a set of requirements for public safety (pay careful attention to those that require hardware or software).
+        <li>Form a community - e.g., city and county governments in Florida could work together with state government in Tallahassee, and ultimately, neighboring states could join.  This seems like a natural fit since they all have a vested interest in public safety.
+        <li>Share information with community and record feedback.
+        <li>Do market research and gain expertise in video streams, video analysis and video transport.
+        <li>Do market research and gain expertise in mobile device connectivity (e.g., how to communicate with Smart phones).
+        <li>Do market research on IT vendors which can potentially help with published requirements (e.g., Google and Amazon seem like good candidates for video analysis software, wireless telecommunication companies seem like good candidates for connectivity to Smart phones).
+        <li>Conduct meetings and publish meeting minutes.
+        <li>Ensure all project deliverables are available for public consumption (assuming appropriate access authority).
+        <li>Periodically conduct conferences so that those in the community can meet face to face.
+    </ul>
+ 
+    <p>And just to drive the point home as to why this will help:
+       <ul>
+           <p><li>As mentioned above, individuals and local entities may struggle to keep up in the area of technical expertise, but if there are multiple vendors working in a particular space (e.g., video stream analysis), then those vendors can police each other.   In fact, entry criteria for consideration might be that vendor X has to do quality assurance reviews and testing of competitor vendor Y.  Assuming automated test suites are a requirement, quality assurance reviews can take place.  As long as there is true competition between vendors in a given space, government agencies at least have a fighting chance.
+           
+           <p><li>Although definition of requirements and standards can be a tedious process, it is actually the standards which allow IT vendors to make money.  No IT vendor is ever going to bid on a contract if they don't have explicit requirements (i.e., a spec).  But when the prize is big enough, and if there is a level playing field, multiple IT vendors will compete for the business.
+           
+           <p><li>As for a possible concern that IT vendors will refuse to cooperate and collaborate for fear of loss of control and potential leakage of intellectual property, the good and bad news on this topic is that virtually everyone participating in the "community" will have the very same fear.  In fact, those in government will also be very concerned about "giving up control".  It is mentioned as both "good and bad" because although painful to work out the rules of engagement, everyone involved will ultimately realize that there is a huge need for public safety (so the revenue streams are certainly well understood).  Given that the "prize" is well understood, there certainly will be IT vendors willing to participate.   Some IT vendors are already actively working in this area, so the consumers (governments, and even those in the private sector) merely need to get organized and insist from the beginning on the following:
+           
+           <p><ul>
+               <li>Standards
+               <li>Transparency
+               <li>Outstanding documentation (e.g., functional footprint, offered services, road map, etc)
+               <li>Repeatable automated tests
+               <li>Port-in / port-out
+               <li>Public APIs (with backward compatibility) for certain critical components and services
+           </ul>
+           
+           <p>In general, businesses are willing to work in this sort of environment (if the prize is big enough), but they don't like to do it, and they won't if they aren't compelled to do so.  So this entire article is merely a reminder to those in government that there are strategies that should (and perhaps must) be followed to increase the likelihood of success in the area of public safety.
+       </ul>
+</ul>
+    
+</html>
+

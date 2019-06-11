@@ -1,0 +1,104 @@
+<html>
+<head>
+<script src="../javascripts/menuCommon.js"></script>
+
+<script>
+var sectionMenu=new Array()
+sectionMenu[0]='<a href="#Top">Top - Use Cases</a>'
+sectionMenu[1]='<a href="#BlackListedIndividual">Blacklisted Individual</a>'
+sectionMenu[2]='<a href="#HostileActionDetected">Hostile Action Detected</a>'
+sectionMenu[3]='<a href="#ChangeOfAppearance">Change of Appearance</a>'
+sectionMenu[4]='<a href="#SelfEvacuation">Self Evacuation</a>'
+sectionMenu[5]='<a href="#AssistedEvacuation">Assisted Evacuation</a>'
+</script>
+
+</head>
+
+<link rel=STYLESHEET TYPE="text/css" href="../stylesheets/common.css">
+
+<a name="Top">
+<table style="width:100%">
+  <tr>
+    <td><h2 onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Public Safety App - Use Cases</h2></td>
+	
+    <td valign="top"><img src="MASlogo-small.jpg"></td> 
+  </tr>
+</table>
+
+<ul>
+   <p>The following are a sample set of use cases which illustrate how Public Safety App can be used to improve public safety.  And just as a reminder, the Public Safety App is a yet to be developed set of services (see related docs for more information):
+</ul>
+
+
+<a name="BlackListedIndividual">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Identify previously black-listed person via facial recognition</em>
+
+<ul>
+  <li>Onsite security manually enters image of someone previously "red flagged".
+  <li>Previously red flagged individual attempts to enter site.
+  <li>Cameras which cover facility entry points trigger facial recognition software, person is identified and onsite security is warned.
+  
+  <p>Outcome - person is prevented from entering facility (detained by security).
+</ul>
+
+
+<a name="HostileActionDetected">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Hostile action is detected</em>
+
+<ul>
+  <li>Cameras record a hostile action (e.g., person exposes a concealed weapon).
+  <li>Due to hostile action, person is red flagged as a hostile actor and is tracked by Public Safety App.
+  <li>Onsite security is notified (as is local law enforcement).
+  <li>Onsite dashboard goes into crisis mode and all relevant video streams are updated on command console.
+  <li>Appropriate video streams are uploaded to server for distribution to law enforcement.
+  <li>Law enforcement distributes real time feeds to appropriate law enforcement agents in the field.
+  <li>Alarm is triggered and civilians are notified on their Smart phones.
+  <li>Hostile actor movement is tracked within the site (so hostile actor's exact location is known).
+  <li>Civilians within the site are evacuated.
+  
+  <p>Outcome - hostile actor is apprehended by law enforcement.
+</ul>
+
+
+<a name="ChangeOfAppearance">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Hostile actor attempts to change appearance and slip away during mass evacuation</em>
+
+<ul>
+  <li>Hostile action is detected and hostile actor is tracked by Public Safety App.
+  <li>Hostile actor initially wears a hat, sunglasses, and a sweater over his shirt.
+  <li>During mass exit from facility, the hostile actor removes hat, glasses, and sweater.
+  <li>Public Safety App detects change in appearance and begins tracking hostile actor based on "new appearance".
+  
+  <p>Outcome - hostile actor is apprehended by law enforcement while exiting facility.
+</ul>
+
+
+<a name="SelfEvacuation">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Civilians are trapped in a facility under a crisis alert - self evacuation</em>
+
+<ul>
+  <li>Hostile action is detected and hostile actor is tracked by Public Safety App.
+  <li>Site goes into crisis mode.
+  <li>Public Safety App detects a pocket of civilians that are trapped (e.g., hiding).
+  <li>Public Safety App tracks hostile actor and determines that those that are trapped are at a completely separate location in the facility.
+  <li>Public Safety App vets those that are trapped and determines that communication with those phones is appropriate (i.e., secure communication is authorized).
+  <li>Evacuation instructions are communicated to those that are trapped.
+    
+  <p>Outcome - those trapped are able to evacuate under their own power.
+</ul>
+
+<a name="AssistedEvacuation">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Civilians are trapped in a facility under a crisis alert - assisted evacuation</em>
+<ul>
+  <li>Hostile action is detected and hostile actor is tracked by Public Safety App.
+  <li>Site goes into crisis mode.
+  <li>Public Safety App detects a pocket of civilians that are trapped (e.g., hiding).
+  <li>Public Safety App tracks hostile actor and determines that those that are trapped are at a completely separate location in the facility.
+  <li>Public Safety App utilizes biometrics within the Smart phones to determine that the users are alive and well.
+  <li>First responders are able to enter the facility without engaging hostile actor.
+    
+  <p>Outcome - those trapped in the crisis are evacuated without incident.
+</ul>
+
+</html>
+

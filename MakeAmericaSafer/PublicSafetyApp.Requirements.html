@@ -1,0 +1,200 @@
+<html>
+<head>
+<script src="../javascripts/menuCommon.js"></script>
+
+<script>
+var sectionMenu=new Array()
+sectionMenu[0]='<a href="#Top">Top - Draft Requirements</a>'
+sectionMenu[1]='<a href="#Assumptions">Assumptions</a>'
+sectionMenu[2]='<a href="#NotificationTriggers">Notification Triggers</a>'
+sectionMenu[3]='<a href="#NotificationActions">Notification Actions</a>'
+sectionMenu[4]='<a href="#VideoAnalysis">Video Analysis</a>'
+sectionMenu[5]='<a href="#SmartPhones">Smart Phones</a>'
+sectionMenu[6]='<a href="#DashboardManagement">Dashboard Management</a>'
+sectionMenu[7]='<a href="#VideoDistribution">Video Distribution</a>'
+sectionMenu[8]='<a href="#UsersAndGroups">Users and Groups</a>'
+sectionMenu[9]='<a href="#Security">Security</a>'
+</script>
+
+</head>
+
+<link rel=STYLESHEET TYPE="text/css" href="../stylesheets/common.css">
+
+
+<a name="Top">
+<table style="width:100%">
+  <tr>
+    <td><h2 onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Public Safety App - Draft Requirements</h2></td>
+	
+    <td valign="top"><img src="MASlogo-small.jpg"></td> 
+  </tr>
+</table>
+
+<ul>
+   <p>The following is a draft set of requirements for a yet to be developed public safety application.   It is referred 
+   to as a single thing, but is really a series of services which operate on various
+   platforms and utilize many different technolgies.   The expression of requirements serves the following:
+   
+   <ul>
+      <li>Expose things of value which promote public safety.
+      <li>Form a community focused on promoting public safety through improved technology and training.             
+      <li>Get the ball rolling on iterative expression and refinement of requirements.
+      <li>Ultimately rollout an agreed upon set of requirements (i.e., baselining process).
+      <li>Utilize requirements to evolve a baselined spec (public interfaces).
+      <li>Encourage rollout of commercial solutions which satisfy requirements and adhere to baselined specification.
+   </ul>
+</ul>
+
+
+<a name="Assumptions">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Assumptions</em>
+
+<ul>
+  <li>Site will be fully covered by multiple cameras, all of which contain microphones and speakers.
+  <li>Cameras will be integrated with centralized brain (i.e., Public Safety App).
+  <li>Site infrastructure (e.g., buildings, lighting, doors, elevators, electrical, sound system, etc.) will be integrated with Public Safety App.
+  <li>Security staff will exist to configure and monitor Public Safety App.
+  <li>Local and state regulators, first responders, and IT experts will be intimately involved.
+  <li>Baselined requirements and specification allows (and mandates) single view of behavior across diverse sites and locations
+      (i.e., everything from Public Safety App perspective should work exactly the same regardless of particular site or service provider operating security for the site).
+</ul>
+
+
+<a name="NotificationTriggers">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Notification Triggers</em>
+
+<ul>
+  <li>Public Safety App allows for configuration of trigger rules, some examples are:
+      <ul>
+         <li>Key word phrases (e.g., gun, shooter, "get down")
+         <li>Certain sounds (gun shot, mass screaming)
+         <li>Black listed individuals
+         <li>Hostile actions (e.g., person exposing a fire arm or other weapon, physical assault)
+         <li>Mass panic (e.g., rapid dispersion of people from a specific location)
+    </ul>
+
+  <p><li>Public Safety App will continuously monitor configured triggers using a variety of techniques, some examples are:
+      <ul>
+        <li>Identification entered into computerized system (e.g., scan of identification badge, person supplies their name to a receptionist)
+        <li>Facial recognition
+        <li>Detection of aggressive action
+        <li>Sound detection (e.g., gun shot)
+        <li>Behavioral anomalies (e.g., someone wearing a heavy coat on a warm summer day, suspicious loitering)
+      </ul>
+
+  <p><li>Once hostile actor is identified, their movement within the site will be tracked.
+    
+  <li>Public Safety App will fire defined Notification Actions (see below) when configured trigger criteria is detected.
+</ul>
+
+
+<a name="NotificationActions">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Notification Actions</em>
+
+<ul>
+  <li>Alarms
+  <li>Notification sent to onsite security and first responders
+  <li>Heightened collection of data from input sources - for example:
+      <ul>
+          <li>recent backlog of collection streams (say last 30 minutes) pushed to server
+          <li>higher push rate of real time streams to server
+      </ul>
+      
+  <p><li>Dashboard goes into "crisis mode" (begins to prioritize content based on Public Safety App algorithm)
+  <li>Onsite building infrastructure controlled by Public Safety App (e.g., lights, alarms, auto locking doors, elevator control, etc.)
+  <li>Continuous push of location of hostile actor to smart phones (e.g., within site map)
+  <li>Video and/or still images of hostile actor pushed to smart phones
+  <li>Instructions from onsite security or first responders pushed to smart phones
+</ul>
+
+
+<a name="VideoAnalysis">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Video Analysis</em>
+
+<ul>
+  <li>Continuously scan for:
+      <ul>
+          <li>black listed individuals (facial recognition)
+          <li>black listed words or sounds
+          <li>mass panic (rapid dispersion)
+          <li>hostile actions
+      </ul>
+    
+  <p><li>Signal notifications when trigger criteria is met
+  <li>When hostile actor is identified, place appropriate camera feeds in dash board (i.e., camera feeds which show hostile actor)
+  <li>Place best still image of hostile actor in dashboard
+  <li>Continuously adjust dashboard feeds as hostile actor moves throughout the site
+  <li>Visually highlight hostile actor in video feeds (to distinguish from others that are trapped)
+  <li>Prediction of hostile actor location within site (including time estimates) based on prior movement history
+</ul>
+
+
+<a name="SmartPhones">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Smart Phones</em>
+
+<ul>
+  <li>Allow automatic connect to Public Safety App when notified of crisis
+  <li>Allow automatic toggle to silent mode when notified of a crisis (or when hostile actor is in close proximity)
+  <li>Allow bi-directional exchange of text, audio and video streams when connected to Public Safety App
+  <li>Allow interconnect to others trapped in crisis
+  <li>Support real time biometric tracking of user's vital signs when connected to Public Safety App
+</ul>
+
+
+<a name="DashboardManagement">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Dashboard Management</em>
+
+<ul>
+  <li>Text messages, audio and video will be aggregated to dash board
+  
+  <li>Content will be included in dash board from various sources
+      <ul>
+          <li>onsite cameras
+          <li>smart phones
+          <li>broadcast messages from onsite security and/or first responders
+          <li>onsite repository (e.g., site map, critical methods and procedures, evacuation plan)
+      </ul>
+      
+  <p><li>Content in dash board will be prioritized based on algorithm in Public Safety App
+  <li>Dashboard can be used to trigger interaction with user smart phones (those trapped onsite)
+  <li>Dashboard to contain sitemap including each user's location (derived from registered smart phones)
+  <li>Meta data associated with the smart phone will be available from the dash board (including biometric "heartbeat")
+</ul>
+
+
+<a name="VideoDistribution">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Video Distribution</em>
+
+<ul>
+  <li>Public Safety App will push text, audio and video streams to centralized server in real time
+  <li>Amount and frequency of data pushed to server will vary based on whether a crisis has been detected
+  <li>Once data is uploaded to centralized server, it can then be distributed to the appropriate users and user groups
+</ul>
+
+
+<a name="UsersAndGroups">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Users and Groups</em>
+
+<ul>
+  <li>Allow pre-registration of Users and Groups
+  <li>User roles will be associated with both Users and Groups
+  <li>The group owner serves as the overall administrator of the group
+  <li>System features are available based on user roles
+</ul>
+
+
+<a name="Security">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Security</em>
+
+<ul>
+  <li>Smart phone users can pre-register for connectivity to Public Safety App (implies some sort of background check or verification process).
+  <li>Smart phone users can configure profile settings.
+  <li>Access to system features will be constrained based on user roles.
+  <li>Users that aren't pre-registered may access Public Safety App (implies extra authentication step).
+  <li>Public Safety App will have security measures to limit exposure of sensitive information to appropriate authorized users.
+  <li>Public Safety App will have security measures to block access by hostile actor.  
+</ul>
+
+
+</html>
+

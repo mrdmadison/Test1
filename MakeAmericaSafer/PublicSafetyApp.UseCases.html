@@ -8,9 +8,10 @@ sectionMenu[0]='<a href="#Top">Top - Use Cases</a>'
 sectionMenu[1]='<a href="#BlackListedIndividual">Blacklisted Individual</a>'
 sectionMenu[2]='<a href="#HostileActionDetected">Hostile Action Detected</a>'
 sectionMenu[3]='<a href="#ChangeOfAppearance">Change of Appearance</a>'
-sectionMenu[4]='<a href="#AutomaticAccompliceDetection">Automatic Accomplice Detection</a>'
-sectionMenu[5]='<a href="#SelfEvacuation">Self Evacuation</a>'
-sectionMenu[6]='<a href="#AssistedEvacuation">Assisted Evacuation</a>'
+sectionMenu[4]='<a href="#AccompliceDetection1">Accomplice Detection - Proximity</a>'
+sectionMenu[5]='<a href="#AccompliceDetection2">Accomplice Detection - National Database</a>'
+sectionMenu[6]='<a href="#SelfEvacuation">Self Evacuation</a>'
+sectionMenu[7]='<a href="#AssistedEvacuation">Assisted Evacuation</a>'
 </script>
 
 </head>
@@ -20,7 +21,7 @@ sectionMenu[6]='<a href="#AssistedEvacuation">Assisted Evacuation</a>'
 <a name="Top">
 <table style="width:100%">
   <tr>
-    <td><h2 onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Public Safety App - Use Cases</h2></td>
+    <td><h2 onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '300px')" onMouseout="delayhidemenu()">Public Safety App - Use Cases</h2></td>
 	
     <td valign="top"><img src="MASlogo-small.jpg"></td> 
   </tr>
@@ -32,10 +33,10 @@ sectionMenu[6]='<a href="#AssistedEvacuation">Assisted Evacuation</a>'
 
 
 <a name="BlackListedIndividual">
-<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Identify previously black-listed person via facial recognition</em>
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '300px')" onMouseout="delayhidemenu()">Identify previously black-listed person via facial recognition</em>
 
 <ul>
-  <li>Onsite security manually enters image of someone previously "red flagged".
+  <li>Previously red flagged individuals are offerred to Public Safety App.
   <li>Previously red flagged individual attempts to enter site.
   <li>Cameras which cover facility entry points trigger facial recognition software, person is identified and onsite security is warned.
   
@@ -44,7 +45,7 @@ sectionMenu[6]='<a href="#AssistedEvacuation">Assisted Evacuation</a>'
 
 
 <a name="HostileActionDetected">
-<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Hostile action is detected</em>
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '300px')" onMouseout="delayhidemenu()">Hostile action is detected</em>
 
 <ul>
   <li>Cameras record a hostile action (e.g., person exposes a concealed weapon).
@@ -62,7 +63,7 @@ sectionMenu[6]='<a href="#AssistedEvacuation">Assisted Evacuation</a>'
 
 
 <a name="ChangeOfAppearance">
-<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Hostile actor attempts to change appearance and slip away during mass evacuation</em>
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '300px')" onMouseout="delayhidemenu()">Hostile actor attempts to change appearance and slip away during mass evacuation</em>
 
 <ul>
   <li>Hostile action is detected and hostile actor is tracked by Public Safety App.
@@ -74,22 +75,37 @@ sectionMenu[6]='<a href="#AssistedEvacuation">Assisted Evacuation</a>'
 </ul>
 
 
-<a name="AutomaticAccompliceDetection">
-<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Automatic accomplice detection</em>
+<a name="AccompliceDetection1">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '300px')" onMouseout="delayhidemenu()">Automatic accomplice detection via proximity</em>
 
 <ul>
   <li>Hostile action is detected and hostile actor is tracked by Public Safety App.
   <li>Analysis of historical video streams is automatically triggered by Public Safety App.
   <li>Public Safety App. discovers that hostile actor arrived on site with an accomplice (they drove together in the same car).
-  <li>Accomplice is also tracked in the Public Safety App.
+  <li>Accomplice is also tracked by the Public Safety App.
   <li>Police are notified of the car's location.
   
   <p>Outcome - hostile actor and accomplice are apprehended when they return to their car.
 </ul>
 
 
+<a name="AccompliceDetection2">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '300px')" onMouseout="delayhidemenu()">Automatic accomplice detection via national database integration</em>
+
+<ul>
+  <li>Hostile action is detected and hostile actor is tracked by Public Safety App.
+  <li>National database of scanned to determine whether hostile actor is known.
+  <li>Assuming hostle actor is known, associates of hostile actor are identified (their pictures are loaded into public safety app).
+  <li>Analysis of historical video streams is automatically triggered by Public Safety App.
+  <li>Public Safety App. discovers that associates of hostile actor are also on site and are thus tracked.
+  <li>Police are notified of potential accomplices (and their locations).
+  
+  <p>Outcome - hostile actor is apprehended, and potential accomplices are detained and questioned.
+</ul>
+
+
 <a name="SelfEvacuation">
-<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Civilians are trapped in a facility under a crisis alert - self evacuation</em>
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '300px')" onMouseout="delayhidemenu()">Civilians are trapped in a facility under a crisis alert - self evacuation</em>
 
 <ul>
   <li>Hostile action is detected and hostile actor is tracked by Public Safety App.
@@ -103,7 +119,7 @@ sectionMenu[6]='<a href="#AssistedEvacuation">Assisted Evacuation</a>'
 </ul>
 
 <a name="AssistedEvacuation">
-<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Civilians are trapped in a facility under a crisis alert - assisted evacuation</em>
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '300px')" onMouseout="delayhidemenu()">Civilians are trapped in a facility under a crisis alert - assisted evacuation</em>
 <ul>
   <li>Hostile action is detected and hostile actor is tracked by Public Safety App.
   <li>Site goes into crisis mode.

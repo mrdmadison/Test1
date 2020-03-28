@@ -134,12 +134,12 @@ sectionMenu[5]='<a href="#Feedback">Feedback</a>'
     
     <ul>
       <li>All configuration settings from legacy system are ported to new system.
-      <li>All legacy system data (e.g., previously red-flagged individuals, system stats, users and user roles) are ported to new system.
-      <li>All new system configuration is defined (or defaults are deemed reasonable).
-      <li>Both legacy system and new system can operate concurrently (dual mode), where legacy system is considered the "master" and new system is running in "parallel mode".   
-      <li>While new system is running in parallel mode, simulated events should result in legacy system actions and new system "shadow actions".  A shadow action might be a notification which is logged somewhere to express that the notification was triggered but wouldn't necessary be sent to an external source (like to law enforcement or first responders).
+      <li>All legacy system data (e.g., previously red-flagged individuals, system stats, users and user roles) is ported to new system.
+      <li>All new system configuration is defined (or defaults are accepted when they are reasonable).
+      <li>Both legacy system and new system can operate concurrently (dual mode) - legacy system is considered the "master" and new system is running in "parallel mode".   
+      <li>While new system is running in parallel mode, simulated events should result in legacy system actions and new system "shadow actions".  A shadow action might be a notification which is logged somewhere to express that the notification was triggered but wouldn't necessarily be sent to an external source (like to law enforcement or first responders).
       <li>Once parallel mode is verified, cut over to new system will be performed and regular system verification will take place.
-      <li>Backout/recovery - this verifies that even once cut over to new system takes place, for some period of time, backout is possible.
+      <li>Backout/recovery - need to verify that even once cut over to new system takes place, for some period of time, backout is still possible.
     </ul>
         
 </ul>

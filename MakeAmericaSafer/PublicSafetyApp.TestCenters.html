@@ -1,0 +1,158 @@
+<html>
+<head>
+<script src="../javascripts/menuCommon.js"></script>
+
+<script>
+var sectionMenu=new Array()
+sectionMenu[0]='<a href="#Top">Top</a>'
+sectionMenu[1]='<a href="#TestCenterOverview">Test Centers - Overview</a>'
+sectionMenu[2]='<a href="#HostileActorTracking">Hostile Actor Tracking</a>'
+sectionMenu[3]='<a href="#CrisisSimulations">Crisis Simulations</a>'
+sectionMenu[4]='<a href="#PortOutAndReleaseUpgrade">Port-out and Release Upgrade</a>'
+sectionMenu[5]='<a href="#Feedback">Feedback</a>'
+
+</script>
+
+</head>
+
+<link rel=STYLESHEET TYPE="text/css" href="../stylesheets/common.css">
+
+<a name="Top">
+<table style="width:100%">
+  <tr>
+    <td><h2 onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Public Safety App - Test Centers</h2></td>
+	
+    <td valign="top"><img src="MASlogo-small.jpg"></td> 
+  </tr>
+</table>
+
+<ul>
+   <p>This article addresses the topic of test centers and why they are essential for the quality and effectiveness of public safety applications.   This article will illustrate how test centers help satify the goals listed below:
+   
+   <ul>
+      <li>Reliability and consistency of system functions and operations.
+      <li>Reliability of system performance (e.g., timeliness of application functions).
+      <li>Reliability of continuous availability, even during system maintenance or release upgrade.
+      <li>Accuracy and effectiveness of documentation and training.
+      <li>Reliability of external interfaces (e.g., video stream distribution, alerts).
+      <li>Reliability of building infrastructure and interoperability (e.g., lights, alarms, cameras).
+      <li>Continuous health checking for live running systems.
+      <li>Continuous verification that video stream analysis accurately tracks individuals across all locations within site.
+   </ul>
+   
+   <p>In addition to the testing and verification of the software and hardware, it is important to identify how people behave while operating the public safety application, as well as how people behave while experiencing a crisis situation.   So aside from the goals mentioned above, the following additional testing should be performed:
+   
+   <ul>
+      <li>Verify effectiveness of rollout (deployment) of public safety application at a given site (e.g., installation, configuration, health checking of all system resources).
+      <li>Verify effectiveness of security staff and system operators in regards to managing a simulated crisis.
+      <li>Verify effectiveness of application in regards to detecting hostile action/crisis in a simulated setting, and verify application, and site itself, can effectively steer citizens within the site to an appropriate exit.
+   </ul>
+</ul>
+
+
+<a name="TestCenterOverview">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Test Center - Overview</em>
+
+<ul>   
+    <p>Virtually all things offered to consumers go through some level of quality assurance.  For food and medicine, we have the FDA, and for aviation we have the FAA and NTSB. For software applications, typically the individual IT vendors ensure the software's validity.  But for mission criticial software, especially when lives are at stake, 3rd party verification is typically required.  To illustrate why this is so important, just imagine a law enforcement officier interacting with public safety application at a given site, getting familiar with its operation and usability, and then transferring to some different site.  If the application at the second site had slightly different usability, it might lead to the law enforcement officier drawing an incorrect conclusion or issuing an inappropriate instruction.   If that were to happen, it could put lives at risk.  This is why consistency and reliability is so critical for public safety applications.
+
+    <p>It is expected that independent test centers would exist throughout the U.S.  IT vendors would contract with a given test center to certify their given release of public safety application software.  The test center would perform the standardized suite of tests and issue a report.  If the IT vendor's software passed, they would receive a certificate expressing that the software version passed.  But note, this first level of certification is only the start of the process.  Once an IT vendor's product passes the first level of quality, it would be passed on to a higher level test center.   It is expected that test centers would be organized by type of test - examples would be:
+    
+    <ul>
+      <li>System functions and consistency (sanity test)
+      <li>System performance (timeliness, load testing, continuous availability, live upgrade)
+      <li>Full integration considering various crisis simulations
+    </ul>
+    
+    <p>And even given the various types of test centers and verification processes, there still needs to be an additional wave of verification once public safety application goes live at a given site.   The premise is that the verification process described above would cover the majority of issues long before deploying at a given site.  Still, once a site goes live, all infrastructure and operations must be re-confirmed.  And, processes must be in place to continually confirm the overall health of the live running system (i.e., "health checking" is an essential component of all mission critical software applications).
+</ul>
+
+
+<a name="HostileActorTracking">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Hostile Actor Tracking</em>
+<ul>   
+    <p>One of the most important aspects of a public safety application is the ability to track one or more hostile actors as they move throughout a site.  Testing software, and test centers in general, must be able to quantify how well a given public safety application can do this.  It is expected that tolerance guidelines would be published, and then IT vendor software would be tested and compared to these baselined standards.
+    
+    <p>It is important for testing to be consistent, repeatable, and predictable.  One way to ensure accuracy of automated test is to track movement of a person by some verifiable means (e.g., assume that a designated person carries a cell phone which is tracked by the site's wireless network).  This would serve as the baselined location of the individual.  This could then be compared to the derived location as the person moves through the site.  Various simulations would thus discover the effectiveness of the video stream analysis software by comparing actual location versus derived location.
+    
+    <p>The following are a few things which could factor into the success rate of the public safety application software:
+    
+    <ul>
+      <li>Density of people within the site
+      <li>Number of hostile actors being simultaneously tracked
+      <li>Number of people within the site with similar clothing 
+      <li>Number of people within the site with similar facial features
+    </ul>
+
+    <p>On a side note, it is assumed that public safety application can associate a person's likeness to their cell phone's system-id (i.e., wireless network identifies and tracks the cell phone, and the onsite cameras associate the person to their cell phone).  Therefore, the mere act of having N number of people walk through the site should demonstrate that all (or most) cameras within the site are working properly, and that the public safety application can track the movement of those cell phones  via wireless network as well as through video stream analysis.   So even before the hostile actor simulation is initiated, a preliminary test of individuals walking thoughout the site should take place.
+</ul>
+
+
+<a name="CrisisSimulations">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Crisis Simulations</em>
+<ul>   
+    <p>Fully integrated test centers will exist throughout the country.  These test centers will be fairly large in size so as to mimic real world sites.  The sites will contain the various building infrastructure which would commonly exist in the real world (e.g., lighting, sound system, interior sprinkler system, auto locking doors, cameras, and wireless network connectivity).  It is assumed that IT vendors will supply their own computer hardware with pre-installed public safety application (testing site will supply ample number of video screens in command center).  It is also assumed that site cameras cover the full site (no blind spots).
+    
+    <p>It is expected that sites could be reconfigured to simulate various building structures:
+    <ul>
+       <li>Multi story school, office building, or hospital
+       <li>Shopping mall
+       <li>College campus
+       <li>Factory
+       <li>Assume some amount of outdoor space to cover things like parking lots and common walk ways.
+    </ul>
+    
+    <p>There will be a predefined set of simulations which will be run.  Once public safety application is verified as fully connected and operational, the simulations will begin.  Simulations will be for things like:
+    
+    <ul>
+      <li>Active shooter
+      <li>Natural disaster (fire, or earth quake)
+      <li>Accomplice detection (via proximity)
+      <li>Person having a heart attack (i.e., falling and remaining on the ground, potentially unconscious)
+    </ul>
+    
+    <p>Key aspects to measure would be:
+    <ul>
+       <li>Timeliness of identification of hostile action
+       <li>Accuracy of hostile actor tracking
+       <li>Timeliness of notification to law enforcement
+       <li>Timeliness of notification to civilians on site
+       <li>Accuracy of customized messages sent to each phone
+       <li>Tracking of biometrics from phones back to command console
+       <li>Video feeds and still images of hostile actor displayed on command console
+    </ul>
+    
+    <p>If site is configured to interact with building infrastructure, then simulations would confirm that appropriate building infrastructure was affected as hostile actor moves throughout the site.  For example, public safety application may be configured to flicker the lights as the hostile actor moves through the site (so as to call attention to the hostile actor's location).  Another example would be to adjust the volume of the alarm such that it "follows" the hostile actor.   Of course, this article isn't intended to express all the various building infrastructure which can be controlled by the public safety application (especially since the requirements are in draft form).  But the key take away is that any/all building infrastructure interoperability would be confirmed via simulations.   This not only will confirm sound software, but it also will demonstrate how first responders, system operators, and civilians behave in the simulated crisis situations.  It is assumed that feedback from test runs would ultimately be factored into future improvements to public safety application design.
+</ul>
+
+
+
+<a name="PortOutAndReleaseUpgrade">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Port-out and Release Upgrade</em>
+<ul>   
+    <p>Port-out and release upgrade are grouped together because they result in very similar tests.  For both, you have a fully operational legacy system, and a new system which will ultimately replace the legacy system.  As part of this upgrade process, the following sorts of things should be confirmed by a test center:
+    
+    <ul>
+      <li>All configuration settings from legacy system are ported to new system.
+      <li>All legacy system data (e.g., previously red-flagged individuals, system stats, users and user roles) are ported to new system.
+      <li>All new system configuration is defined (or defaults are deemed reasonable).
+      <li>Both legacy system and new system can operate concurrently (dual mode), where legacy system is considered the "master" and new system is running in "parallel mode".   
+      <li>While new system is running in parallel mode, simulated events should result in legacy system actions and new system "shadow actions".  A shadow action might be a notification which is logged somewhere to express that the notification was triggered but wouldn't necessary be sent to an external source (like to law enforcement or first responders).
+      <li>Once parallel mode is verified, cut over to new system will be performed and regular system verification will take place.
+      <li>Backout/recovery - this verifies that even once cut over to new system takes place, for some period of time, backout is possible.
+    </ul>
+        
+</ul>
+
+
+
+<a name="Feedback">
+<em onClick="return clickreturnvalue()" onMouseover="dropdownmenu(this, event, sectionMenu, '260px')" onMouseout="delayhidemenu()">Feedback</em>
+<ul>
+  <a href="https://darrellmadison.wordpress.com/">My blog</a><br>
+  <a href="https://www.facebook.com/dee.madison.796">Facebook</a><br>
+  <a href="https://twitter.com/MrDMadison">Twitter: @MrDMadison</a><br>
+</ul>
+
+</html>
+

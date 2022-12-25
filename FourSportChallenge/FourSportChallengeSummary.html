@@ -773,6 +773,7 @@
             <ul>
                 <li>The relative risk (via published percentages) should be available via some visual clue as the player views the entire fairway.  This will inform the player of areas which border the fairway that should be feared, and which are safer.
                 <li>When hitting from within the trees, the player must be able to control the simulator display screen adjusting the target reference point by 360 degrees.  This is because the player may have to advance the ball backwards, forwards, or sideways.
+                <li>Simulator must consider whether player is right-handed or left-handed.  Based on player's stance when addressing the ball in the hitting bay, the software shall determine whether there is adequate room amongst the virtual trees for the player to complete the golf swing.  And obviously, if the player is attempting to stand where a tree is located, the software should make it obvious that this is not valid.
                 <li>The simulator screen display must automatically adjust the depth of field (e.g., zoom in) so that trees in close proximity are shown.  This will allow player to establish a target point for hitting back into the fairway or onto the green.
                 <li>If software isn't sufficiently advanced to model actual trees on a given course, a random sample of trees can be included to offer a bit of a challenge to the golfer, while still keeping things fair.  But the same principle applies as mentioned above.
                 <li>And obviously, all hazards and out of bounds must be clearly delineated.
@@ -790,6 +791,11 @@
                 <li>The software must take into consideration the number and location of all holes on the putting service and pick the hole which is most appropriate.
                 <li>Additional factors that might need to be considered are elevation of the virtual green (how high is the virtual green in relation to the fairway), rough height, and rough type.
                 <li>Ideally, indoor golf solution would direct ball placement on indoor green via red dot laser beam.  As an alternative, match referee can assist with ball placement by approximating location based on data from simulator shot result.
+                <li>The software must take into consideration whether the player is right-handed or left-handed.  This could impact things like:
+                   <ul>
+                      <li>stance, when golf ball is close to the right or left edge of a bunker on the virtual hole,
+                      <li>uphill or downhill putts on virtual hole - e.g., right-handed golfers may have more trouble with downhill puts with left to right break (as opposed to right to left break).
+                   </ul>
                 <li>The software must understand the physical limitations of the indoor site - specifically the maximum ceiling height.  The software must not position the player's ball on the indoor green in a location which exceeds the maximum chipping distance.  Instead, the simulator must require the player to hit another approach shot to the green.                
             </ul>
         </ul>
